@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "core-js": "^2.5.7",
     "react": "next",
     "react-dom": "next",
     "react-hooks-async": "latest",
