@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { useAsyncRun, useAsyncTaskFetch } from 'react-hooks-async';
 
-const { useEffect, useState } = React;
+const { useState } = React;
 
 const Err: React.SFC<{ error: Error }> = ({ error }) => (
   <div>
@@ -20,11 +20,10 @@ const Loading: React.SFC<{ abort: () => void }> = ({ abort }) => (
 );
 
 const DisplayRemoteData: React.FC<{ id: string }> = ({ id }) => {
-  const [start, setStart] = useState(false);
-  useEffect(() => () => setStart(false), [id]);
+  const [startId, setStartId] = useState('');
   const url = `https://jsonplaceholder.typicode.com/posts/${id}`;
   const asyncTask = useAsyncTaskFetch<{ title: string }>(url);
-  useAsyncRun(start && asyncTask);
+  useAsyncRun(startId === id && asyncTask);
   const {
     started,
     pending,
@@ -32,7 +31,7 @@ const DisplayRemoteData: React.FC<{ id: string }> = ({ id }) => {
     result,
     abort,
   } = asyncTask;
-  if (!started) return <button onClick={() => setStart(true)}>start</button>;
+  if (!started) return <button onClick={() => setStartId(id)}>start</button>;
   if (error) return <Err error={error} />;
   if (pending) return <Loading abort={abort} />;
   if (!result) return <div>No result</div>;
