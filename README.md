@@ -29,7 +29,7 @@ Usage
 
 A typeahead search example.
 
-![Preview](./examples/04_typeahead/screencast.gif)
+![Preview](./examples/04_typeahead/screencast.gif | max-width=350)
 
 ```javascript
 import React, { useCallback, useState } from 'react';
