@@ -27,6 +27,11 @@ export type UseAsyncTaskTimeout = <Result>(
   delay: number,
 ) => AsyncTask<Result>;
 
+export type UseAsyncTaskDelay = (
+  milliSeconds: number,
+  inputs: InputIdentityList,
+) => AsyncTask<true>;
+
 export type UseAsyncTaskFetch = <Result>(
   input: string | Request,
   init?: RequestInit,
@@ -47,4 +52,5 @@ export const useAsyncCombineSeq: UseAsyncTaskCombine;
 // custom async hooks
 
 export const useAsyncTaskTimeout: UseAsyncTaskTimeout;
+export const useAsyncTaskDelay: UseAsyncTaskDelay;
 export const useAsyncTaskFetch: UseAsyncTaskFetch;

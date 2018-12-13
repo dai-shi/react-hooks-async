@@ -10,7 +10,7 @@ const App = () => {
     <div>
       Query:
       <input value={query} onChange={e => setQuery(e.target.value)} />
-      <GitHubSearch query={query} />
+      {query && <GitHubSearch query={query} />}
     </div>
   );
 };

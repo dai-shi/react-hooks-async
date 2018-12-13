@@ -3,11 +3,9 @@ import * as React from 'react';
 import {
   useAsyncCombineSeq,
   useAsyncRun,
+  useAsyncTaskDelay,
   useAsyncTaskFetch,
-  useAsyncTaskTimeout,
 } from 'react-hooks-async';
-
-const { useCallback } = React;
 
 const Err: React.SFC<{ error: Error }> = ({ error }) => (
   <div>
@@ -34,12 +32,11 @@ type Result = {
 
 const GitHubSearch: React.FC<{ query: string }> = ({ query }) => {
   const url = `https://api.github.com/search/repositories?q=${query}`;
-  const timeoutTask = useAsyncTaskTimeout(useCallback(() => true, [query]), 500);
+  const delayTask = useAsyncTaskDelay(500, [query]);
   const fetchTask = useAsyncTaskFetch<Result>(url);
-  const combinedTask = useAsyncCombineSeq(timeoutTask, fetchTask);
-  useAsyncRun(query && combinedTask);
-  if (!query) return null;
-  if (timeoutTask.pending) return <div>Waiting...</div>;
+  const combinedTask = useAsyncCombineSeq(delayTask, fetchTask);
+  useAsyncRun(combinedTask);
+  if (delayTask.pending) return <div>Waiting...</div>;
   if (fetchTask.error) return <Err error={fetchTask.error} />;
   if (fetchTask.pending) return <Loading abort={fetchTask.abort} />;
   if (!fetchTask.result) return <div>No result</div>;
