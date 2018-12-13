@@ -29,6 +29,8 @@ Usage
 
 A typeahead search example.
 
+![Preview](./examples/04_typeahead/screencast.gif)
+
 ```javascript
 import React, { useCallback, useState } from 'react';
 
