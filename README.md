@@ -29,7 +29,7 @@ Usage
 
 A typeahead search example.
 
-![Preview](./examples/04_typeahead/screencast.gif | width=350)
+<img src="./examples/04_typeahead/screencast.gif" alt="Preview" width="350" />
 
 ```javascript
 import React, { useCallback, useState } from 'react';
