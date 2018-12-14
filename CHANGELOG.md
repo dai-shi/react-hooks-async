@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [0.2.0] - 2018-12-14
 ### Added
 - Add useAsyncTaskDelay
 - Add useAsyncTaskAxios
