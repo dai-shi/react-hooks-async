@@ -14,7 +14,7 @@ describe('basic spec', () => {
     expect(useAsyncTask).toBeDefined();
   });
 
-  it('should create a component', () => {
+  it.skip('should create a component', () => {
     // TODO
   });
 });

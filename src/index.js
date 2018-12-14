@@ -8,3 +8,4 @@ export { useAsyncCombineSeq } from './use-async-combine-seq';
 export { useAsyncTaskTimeout } from './use-async-task-timeout';
 export { useAsyncTaskDelay } from './use-async-task-delay';
 export { useAsyncTaskFetch } from './use-async-task-fetch';
+export { useAsyncTaskAxios } from './use-async-task-axios';

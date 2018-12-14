@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios';
 import { Body, Request, RequestInit } from 'node-fetch';
 
 type InputIdentityList = ReadonlyArray<unknown>;
@@ -38,6 +39,10 @@ export type UseAsyncTaskFetch = <Result>(
   bodyReader?: (b: Body) => Promise<Result>,
 ) => AsyncTask<Result>;
 
+export type UseAsyncTaskAxios = <Result>(
+  config: AxiosRequestConfig,
+) => AsyncTask<Result>;
+
 // core async hooks
 
 export const useAsyncTask: UseAsyncTask;
@@ -54,3 +59,4 @@ export const useAsyncCombineSeq: UseAsyncTaskCombine;
 export const useAsyncTaskTimeout: UseAsyncTaskTimeout;
 export const useAsyncTaskDelay: UseAsyncTaskDelay;
 export const useAsyncTaskFetch: UseAsyncTaskFetch;
+export const useAsyncTaskAxios: UseAsyncTaskAxios;

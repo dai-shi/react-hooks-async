@@ -24,7 +24,8 @@
     "examples:minimal": "DIR=01_minimal EXT=js webpack-dev-server",
     "examples:typescript": "DIR=02_typescript webpack-dev-server",
     "examples:startbutton": "DIR=03_startbutton webpack-dev-server",
-    "examples:typeahead": "DIR=04_typeahead webpack-dev-server"
+    "examples:typeahead": "DIR=04_typeahead webpack-dev-server",
+    "examples:axios": "DIR=05_axios webpack-dev-server"
   },
   "keywords": [
     "react",
@@ -41,6 +42,7 @@
     "@types/node-fetch": "^2.1.4",
     "@types/react": "^16.7.13",
     "@types/react-dom": "^16.0.11",
+    "axios": "^0.18.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
