@@ -15,6 +15,8 @@ require("core-js/modules/es6.object.define-property");
 
 require("core-js/modules/es6.promise");
 
+require("core-js/modules/es6.array.find");
+
 require("core-js/modules/es6.array.some");
 
 require("core-js/modules/es6.array.map");
@@ -103,12 +105,16 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
       var pending = _ref4.pending;
       return pending;
     }),
-    error: asyncTasks.map(function (_ref5) {
+    error: asyncTasks.find(function (_ref5) {
       var error = _ref5.error;
       return error;
     }),
-    result: asyncTasks.map(function (_ref6) {
-      var result = _ref6.result;
+    errorAll: asyncTasks.map(function (_ref6) {
+      var error = _ref6.error;
+      return error;
+    }),
+    result: asyncTasks.map(function (_ref7) {
+      var result = _ref7.result;
       return result;
     })
   });

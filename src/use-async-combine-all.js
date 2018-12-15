@@ -14,7 +14,8 @@ export const useAsyncCombineAll = (asyncTasks) => {
   return {
     ...task,
     pending: asyncTasks.some(({ pending }) => pending),
-    error: asyncTasks.map(({ error }) => error),
+    error: asyncTasks.find(({ error }) => error),
+    errorAll: asyncTasks.map(({ error }) => error),
     result: asyncTasks.map(({ result }) => result),
   };
 };

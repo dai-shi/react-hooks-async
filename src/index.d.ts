@@ -21,7 +21,8 @@ export type UseAsyncTask = <Result>(
 type Falsy = false | '' | null | undefined;
 export type UseAsyncTaskRun = (t: AsyncTask<unknown> | Falsy) => void;
 
-export type UseAsyncTaskCombine = (...ts: Array<AsyncTask<unknown>>) => AsyncTask<unknown>;
+export type UseAsyncTaskCombine = (...ts: Array<AsyncTask<unknown>>)
+  => AsyncTask<unknown> & { errorAll?: Error[] };
 
 export type UseAsyncTaskTimeout = <Result>(
   func: () => Result,
