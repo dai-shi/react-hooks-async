@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Added
+- useAsyncCombineRace
 ### Changed
 - Fix combine return type
 

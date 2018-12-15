@@ -53,7 +53,7 @@ export const useAsyncRun: UseAsyncTaskRun;
 
 export const useAsyncCombineAll: UseAsyncTaskCombine;
 export const useAsyncCombineSeq: UseAsyncTaskCombine;
-// export const useAsyncCombineRace: UseAsyncTaskCombine;
+export const useAsyncCombineRace: UseAsyncTaskCombine;
 
 // custom async hooks
 
