@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [0.3.0] - 2018-12-16
 ### Added
 - useAsyncCombineRace
 ### Changed

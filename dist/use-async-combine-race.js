@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.useAsyncCombineAll = void 0;
+exports.default = exports.useAsyncCombineRace = void 0;
 
 require("core-js/modules/es6.array.filter");
 
@@ -21,11 +21,15 @@ require("core-js/modules/es6.array.some");
 
 require("core-js/modules/es6.array.map");
 
+require("core-js/modules/es6.array.find-index");
+
 require("core-js/modules/web.dom.iterable");
 
 require("core-js/modules/es6.array.for-each");
 
 require("regenerator-runtime/runtime");
+
+var _react = require("react");
 
 var _useAsyncTask = require("./use-async-task");
 
@@ -37,9 +41,15 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var useAsyncCombineAll = function useAsyncCombineAll() {
+var useAsyncCombineRace = function useAsyncCombineRace() {
   for (var _len = arguments.length, asyncTasks = new Array(_len), _key = 0; _key < _len; _key++) {
     asyncTasks[_key] = arguments[_key];
+  }
+
+  var callback = (0, _react.useRef)(null);
+
+  if (callback.current) {
+    callback.current(asyncTasks);
   }
 
   var task = (0, _useAsyncTask.useAsyncTask)(
@@ -48,6 +58,7 @@ var useAsyncCombineAll = function useAsyncCombineAll() {
     var _ref = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee(abortController) {
+      var stopOthers;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -57,11 +68,28 @@ var useAsyncCombineAll = function useAsyncCombineAll() {
                   asyncTask.abort();
                 });
               });
+
+              stopOthers = function stopOthers(tasks) {
+                var index = tasks.findIndex(function (_ref2) {
+                  var pending = _ref2.pending;
+                  return !pending;
+                });
+
+                if (index >= 0) {
+                  tasks.forEach(function (asyncTask, i) {
+                    if (i !== index) {
+                      asyncTask.abort();
+                    }
+                  });
+                }
+              };
+
+              callback.current = stopOthers;
               asyncTasks.forEach(function (asyncTask) {
                 asyncTask.start();
               });
 
-            case 2:
+            case 4:
             case "end":
               return _context.stop();
           }
@@ -72,30 +100,30 @@ var useAsyncCombineAll = function useAsyncCombineAll() {
     return function (_x) {
       return _ref.apply(this, arguments);
     };
-  }(), asyncTasks.map(function (_ref2) {
-    var taskId = _ref2.taskId;
+  }(), asyncTasks.map(function (_ref3) {
+    var taskId = _ref3.taskId;
     return taskId;
   }));
   return _objectSpread({}, task, {
-    pending: asyncTasks.some(function (_ref3) {
-      var pending = _ref3.pending;
+    pending: asyncTasks.some(function (_ref4) {
+      var pending = _ref4.pending;
       return pending;
     }),
-    error: asyncTasks.find(function (_ref4) {
-      var error = _ref4.error;
-      return error;
-    }),
-    errorAll: asyncTasks.map(function (_ref5) {
+    error: asyncTasks.find(function (_ref5) {
       var error = _ref5.error;
       return error;
     }),
-    result: asyncTasks.map(function (_ref6) {
-      var result = _ref6.result;
+    errorAll: asyncTasks.map(function (_ref6) {
+      var error = _ref6.error;
+      return error;
+    }),
+    result: asyncTasks.map(function (_ref7) {
+      var result = _ref7.result;
       return result;
     })
   });
 };
 
-exports.useAsyncCombineAll = useAsyncCombineAll;
-var _default = useAsyncCombineAll;
+exports.useAsyncCombineRace = useAsyncCombineRace;
+var _default = useAsyncCombineRace;
 exports.default = _default;

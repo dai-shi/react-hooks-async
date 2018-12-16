@@ -29,6 +29,12 @@ Object.defineProperty(exports, "useAsyncCombineSeq", {
     return _useAsyncCombineSeq.useAsyncCombineSeq;
   }
 });
+Object.defineProperty(exports, "useAsyncCombineRace", {
+  enumerable: true,
+  get: function get() {
+    return _useAsyncCombineRace.useAsyncCombineRace;
+  }
+});
 Object.defineProperty(exports, "useAsyncTaskTimeout", {
   enumerable: true,
   get: function get() {
@@ -61,6 +67,8 @@ var _useAsyncRun = require("./use-async-run");
 var _useAsyncCombineAll = require("./use-async-combine-all");
 
 var _useAsyncCombineSeq = require("./use-async-combine-seq");
+
+var _useAsyncCombineRace = require("./use-async-combine-race");
 
 var _useAsyncTaskTimeout = require("./use-async-task-timeout");
 
