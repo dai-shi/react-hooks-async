@@ -91,6 +91,7 @@ You can also try them in codesandbox.io:
 [03](https://codesandbox.io/s/github/dai-shi/react-hooks-async/tree/master/examples/03_startbutton)
 [04](https://codesandbox.io/s/github/dai-shi/react-hooks-async/tree/master/examples/04_typeahead)
 [05](https://codesandbox.io/s/github/dai-shi/react-hooks-async/tree/master/examples/05_axios)
+[06](https://codesandbox.io/s/github/dai-shi/react-hooks-async/tree/master/examples/06_progress)
 
 Reference
 ---------

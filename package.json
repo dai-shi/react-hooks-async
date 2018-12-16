@@ -25,7 +25,8 @@
     "examples:typescript": "DIR=02_typescript webpack-dev-server",
     "examples:startbutton": "DIR=03_startbutton webpack-dev-server",
     "examples:typeahead": "DIR=04_typeahead webpack-dev-server",
-    "examples:axios": "DIR=05_axios webpack-dev-server"
+    "examples:axios": "DIR=05_axios webpack-dev-server",
+    "examples:progress": "DIR=06_progress webpack-dev-server"
   },
   "keywords": [
     "react",
