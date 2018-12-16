@@ -1,6 +1,6 @@
 import { useAsyncTask } from './use-async-task';
 
-export const useAsyncCombineAll = (asyncTasks) => {
+export const useAsyncCombineAll = (...asyncTasks) => {
   const task = useAsyncTask(async (abortController) => {
     abortController.signal.addEventListener('abort', () => {
       asyncTasks.forEach((asyncTask) => {
