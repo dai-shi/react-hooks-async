@@ -53,12 +53,6 @@ Object.defineProperty(exports, "useAsyncTaskFetch", {
     return _useAsyncTaskFetch.useAsyncTaskFetch;
   }
 });
-Object.defineProperty(exports, "useAsyncTaskAxios", {
-  enumerable: true,
-  get: function get() {
-    return _useAsyncTaskAxios.useAsyncTaskAxios;
-  }
-});
 
 var _useAsyncTask = require("./use-async-task");
 
@@ -75,5 +69,3 @@ var _useAsyncTaskTimeout = require("./use-async-task-timeout");
 var _useAsyncTaskDelay = require("./use-async-task-delay");
 
 var _useAsyncTaskFetch = require("./use-async-task-fetch");
-
-var _useAsyncTaskAxios = require("./use-async-task-axios");

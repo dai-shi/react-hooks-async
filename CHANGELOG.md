@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.4.0] - 2018-12-18
+### Changed
+- Make useAsyncTaskAxios optional (see examples/05_axios)
+
 ## [0.3.0] - 2018-12-16
 ### Added
 - useAsyncCombineRace
