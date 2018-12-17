@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-import { useAsyncRun, useAsyncTaskAxios } from 'react-hooks-async';
+import { useAsyncRun } from 'react-hooks-async';
+import { useAsyncTaskAxios } from 'react-hooks-async/src/use-async-task-axios';
 
 const { useMemo } = React;
 

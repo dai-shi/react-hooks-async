@@ -5,6 +5,7 @@
   "dependencies": {
     "@types/react": "^16.7.6",
     "@types/react-dom": "^16.0.9",
+    "axios": "^0.18.0",
     "core-js": "^2.5.7",
     "react": "next",
     "react-dom": "next",
