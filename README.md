@@ -15,7 +15,7 @@ However, DOM provides AbortController which can be
 used for aborting promises in general.
 
 This is an experimental library to provide an easy
-way to handle async function by React Hooks API.
+way to handle async function with React Hooks API.
 
 Install
 -------
