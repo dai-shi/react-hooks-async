@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.5.0] - 2018-12-19
+### Changed
+- Aborts running tasks on unmount
+
 ## [0.4.0] - 2018-12-18
 ### Changed
 - Make useAsyncTaskAxios optional (see examples/05_axios)

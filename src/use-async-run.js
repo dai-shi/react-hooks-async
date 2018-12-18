@@ -1,15 +1,16 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 export const useAsyncRun = (asyncTask) => {
-  const previous = useRef(null);
   useEffect(() => {
     if (asyncTask) {
-      if (previous.current) {
-        previous.current.abort();
-      }
-      previous.current = asyncTask;
       asyncTask.start();
     }
+    const cleanup = () => {
+      if (asyncTask) {
+        asyncTask.abort();
+      }
+    };
+    return cleanup;
   }, [asyncTask && asyncTask.taskId]);
 };
 
