@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/node-fetch": "^2.1.4",
     "@types/react": "^16.7.6",
     "@types/react-dom": "^16.0.9",
     "axios": "^0.18.0",
