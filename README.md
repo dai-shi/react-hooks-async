@@ -38,17 +38,16 @@ import {
   useAsyncCombineSeq,
   useAsyncRun,
   useAsyncTaskFetch,
-  useAsyncTaskTimeout,
+  useAsyncTaskDelay,
 } from 'react-hooks-async';
 
 const GitHubSearch = ({ query }) => {
   const url = `https://api.github.com/search/repositories?q=${query}`;
-  const timeoutTask = useAsyncTaskTimeout(useCallback(() => true, [query]), 500);
+  const delayTask = useAsyncTaskDelay(500, [query]);
   const fetchTask = useAsyncTaskFetch(url);
-  const combinedTask = useAsyncCombineSeq(timeoutTask, fetchTask);
-  useAsyncRun(query && combinedTask);
-  if (!query) return null;
-  if (timeoutTask.pending) return <div>Waiting...</div>;
+  const combinedTask = useAsyncCombineSeq(delayTask, fetchTask);
+  useAsyncRun(combinedTask);
+  if (delayTask.pending) return <div>Waiting...</div>;
   if (fetchTask.error) return <Err error={fetchTask.error} />;
   if (fetchTask.pending) return <Loading abort={fetchTask.abort} />;
   if (!fetchTask.result) return <div>No result</div>;
@@ -67,7 +66,7 @@ const App = () => {
     <div>
       Query:
       <input value={query} onChange={e => setQuery(e.target.value)} />
-      <GitHubSearch query={query} />
+      {query && <GitHubSearch query={query} />}
     </div>
   );
 };
