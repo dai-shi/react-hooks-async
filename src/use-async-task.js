@@ -1,9 +1,12 @@
 import {
   useEffect,
   useMemo,
+  useReducer,
   useRef,
-  useState,
 } from 'react';
+
+const forcedReducer = state => !state;
+const useForceUpdate = () => useReducer(forcedReducer, false)[1];
 
 let idCounter = 0;
 
@@ -46,16 +49,16 @@ const createTask = (func, notifyUpdate) => {
 };
 
 export const useAsyncTask = (func, inputs) => {
-  const task = useRef(null);
-  task.current = useMemo(() => createTask(func, (t) => {
-    if (task.current && task.current.taskId === t.taskId) {
-      // eslint-disable-next-line no-use-before-define
-      setState(t);
+  const forceUpdate = useForceUpdate();
+  const task = useRef({});
+  const newTask = useMemo(() => createTask(func, (updatedTask) => {
+    if (task.current && task.current.taskId === updatedTask.taskId) {
+      task.current = updatedTask;
+      forceUpdate();
     }
   }), inputs);
-  const [state, setState] = useState(task.current);
-  if (state.taskId !== task.current.taskId) {
-    setState(task.current);
+  if (task.current && task.current.taskId !== newTask.taskId) {
+    task.current = newTask;
   }
   useEffect(() => {
     const cleanup = () => {
@@ -63,7 +66,7 @@ export const useAsyncTask = (func, inputs) => {
     };
     return cleanup;
   }, []);
-  return state;
+  return task.current;
 };
 
 export default useAsyncTask;
