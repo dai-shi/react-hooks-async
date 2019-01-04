@@ -31,9 +31,10 @@ const UserInfo: React.FC<{ id: string }> = ({ id }) => {
     pending,
     error,
     result,
+    start,
     abort,
   } = asyncTask;
-  if (!started) return <button onClick={asyncTask.start}>start</button>;
+  if (!started) return <button onClick={start}>start</button>;
   if (error) return <Err error={error} />;
   if (pending) return <Loading abort={abort} />;
   if (!result) return <div>No result</div>;
