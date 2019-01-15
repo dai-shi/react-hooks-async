@@ -1,6 +1,4 @@
-import { Body, Request, RequestInit } from 'node-fetch';
-
-type InputIdentityList = ReadonlyArray<unknown>;
+export type InputIdentityList = ReadonlyArray<unknown>;
 
 export type AsyncTask<Result> = {
   taskId: symbol,
@@ -18,40 +16,24 @@ export type UseAsyncTask = <Result>(
 ) => AsyncTask<Result>;
 
 type Falsy = false | '' | null | undefined;
-export type UseAsyncTaskRun = (t: AsyncTask<unknown> | Falsy) => void;
+export type UseAsyncRun = (t: AsyncTask<unknown> | Falsy) => void;
 
-export type UseAsyncTaskCombine = (...ts: Array<AsyncTask<unknown>>)
+export type UseAsyncCombine = (...ts: Array<AsyncTask<unknown>>)
   => AsyncTask<unknown> & { errorAll?: Error[] };
-
-export type UseAsyncTaskTimeout = <Result>(
-  func: () => Result,
-  delay: number,
-) => AsyncTask<Result>;
-
-export type UseAsyncTaskDelay = (
-  milliSeconds: number,
-  inputs: InputIdentityList,
-) => AsyncTask<true>;
-
-export type UseAsyncTaskFetch = <Result>(
-  input: string | Request,
-  init?: RequestInit,
-  bodyReader?: (b: Body) => Promise<Result>,
-) => AsyncTask<Result>;
 
 // core async hooks
 
-export const useAsyncTask: UseAsyncTask;
-export const useAsyncRun: UseAsyncTaskRun;
+export { useAsyncTask } from './use-async-task';
+export { useAsyncRun } from './use-async-run';
 
 // combining async hooks
 
-export const useAsyncCombineAll: UseAsyncTaskCombine;
-export const useAsyncCombineSeq: UseAsyncTaskCombine;
-export const useAsyncCombineRace: UseAsyncTaskCombine;
+export { useAsyncCombineAll } from './use-async-combine-all';
+export { useAsyncCombineSeq } from './use-async-combine-seq';
+export { useAsyncCombineRace } from './use-async-combine-race';
 
 // custom async hooks
 
-export const useAsyncTaskTimeout: UseAsyncTaskTimeout;
-export const useAsyncTaskDelay: UseAsyncTaskDelay;
-export const useAsyncTaskFetch: UseAsyncTaskFetch;
+export { useAsyncTaskTimeout } from './use-async-task-timeout';
+export { useAsyncTaskDelay } from './use-async-task-delay';
+export { useAsyncTaskFetch } from './use-async-task-fetch';
