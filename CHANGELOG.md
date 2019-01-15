@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.6.0] - 2019-01-15
+### Changed
+- Split type definition files in the src directory
+
 ## [0.5.0] - 2018-12-19
 ### Changed
 - Aborts running tasks on unmount
