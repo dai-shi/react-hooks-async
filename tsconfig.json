@@ -8,7 +8,8 @@
     "baseUrl": ".",
     "paths": {
       "react-hooks-async": ["."],
-      "react-hooks-async/src/use-async-task-axios": ["./src/use-async-task-axios"]
+      "react-hooks-async/src/use-async-task-axios": ["./src/use-async-task-axios"],
+      "react-hooks-async/src/use-async-task-wasm": ["./src/use-async-task-wasm"]
     }
   }
 }
