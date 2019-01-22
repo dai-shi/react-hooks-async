@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.7.0] - 2019-01-22
+### Added
+- useAsyncTaskWasm and useWasm
+
 ## [0.6.0] - 2019-01-15
 ### Changed
 - Split type definition files in the src directory
