@@ -5,13 +5,7 @@ import { useAsyncCombineRace, useAsyncRun, useAsyncTaskTimeout } from 'react-hoo
 const { useCallback } = React;
 
 const Progress: React.SFC<{ current: number; max: number }> = ({ current, max }) => (
-  <div>
-    Loading... (
-    {current}
-    /
-    {max}
-    )
-  </div>
+  <div>Loading...({current}/{max})</div>
 );
 
 const RemoteData: React.FC = () => {
@@ -36,13 +30,7 @@ const RemoteData: React.FC = () => {
     <div>
       RemoteData:
       {asyncTasks.map((task, index) => (
-        task.result && (
-          <div>
-            {index}
-            :
-            {task.result}
-          </div>
-        )
+        task.result && <div>{index}:{task.result}</div>
       ))}
     </div>
   );

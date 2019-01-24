@@ -4,10 +4,7 @@ import ReactDOM from 'react-dom';
 import { useAsyncRun, useAsyncTaskTimeout } from 'react-hooks-async';
 
 const Err = ({ error }) => (
-  <div>
-    Error:
-    {error.message}
-  </div>
+  <div>Error:{error.message}</div>
 );
 
 const Waiting = ({ abort }) => (
@@ -29,12 +26,7 @@ const DelayedMessage = ({ delay }) => {
   } = asyncTask;
   if (error) return <Err error={error} />;
   if (pending) return <Waiting abort={abort} />;
-  return (
-    <div>
-      Result:
-      {result}
-    </div>
-  );
+  return <div>Result:{result}</div>;
 };
 
 const App = () => (

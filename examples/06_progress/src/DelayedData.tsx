@@ -5,13 +5,7 @@ import { useAsyncCombineAll, useAsyncRun, useAsyncTaskTimeout } from 'react-hook
 const { useCallback } = React;
 
 const Progress: React.SFC<{ current: number; max: number }> = ({ current, max }) => (
-  <div>
-    Loading... (
-    {current}
-    /
-    {max}
-    )
-  </div>
+  <div>Loading...({current}/{max})</div>
 );
 
 const RemoteData: React.FC = () => {

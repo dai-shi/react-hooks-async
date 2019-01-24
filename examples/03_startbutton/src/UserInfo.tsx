@@ -3,11 +3,7 @@ import * as React from 'react';
 import { useAsyncTaskFetch } from 'react-hooks-async';
 
 const Err: React.SFC<{ error: Error }> = ({ error }) => (
-  <div>
-    Error:
-    {error.name}
-    {error.message}
-  </div>
+  <div>Error:{error.name}{' '}{error.message}</div>
 );
 
 const Loading: React.SFC<{ abort: () => void }> = ({ abort }) => (
@@ -40,12 +36,7 @@ const UserInfo: React.FC<{ id: string }> = ({ id }) => {
   if (error) return <Err error={error} />;
   if (pending) return <Loading abort={abort} />;
   if (!result) return <div>No result</div>;
-  return (
-    <div>
-      First Name:
-      {result.data.first_name}
-    </div>
-  );
+  return <div>First Name:{result.data.first_name}</div>;
 };
 
 export default UserInfo;

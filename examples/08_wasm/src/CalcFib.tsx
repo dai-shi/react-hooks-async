@@ -9,11 +9,7 @@ type Result = {
 };
 
 const Err: React.SFC<{ error: Error }> = ({ error }) => (
-  <div>
-    Error:
-    {error.name}
-    {error.message}
-  </div>
+  <div>Error:{error.name}{' '}{error.message}</div>
 );
 
 const Loading: React.SFC<{ abort: () => void }> = ({ abort }) => (
@@ -34,12 +30,7 @@ const CalcFib: React.FC<{ count: number }> = ({ count }) => {
   if (error) return <Err error={error} />;
   if (pending) return <Loading abort={abort} />;
   if (!result) return <div>No result</div>;
-  return (
-    <div>
-      Fib:
-      {result.exports.fib(count)}
-    </div>
-  );
+  return <div>Fib:{result.exports.fib(count)}</div>;
 };
 
 export default CalcFib;

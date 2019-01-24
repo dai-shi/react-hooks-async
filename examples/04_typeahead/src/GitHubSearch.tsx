@@ -8,11 +8,7 @@ import {
 } from 'react-hooks-async';
 
 const Err: React.SFC<{ error: Error }> = ({ error }) => (
-  <div>
-    Error:
-    {error.name}
-    {error.message}
-  </div>
+  <div>Error:{error.name}{' '}{error.message}</div>
 );
 
 const Loading: React.SFC<{ abort: () => void }> = ({ abort }) => (
