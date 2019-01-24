@@ -22,8 +22,8 @@ const Loading: React.SFC<{ abort: () => void }> = ({ abort }) => (
 
 type Response = {
   data: {
-    title: string,
-  },
+    title: string;
+  };
 };
 
 const DisplayRemoteData: React.FC<{ id: string }> = ({ id }) => {

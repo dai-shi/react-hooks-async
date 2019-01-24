@@ -10,8 +10,8 @@ const App = () => {
     <div>
       count:
       {count}
-      <button onClick={() => setCount(count + 1)}>+1</button>
-      <button onClick={() => setCount(count - 1)}>-1</button>
+      <button type="button" onClick={() => setCount(count + 1)}>+1</button>
+      <button type="button" onClick={() => setCount(count - 1)}>-1</button>
       <CalcFib count={count} />
     </div>
   );

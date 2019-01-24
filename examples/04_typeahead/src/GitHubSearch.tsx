@@ -22,12 +22,14 @@ const Loading: React.SFC<{ abort: () => void }> = ({ abort }) => (
   </div>
 );
 
+/* eslint-disable camelcase, @typescript-eslint/camelcase */
+
 type Result = {
   items: [{
-    id: number,
-    name: string,
-    html_url: string,
-  }],
+    id: number;
+    name: string;
+    html_url: string;
+  }];
 };
 
 const GitHubSearch: React.FC<{ query: string }> = ({ query }) => {
@@ -43,7 +45,7 @@ const GitHubSearch: React.FC<{ query: string }> = ({ query }) => {
   return (
     <ul>
       {fetchTask.result.items.map(({ id, name, html_url }) => (
-        <li key={id}><a target="_blank" href={html_url}>{name}</a></li>
+        <li key={id}><a target="_blank" rel="noreferrer noopener" href={html_url}>{name}</a></li>
       ))}
     </ul>
   );

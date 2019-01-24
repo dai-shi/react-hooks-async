@@ -1,13 +1,13 @@
 export type InputIdentityList = ReadonlyArray<unknown>;
 
 export type AsyncTask<Result> = {
-  taskId: symbol,
-  started: boolean,
-  pending: boolean,
-  error: Error | void,
-  result: Result | void,
-  start: () => void,
-  abort: () => void,
+  taskId: symbol;
+  started: boolean;
+  pending: boolean;
+  error: Error | void;
+  result: Result | void;
+  start: () => void;
+  abort: () => void;
 };
 
 export type UseAsyncTask = <Result>(
@@ -18,8 +18,9 @@ export type UseAsyncTask = <Result>(
 type Falsy = false | '' | null | undefined;
 export type UseAsyncRun = (t: AsyncTask<unknown> | Falsy) => void;
 
-export type UseAsyncCombine = (...ts: Array<AsyncTask<unknown>>)
-  => AsyncTask<unknown> & { errorAll?: Error[] };
+export type UseAsyncCombine = (
+  ...ts: AsyncTask<unknown>[],
+) => AsyncTask<unknown> & { errorAll?: Error[] };
 
 // core async hooks
 

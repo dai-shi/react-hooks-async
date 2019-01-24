@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/named
 import { AsyncTask } from './index';
 
 export type UseAsyncTaskTimeout = <Result>(

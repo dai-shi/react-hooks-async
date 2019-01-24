@@ -10,8 +10,8 @@ const App = () => {
     <div>
       id:
       {id}
-      <button onClick={() => setId(id + 1)}>Next</button>
-      <button onClick={() => setId(id - 1)}>Previous</button>
+      <button type="button" onClick={() => setId(id + 1)}>Next</button>
+      <button type="button" onClick={() => setId(id - 1)}>Previous</button>
       <DisplayRemoteData id={String(id)} />
     </div>
   );

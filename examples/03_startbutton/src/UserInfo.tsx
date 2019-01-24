@@ -17,6 +17,8 @@ const Loading: React.SFC<{ abort: () => void }> = ({ abort }) => (
   </div>
 );
 
+/* eslint-disable camelcase, @typescript-eslint/camelcase */
+
 type Result = {
   data: {
     first_name: string;
@@ -34,7 +36,7 @@ const UserInfo: React.FC<{ id: string }> = ({ id }) => {
     start,
     abort,
   } = asyncTask;
-  if (!started) return <button onClick={start}>start</button>;
+  if (!started) return <button type="button" onClick={start}>start</button>;
   if (error) return <Err error={error} />;
   if (pending) return <Loading abort={abort} />;
   if (!result) return <div>No result</div>;
