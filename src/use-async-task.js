@@ -48,14 +48,12 @@ const createTask = (func, notifyUpdate) => {
   return task;
 };
 
-const emptyInputs = Symbol('emtpy inputs');
-
 export const useAsyncTask = (func, inputs) => {
   const forceUpdate = useForceUpdate();
-  const task = useRef();
-  const previousInputs = useRef(emptyInputs);
-  if (!shallowequal(inputs, previousInputs.current)) {
-    previousInputs.current = inputs;
+  const task = useRef(null);
+  const prevInputs = useRef();
+  if (!prevInputs || !shallowequal(prevInputs.current, inputs)) {
+    prevInputs.current = inputs;
     task.current = createTask(func, (updatedTask) => {
       if (task.current && task.current.taskId === updatedTask.taskId) {
         task.current = updatedTask;

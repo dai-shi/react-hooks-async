@@ -27,6 +27,10 @@ require("core-js/modules/es6.symbol");
 
 var _react = require("react");
 
+var _shallowequal = _interopRequireDefault(require("shallowequal"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -128,18 +132,17 @@ var createTask = function createTask(func, notifyUpdate) {
 
 var useAsyncTask = function useAsyncTask(func, inputs) {
   var forceUpdate = useForceUpdate();
-  var task = (0, _react.useRef)({});
-  var newTask = (0, _react.useMemo)(function () {
-    return createTask(func, function (updatedTask) {
+  var task = (0, _react.useRef)(null);
+  var prevInputs = (0, _react.useRef)();
+
+  if (!prevInputs || !(0, _shallowequal.default)(prevInputs.current, inputs)) {
+    prevInputs.current = inputs;
+    task.current = createTask(func, function (updatedTask) {
       if (task.current && task.current.taskId === updatedTask.taskId) {
         task.current = updatedTask;
         forceUpdate();
       }
     });
-  }, inputs);
-
-  if (task.current && task.current.taskId !== newTask.taskId) {
-    task.current = newTask;
   }
 
   (0, _react.useEffect)(function () {
