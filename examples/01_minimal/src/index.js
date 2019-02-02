@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { useAsyncRun, useAsyncTaskTimeout } from 'react-hooks-async';
@@ -14,9 +14,10 @@ const Waiting = ({ abort }) => (
   </div>
 );
 
+const renderHi = () => <h1>Hi</h1>;
+
 const DelayedMessage = ({ delay }) => {
-  const func = useCallback(() => <h1>Hi</h1>, []);
-  const asyncTask = useAsyncTaskTimeout(func, delay);
+  const asyncTask = useAsyncTaskTimeout(renderHi, delay);
   useAsyncRun(asyncTask);
   const {
     pending,

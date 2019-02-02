@@ -2,19 +2,23 @@ import * as React from 'react';
 
 import { useAsyncCombineAll, useAsyncRun, useAsyncTaskTimeout } from 'react-hooks-async';
 
-const { useCallback } = React;
-
 const Progress: React.SFC<{ current: number; max: number }> = ({ current, max }) => (
   <div>Loading...({current}/{max})</div>
 );
 
+const renderHello1 = () => <span>Hello1</span>;
+const renderHello2 = () => <span>Hello2</span>;
+const renderHello3 = () => <span>Hello3</span>;
+const renderHello4 = () => <span>Hello4</span>;
+const renderHello5 = () => <span>Hello5</span>;
+
 const RemoteData: React.FC = () => {
   const asyncTasks = [
-    useAsyncTaskTimeout(useCallback(() => <span>Hello1</span>, []), 1000),
-    useAsyncTaskTimeout(useCallback(() => <span>Hello2</span>, []), 2000),
-    useAsyncTaskTimeout(useCallback(() => <span>Hello3</span>, []), 3000),
-    useAsyncTaskTimeout(useCallback(() => <span>Hello4</span>, []), 4000),
-    useAsyncTaskTimeout(useCallback(() => <span>Hello5</span>, []), 5000),
+    useAsyncTaskTimeout(renderHello1, 1000),
+    useAsyncTaskTimeout(renderHello2, 2000),
+    useAsyncTaskTimeout(renderHello3, 3000),
+    useAsyncTaskTimeout(renderHello4, 4000),
+    useAsyncTaskTimeout(renderHello5, 5000),
   ];
   const combinedTask = useAsyncCombineAll(...asyncTasks);
   useAsyncRun(combinedTask);
