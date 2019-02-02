@@ -226,7 +226,7 @@ const task = useAsyncTaskAxios(config);
 This is similar to `useAsyncTaskFetch` but using
 [axios](https://github.com/axios/axios).
 Note again the identity of `config` matters and
-best to use with `useMemo`.
+best to use with `useMemoSafe`.
 
 Limitations
 -----------

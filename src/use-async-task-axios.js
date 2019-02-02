@@ -1,5 +1,18 @@
+import { useRef } from 'react';
 import axios from 'axios';
 import { useAsyncTask } from './use-async-task';
+
+// this can be too naive
+export const useMemoSafe = (create, inputs) => {
+  const memoized = useRef();
+  const prevInputs = useRef([]);
+  if (prevInputs.current.length !== inputs.length
+    || prevInputs.current.some((x, i) => x !== inputs[i])) {
+    prevInputs.current = inputs;
+    memoized.current = create();
+  }
+  return memoized.current;
+};
 
 export const useAsyncTaskAxios = config => useAsyncTask(
   (abortController) => {
