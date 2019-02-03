@@ -15,7 +15,7 @@ export type UseAsyncTask = <Result>(
   inputs: InputIdentityList,
 ) => AsyncTask<Result>;
 
-type Falsy = false | '' | null | undefined;
+type Falsy = false | 0 | '' | null | undefined;
 export type UseAsyncRun = (t: AsyncTask<unknown> | Falsy) => void;
 
 export type UseAsyncCombine = (
