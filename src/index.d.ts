@@ -4,8 +4,8 @@ export type AsyncTask<Result> = {
   taskId: symbol;
   started: boolean;
   pending: boolean;
-  error: Error | void;
-  result: Result | void;
+  error: Error | null;
+  result: Result | null;
   start: () => void;
   abort: () => void;
 };

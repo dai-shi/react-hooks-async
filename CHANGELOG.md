@@ -4,6 +4,7 @@
 ### Changed
 - Do not use useMemo/useCallback as a semantic guarantee
 - A naive useMemoSafe for axios config
+- Fix null types
 
 ## [0.7.0] - 2019-01-22
 ### Added
