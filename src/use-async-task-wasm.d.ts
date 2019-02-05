@@ -4,7 +4,7 @@ import { AsyncTask } from './index';
 
 export type UseAsyncTaskWasm = <Result>(
   input: string | Request,
-  inputObject?: object,
+  importObject?: object,
 ) => AsyncTask<Result>;
 
 export const useAsyncTaskWasm: UseAsyncTaskWasm;

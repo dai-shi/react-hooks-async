@@ -217,6 +217,8 @@ The first argument `input` and the second argument `init`
 are simply fed into `fetch`. The third argument `bodyReader`
 is to read the response body, which defaults to JSON parser.
 
+The hook `useFetch` has the same signature and runs the async task immediately.
+
 #### useAsyncTaskAxios
 
 ```javascript
@@ -227,6 +229,21 @@ This is similar to `useAsyncTaskFetch` but using
 [axios](https://github.com/axios/axios).
 Note again the identity of `config` matters and
 best to use with `useMemoSafe`.
+
+The hook `useAxios` has the same signature and runs the async task immediately.
+
+#### useAsyncTaskWasm
+
+```javascript
+const task = useAsyncTaskWasm(input, importObject);
+```
+
+This function returns an async task that fetches wasm
+and creates a WebAssembly instance.
+The first argument `input` is simply fed into `fetch`.
+The second argument `importObject` is passed at instantiating WebAssembly.
+
+The hook `useWasm` has the same signature and runs the async task immediately.
 
 Limitations
 -----------
