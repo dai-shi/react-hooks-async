@@ -3,7 +3,8 @@ import {
   useReducer,
   useRef,
 } from 'react';
-import shallowequal from 'shallowequal';
+
+import { shallowArrayEqual } from './utils';
 
 const useForceUpdate = () => useReducer(state => !state, false)[1];
 
@@ -51,7 +52,7 @@ export const useAsyncTask = (func, inputs) => {
   const forceUpdate = useForceUpdate();
   const task = useRef(null);
   const prevInputs = useRef();
-  if (!prevInputs || !shallowequal(prevInputs.current, inputs)) {
+  if (!prevInputs.current || !shallowArrayEqual(prevInputs.current, inputs)) {
     prevInputs.current = inputs;
     task.current = createTask(func, (updatedTask) => {
       if (task.current && task.current.taskId === updatedTask.taskId) {

@@ -2,13 +2,13 @@ import { useRef } from 'react';
 import axios from 'axios';
 import { useAsyncTask } from './use-async-task';
 import { useAsyncRun } from './use-async-run';
+import { shallowArrayEqual } from './utils';
 
 // this can be too naive
 export const useMemoSafe = (create, inputs) => {
   const memoized = useRef();
   const prevInputs = useRef([]);
-  if (prevInputs.current.length !== inputs.length
-    || prevInputs.current.some((x, i) => x !== inputs[i])) {
+  if (!shallowArrayEqual(prevInputs.current, inputs)) {
     prevInputs.current = inputs;
     memoized.current = create();
   }

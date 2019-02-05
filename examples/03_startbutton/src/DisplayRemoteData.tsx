@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-import { useAsyncRun, useAsyncTaskFetch } from 'react-hooks-async';
+import { useAsyncRun } from 'react-hooks-async';
+import { useAsyncTaskFetch } from 'react-hooks-async/src/use-async-task-fetch';
 
 const { useState } = React;
 

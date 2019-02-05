@@ -17,8 +17,6 @@ require("core-js/modules/es6.object.keys");
 
 require("core-js/modules/es6.object.define-property");
 
-require("core-js/modules/es6.array.some");
-
 var _react = require("react");
 
 var _axios = _interopRequireDefault(require("axios"));
@@ -26,6 +24,8 @@ var _axios = _interopRequireDefault(require("axios"));
 var _useAsyncTask = require("./use-async-task");
 
 var _useAsyncRun = require("./use-async-run");
+
+var _utils = require("./utils");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38,9 +38,7 @@ var useMemoSafe = function useMemoSafe(create, inputs) {
   var memoized = (0, _react.useRef)();
   var prevInputs = (0, _react.useRef)([]);
 
-  if (prevInputs.current.length !== inputs.length || prevInputs.current.some(function (x, i) {
-    return x !== inputs[i];
-  })) {
+  if (!(0, _utils.shallowArrayEqual)(prevInputs.current, inputs)) {
     prevInputs.current = inputs;
     memoized.current = create();
   }

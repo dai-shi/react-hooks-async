@@ -27,9 +27,7 @@ require("core-js/modules/es6.symbol");
 
 var _react = require("react");
 
-var _shallowequal = _interopRequireDefault(require("shallowequal"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _utils = require("./utils");
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
@@ -133,7 +131,7 @@ var useAsyncTask = function useAsyncTask(func, inputs) {
   var task = (0, _react.useRef)(null);
   var prevInputs = (0, _react.useRef)();
 
-  if (!prevInputs || !(0, _shallowequal.default)(prevInputs.current, inputs)) {
+  if (!prevInputs.current || !(0, _utils.shallowArrayEqual)(prevInputs.current, inputs)) {
     prevInputs.current = inputs;
     task.current = createTask(func, function (updatedTask) {
       if (task.current && task.current.taskId === updatedTask.taskId) {

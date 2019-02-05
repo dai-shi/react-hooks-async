@@ -1,6 +1,9 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Remove shallowequal dependency
+- Remove helper hooks from index (breaking change)
 
 ## [0.8.0] - 2019-02-05
 ### Changed

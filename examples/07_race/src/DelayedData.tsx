@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-import { useAsyncCombineRace, useAsyncRun, useAsyncTaskTimeout } from 'react-hooks-async';
+import { useAsyncCombineRace, useAsyncRun } from 'react-hooks-async';
+import { useAsyncTaskTimeout } from 'react-hooks-async/src/use-async-task-timeout';
 
 const Progress: React.SFC<{ current: number; max: number }> = ({ current, max }) => (
   <div>Loading...({current}/{max})</div>

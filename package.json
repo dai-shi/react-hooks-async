@@ -35,9 +35,7 @@
     "fetch"
   ],
   "license": "MIT",
-  "dependencies": {
-    "shallowequal": "^1.1.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",

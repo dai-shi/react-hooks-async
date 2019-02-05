@@ -5,7 +5,8 @@ import {
   cleanup,
 } from 'react-testing-library';
 
-import { useAsyncTask, useAsyncTaskTimeout, useAsyncRun } from '../src/index';
+import { useAsyncTask, useAsyncRun } from '../src/index';
+import { useAsyncTaskTimeout } from '../src/use-async-task-timeout';
 
 jest.useFakeTimers();
 
