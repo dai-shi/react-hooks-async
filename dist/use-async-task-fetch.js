@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.useAsyncTaskFetch = void 0;
+exports.default = exports.useFetch = exports.useAsyncTaskFetch = void 0;
 
 require("core-js/modules/es6.array.for-each");
 
@@ -22,6 +22,8 @@ require("core-js/modules/es6.promise");
 require("regenerator-runtime/runtime");
 
 var _useAsyncTask = require("./use-async-task");
+
+var _useAsyncRun = require("./use-async-run");
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
@@ -95,5 +97,13 @@ var useAsyncTaskFetch = function useAsyncTaskFetch(input) {
 };
 
 exports.useAsyncTaskFetch = useAsyncTaskFetch;
+
+var useFetch = function useFetch() {
+  var asyncTask = useAsyncTaskFetch.apply(void 0, arguments);
+  (0, _useAsyncRun.useAsyncRun)(asyncTask);
+  return asyncTask;
+};
+
+exports.useFetch = useFetch;
 var _default = useAsyncTaskFetch;
 exports.default = _default;

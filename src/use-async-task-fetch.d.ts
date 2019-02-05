@@ -9,4 +9,5 @@ export type UseAsyncTaskFetch = <Result>(
 ) => AsyncTask<Result>;
 
 export const useAsyncTaskFetch: UseAsyncTaskFetch;
+export const useFetch: UseAsyncTaskFetch;
 export default useAsyncTaskFetch;

@@ -39,12 +39,10 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var forcedReducer = function forcedReducer(state) {
-  return !state;
-};
-
 var useForceUpdate = function useForceUpdate() {
-  return (0, _react.useReducer)(forcedReducer, false)[1];
+  return (0, _react.useReducer)(function (state) {
+    return !state;
+  }, false)[1];
 };
 
 var idCounter = 0;

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.useAsyncTaskAxios = exports.useMemoSafe = void 0;
+exports.default = exports.useAxios = exports.useAsyncTaskAxios = exports.useMemoSafe = void 0;
 
 require("core-js/modules/es6.array.for-each");
 
@@ -24,6 +24,8 @@ var _react = require("react");
 var _axios = _interopRequireDefault(require("axios"));
 
 var _useAsyncTask = require("./use-async-task");
+
+var _useAsyncRun = require("./use-async-run");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -62,5 +64,13 @@ var useAsyncTaskAxios = function useAsyncTaskAxios(config) {
 };
 
 exports.useAsyncTaskAxios = useAsyncTaskAxios;
+
+var useAxios = function useAxios() {
+  var asyncTask = useAsyncTaskAxios.apply(void 0, arguments);
+  (0, _useAsyncRun.useAsyncRun)(asyncTask);
+  return asyncTask;
+};
+
+exports.useAxios = useAxios;
 var _default = useAsyncTaskAxios;
 exports.default = _default;

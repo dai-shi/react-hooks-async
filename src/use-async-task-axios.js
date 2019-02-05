@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import axios from 'axios';
 import { useAsyncTask } from './use-async-task';
+import { useAsyncRun } from './use-async-run';
 
 // this can be too naive
 export const useMemoSafe = (create, inputs) => {
@@ -27,5 +28,11 @@ export const useAsyncTaskAxios = config => useAsyncTask(
   },
   [config],
 );
+
+export const useAxios = (...args) => {
+  const asyncTask = useAsyncTaskAxios(...args);
+  useAsyncRun(asyncTask);
+  return asyncTask;
+};
 
 export default useAsyncTaskAxios;

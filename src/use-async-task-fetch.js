@@ -1,4 +1,5 @@
 import { useAsyncTask } from './use-async-task';
+import { useAsyncRun } from './use-async-run';
 
 const defaultInit = {};
 const defaultReadBody = body => body.json();
@@ -27,5 +28,11 @@ export const useAsyncTaskFetch = (
   },
   [input, init, readBody],
 );
+
+export const useFetch = (...args) => {
+  const asyncTask = useAsyncTaskFetch(...args);
+  useAsyncRun(asyncTask);
+  return asyncTask;
+};
 
 export default useAsyncTaskFetch;

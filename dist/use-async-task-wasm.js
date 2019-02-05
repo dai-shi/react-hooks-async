@@ -73,8 +73,8 @@ var useAsyncTaskWasm = function useAsyncTaskWasm(input) {
 
 exports.useAsyncTaskWasm = useAsyncTaskWasm;
 
-var useWasm = function useWasm(input, importObject) {
-  var asyncTask = useAsyncTaskWasm(input, importObject);
+var useWasm = function useWasm() {
+  var asyncTask = useAsyncTaskWasm.apply(void 0, arguments);
   (0, _useAsyncRun.useAsyncRun)(asyncTask);
   return asyncTask;
 };

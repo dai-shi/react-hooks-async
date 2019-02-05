@@ -20,8 +20,8 @@ export const useAsyncTaskWasm = (
   [input, importObject],
 );
 
-export const useWasm = (input, importObject) => {
-  const asyncTask = useAsyncTaskWasm(input, importObject);
+export const useWasm = (...args) => {
+  const asyncTask = useAsyncTaskWasm(...args);
   useAsyncRun(asyncTask);
   return asyncTask;
 };

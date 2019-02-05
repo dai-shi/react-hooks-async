@@ -12,4 +12,5 @@ export type UseAsyncTaskAxios = <Result>(
 ) => AsyncTask<Result>;
 
 export const useAsyncTaskAxios: UseAsyncTaskAxios;
+export const useAxios: UseAsyncTaskAxios;
 export default useAsyncTaskAxios;
