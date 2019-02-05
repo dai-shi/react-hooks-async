@@ -8,7 +8,8 @@ import {
 import { useAsyncTask, useAsyncRun } from '../src/index';
 import { useAsyncTaskTimeout } from '../src/use-async-task-timeout';
 
-jest.useFakeTimers();
+// jest.useFakeTimers();
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 describe('basic spec', () => {
   afterEach(cleanup);
@@ -17,7 +18,7 @@ describe('basic spec', () => {
     expect(useAsyncTask).toBeDefined();
   });
 
-  it.skip('should create a component with timeout', () => {
+  it('should create a component with timeout', async () => {
     const Waiting = ({ abort }) => (
       <div>
         Waiting...
@@ -40,17 +41,18 @@ describe('basic spec', () => {
     };
     const App = () => (
       <div>
-        <DelayedMessage delay={3000} />
-        <DelayedMessage delay={1000} />
+        <DelayedMessage delay={300} />
+        <DelayedMessage delay={100} />
       </div>
     );
     const { container } = render(<App />);
     expect(container).toMatchSnapshot();
-    jest.advanceTimersByTime(1000);
     flushEffects();
+    // jest.advanceTimersByTime(100);
+    await sleep(100);
     expect(container).toMatchSnapshot();
-    jest.advanceTimersByTime(2000);
-    flushEffects();
+    // jest.advanceTimersByTime(200);
+    await sleep(200);
     expect(container).toMatchSnapshot();
   });
 });

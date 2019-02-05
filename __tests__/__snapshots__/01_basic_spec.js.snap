@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`basic spec should create a component with timeout 1`] = `
+<div>
+  <div>
+    <div>
+      Waiting...
+      <button
+        type="button"
+      >
+        Abort
+      </button>
+    </div>
+    <div>
+      Waiting...
+      <button
+        type="button"
+      >
+        Abort
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`basic spec should create a component with timeout 2`] = `
+<div>
+  <div>
+    <div>
+      Waiting...
+      <button
+        type="button"
+      >
+        Abort
+      </button>
+    </div>
+    <div>
+      Result:
+      <h1>
+        Hi
+      </h1>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`basic spec should create a component with timeout 3`] = `
+<div>
+  <div>
+    <div>
+      Result:
+      <h1>
+        Hi
+      </h1>
+    </div>
+    <div>
+      Result:
+      <h1>
+        Hi
+      </h1>
+    </div>
+  </div>
+</div>
+`;
