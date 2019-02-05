@@ -5,8 +5,7 @@ import {
 } from 'react';
 import shallowequal from 'shallowequal';
 
-const forcedReducer = state => !state;
-const useForceUpdate = () => useReducer(forcedReducer, false)[1];
+const useForceUpdate = () => useReducer(state => !state, false)[1];
 
 let idCounter = 0;
 
