@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [0.8.0] - 2019-02-05
 ### Changed
 - Do not use useMemo/useCallback as a semantic guarantee
 - A naive useMemoSafe for axios config
