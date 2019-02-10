@@ -27,19 +27,20 @@ npm install react-hooks-async
 Usage
 -----
 
-A typeahead search example.
+A typeahead search example:
 
 <img src="./examples/04_typeahead/screencast.gif" alt="Preview" width="350" />
 
 ```javascript
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 
-import {
-  useAsyncCombineSeq,
-  useAsyncRun,
-  useAsyncTaskFetch,
-  useAsyncTaskDelay,
-} from 'react-hooks-async';
+import { useAsyncCombineSeq, useAsyncRun } from 'react-hooks-async';
+import { useAsyncTaskDelay } from 'react-hooks-async/dist/use-async-task-delay';
+import { useAsyncTaskFetch } from 'react-hooks-async/dist/use-async-task-fetch';
+
+const Err = ({ error }) => <div>Error:{error.name}{' '}{error.message}</div>;
+
+const Loading = ({ abort }) => <div>Loading...<button onClick={abort}>Abort</button></div>;
 
 const GitHubSearch = ({ query }) => {
   const url = `https://api.github.com/search/repositories?q=${query}`;
@@ -70,6 +71,30 @@ const App = () => {
     </div>
   );
 };
+```
+
+A simple fetch example:
+
+```
+import React from 'react';
+
+import { useFetch } from 'react-hooks-async/dist/use-async-task-fetch';
+
+const UserInfo = ({ id }) => {
+  const url = `https://reqres.in/api/users/${id}?delay=1`;
+  const { pending, error, result, abort } = useFetch(url);
+  if (pending) return <div>Loading...<button onClick={abort}>Abort</button></div>;
+  if (error) return <div>Error:{error.name}{' '}{error.message}</div>;
+  if (!result) return <div>No result</div>;
+  return <div>First Name:{result.data.first_name}</div>;
+};
+
+const App = () => (
+  <div>
+    <UserInfo id={'1'} />
+    <UserInfo id={'2'} />
+  </div>
+);
 ```
 
 Examples
