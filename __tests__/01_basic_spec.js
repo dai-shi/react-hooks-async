@@ -4,6 +4,7 @@ import { render, cleanup } from 'react-testing-library';
 import { useAsyncTask, useAsyncRun } from '../src/index';
 import { useAsyncTaskTimeout } from '../src/use-async-task-timeout';
 
+// FIXME we should fake timers
 // jest.useFakeTimers();
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 

@@ -7,15 +7,17 @@ react-hooks-async
 
 An abortable async function library with React Hooks
 
-Motivation
-----------
+Introduction
+------------
 
 JavaScript promises are not abortable/cancelable.
 However, DOM provides AbortController which can be
 used for aborting promises in general.
 
-This is an experimental library to provide an easy
-way to handle async function with React Hooks API.
+This is a library to provide an easy way to handle
+async function with React Hooks API.
+It comes with a collection of custom hooks that can be used as is.
+More custom hooks can be developed based on core hooks.
 
 Install
 -------
@@ -75,7 +77,7 @@ const App = () => {
 
 A simple fetch example:
 
-```
+```javascript
 import React from 'react';
 
 import { useFetch } from 'react-hooks-async/dist/use-async-task-fetch';
