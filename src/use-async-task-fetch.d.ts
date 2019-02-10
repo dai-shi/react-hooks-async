@@ -1,4 +1,3 @@
-import { Body, Request, RequestInit } from 'node-fetch';
 // eslint-disable-next-line import/named
 import { AsyncTask } from './index';
 

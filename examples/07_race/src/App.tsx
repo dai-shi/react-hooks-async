@@ -3,9 +3,11 @@ import * as React from 'react';
 import DelayedData from './DelayedData';
 
 const App = () => (
-  <div>
-    <DelayedData />
-  </div>
+  <React.StrictMode>
+    <div>
+      <DelayedData />
+    </div>
+  </React.StrictMode>
 );
 
 export default App;

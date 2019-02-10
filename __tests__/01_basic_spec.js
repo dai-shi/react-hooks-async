@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  render,
-  flushEffects,
-  cleanup,
-} from 'react-testing-library';
+import { render, cleanup } from 'react-testing-library';
 
 import { useAsyncTask, useAsyncRun } from '../src/index';
 import { useAsyncTaskTimeout } from '../src/use-async-task-timeout';
@@ -47,7 +43,6 @@ describe('basic spec', () => {
     );
     const { container } = render(<App />);
     expect(container).toMatchSnapshot();
-    flushEffects();
     // jest.advanceTimersByTime(100);
     await sleep(100);
     expect(container).toMatchSnapshot();

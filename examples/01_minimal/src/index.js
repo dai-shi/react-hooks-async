@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 
 import { useAsyncRun } from 'react-hooks-async';
@@ -32,10 +32,12 @@ const DelayedMessage = ({ delay }) => {
 };
 
 const App = () => (
-  <div>
-    <DelayedMessage delay={3000} />
-    <DelayedMessage delay={1000} />
-  </div>
+  <StrictMode>
+    <div>
+      <DelayedMessage delay={3000} />
+      <DelayedMessage delay={1000} />
+    </div>
+  </StrictMode>
 );
 
 ReactDOM.render(<App />, document.getElementById('app'));
