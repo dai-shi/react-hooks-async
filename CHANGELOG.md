@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 ### Changed
+- Improve useRef usage for concurrent mode
+
+## [1.0.0] - 2019-02-10
+### Changed
 - Remove shallowequal dependency
 - Remove helper hooks from index (breaking change)
 

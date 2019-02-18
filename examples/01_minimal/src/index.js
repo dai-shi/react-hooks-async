@@ -1,4 +1,4 @@
-import React, { StrictMode } from 'react';
+import React, { StrictMode, unstable_ConcurrentMode as ConcurrentMode } from 'react';
 import ReactDOM from 'react-dom';
 
 import { useAsyncRun } from 'react-hooks-async';
@@ -33,10 +33,12 @@ const DelayedMessage = ({ delay }) => {
 
 const App = () => (
   <StrictMode>
-    <div>
-      <DelayedMessage delay={3000} />
-      <DelayedMessage delay={1000} />
-    </div>
+    <ConcurrentMode>
+      <div>
+        <DelayedMessage delay={3000} />
+        <DelayedMessage delay={1000} />
+      </div>
+    </ConcurrentMode>
   </StrictMode>
 );
 
