@@ -127,13 +127,30 @@ var createTask = function createTask(func, notifyUpdate) {
 };
 
 var useAsyncTask = function useAsyncTask(func, inputs) {
-  var forceUpdate = useForceUpdate();
-  var task = (0, _react.useRef)(null);
-  var prevInputs = (0, _react.useRef)();
+  var forceUpdate = useForceUpdate(); // inputs
 
-  if (!prevInputs.current || !(0, _utils.shallowArrayEqual)(prevInputs.current, inputs)) {
+  var prevInputs = (0, _react.useRef)();
+  (0, _react.useLayoutEffect)(function () {
     prevInputs.current = inputs;
-    task.current = createTask(func, function (updatedTask) {
+  }); // task
+
+  var task = (0, _react.useRef)(null);
+  var currentTask = task.current;
+  (0, _react.useLayoutEffect)(function () {
+    // We need to set task.current before event hander can be called.
+    task.current = currentTask;
+
+    var cleanup = function cleanup() {
+      task.current = null;
+    };
+
+    return cleanup;
+  }); // create task
+
+  if (!currentTask || !(0, _utils.shallowArrayEqual)(prevInputs.current, inputs)) {
+    currentTask = createTask(func, function (updatedTask) {
+      // Note: task.start() should be called in useEffect or event handler,
+      // otherwise the task will be not updated.
       if (task.current && task.current.taskId === updatedTask.taskId) {
         task.current = updatedTask;
         forceUpdate();
@@ -141,14 +158,7 @@ var useAsyncTask = function useAsyncTask(func, inputs) {
     });
   }
 
-  (0, _react.useEffect)(function () {
-    var cleanup = function cleanup() {
-      task.current = null;
-    };
-
-    return cleanup;
-  }, []);
-  return task.current;
+  return currentTask;
 };
 
 exports.useAsyncTask = useAsyncTask;
