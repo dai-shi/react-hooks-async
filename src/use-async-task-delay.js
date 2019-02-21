@@ -4,8 +4,8 @@ import { useAsyncTaskTimeout } from './use-async-task-timeout';
 import { shallowArrayEqual } from './utils';
 
 export const useAsyncTaskDelay = (milliSeconds, inputs) => {
-  const func = useRef();
-  const prevInputs = useRef();
+  const func = useRef(null);
+  const prevInputs = useRef(null);
   if (!prevInputs.current || !shallowArrayEqual(prevInputs.current, inputs)) {
     prevInputs.current = inputs;
     func.current = () => true;

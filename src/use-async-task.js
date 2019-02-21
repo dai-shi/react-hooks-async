@@ -52,7 +52,7 @@ const createTask = (func, notifyUpdate) => {
 export const useAsyncTask = (func, inputs) => {
   const forceUpdate = useForceUpdate();
   // inputs
-  const prevInputs = useRef();
+  const prevInputs = useRef(null);
   useLayoutEffect(() => {
     prevInputs.current = inputs;
   });

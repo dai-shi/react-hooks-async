@@ -35,10 +35,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 // this can be too naive
 var useMemoSafe = function useMemoSafe(create, inputs) {
-  var memoized = (0, _react.useRef)();
-  var prevInputs = (0, _react.useRef)([]);
+  var memoized = (0, _react.useRef)(null);
+  var prevInputs = (0, _react.useRef)(null);
 
-  if (!(0, _utils.shallowArrayEqual)(prevInputs.current, inputs)) {
+  if (!prevInputs.current || !(0, _utils.shallowArrayEqual)(prevInputs.current, inputs)) {
     prevInputs.current = inputs;
     memoized.current = create();
   }

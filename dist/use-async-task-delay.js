@@ -14,8 +14,8 @@ var _useAsyncTaskTimeout = require("./use-async-task-timeout");
 var _utils = require("./utils");
 
 var useAsyncTaskDelay = function useAsyncTaskDelay(milliSeconds, inputs) {
-  var func = (0, _react.useRef)();
-  var prevInputs = (0, _react.useRef)();
+  var func = (0, _react.useRef)(null);
+  var prevInputs = (0, _react.useRef)(null);
 
   if (!prevInputs.current || !(0, _utils.shallowArrayEqual)(prevInputs.current, inputs)) {
     prevInputs.current = inputs;

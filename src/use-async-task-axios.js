@@ -6,9 +6,9 @@ import { shallowArrayEqual } from './utils';
 
 // this can be too naive
 export const useMemoSafe = (create, inputs) => {
-  const memoized = useRef();
-  const prevInputs = useRef([]);
-  if (!shallowArrayEqual(prevInputs.current, inputs)) {
+  const memoized = useRef(null);
+  const prevInputs = useRef(null);
+  if (!prevInputs.current || !shallowArrayEqual(prevInputs.current, inputs)) {
     prevInputs.current = inputs;
     memoized.current = create();
   }
