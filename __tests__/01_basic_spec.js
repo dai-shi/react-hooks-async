@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import { render, cleanup } from 'react-testing-library';
 
 import { useAsyncTask, useAsyncRun } from '../src/index';
@@ -37,10 +37,12 @@ describe('basic spec', () => {
       return <div>Result:{result}</div>;
     };
     const App = () => (
-      <div>
-        <DelayedMessage delay={300} />
-        <DelayedMessage delay={100} />
-      </div>
+      <StrictMode>
+        <div>
+          <DelayedMessage delay={300} />
+          <DelayedMessage delay={100} />
+        </div>
+      </StrictMode>
     );
     const { container } = render(<App />);
     expect(container).toMatchSnapshot();

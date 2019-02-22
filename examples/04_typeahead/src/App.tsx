@@ -4,7 +4,6 @@ import GitHubSearch from './GitHubSearch';
 
 const {
   useState,
-  StrictMode,
   // @ts-ignore
   unstable_ConcurrentMode: ConcurrentMode,
 } = React;
@@ -12,15 +11,13 @@ const {
 const App = () => {
   const [query, setQuery] = useState('');
   return (
-    <StrictMode>
-      <ConcurrentMode>
-        <div>
-          Query:
-          <input value={query} onChange={e => setQuery(e.target.value)} />
-          {query && <GitHubSearch query={query} />}
-        </div>
-      </ConcurrentMode>
-    </StrictMode>
+    <ConcurrentMode>
+      <div>
+        Query:
+        <input value={query} onChange={e => setQuery(e.target.value)} />
+        {query && <GitHubSearch query={query} />}
+      </div>
+    </ConcurrentMode>
   );
 };
 
