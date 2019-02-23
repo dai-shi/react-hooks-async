@@ -1,8 +1,11 @@
 # Change Log
 
 ## [Unreleased]
+
+## [1.2.0] - 2019-02-23
 ### Changed
 - Rename useMemoSafe to useMemoPrev
+  - Although this is technically a breaking change, we release it as a minor update.
 
 ## [1.1.0] - 2019-02-18
 ### Changed
