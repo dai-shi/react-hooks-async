@@ -256,7 +256,7 @@ const task = useAsyncTaskAxios(config);
 This is similar to `useAsyncTaskFetch` but using
 [axios](https://github.com/axios/axios).
 Note again the identity of `config` matters and
-best to use with `useMemoSafe`.
+best to use with `useMemoPrev`.
 
 The hook `useAxios` has the same signature and runs the async task immediately.
 

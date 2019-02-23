@@ -2,7 +2,7 @@ import { AxiosRequestConfig } from 'axios';
 // eslint-disable-next-line import/named
 import { AsyncTask } from './index';
 
-export const useMemoSafe: <T>(
+export const useMemoPrev: <T>(
   creator: () => T,
   inputs: unknown[],
 ) => T;

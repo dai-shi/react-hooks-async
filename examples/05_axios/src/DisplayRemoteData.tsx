@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { useAsyncRun } from 'react-hooks-async';
-import { useAsyncTaskAxios, useMemoSafe } from 'react-hooks-async/src/use-async-task-axios';
+import { useAsyncTaskAxios, useMemoPrev } from 'react-hooks-async/src/use-async-task-axios';
 
 const Err: React.SFC<{ error: Error }> = ({ error }) => (
   <div>Error:{error.name}{' '}{error.message}</div>
@@ -22,7 +22,7 @@ type Response = {
 
 const DisplayRemoteData: React.FC<{ id: string }> = ({ id }) => {
   const url = `https://jsonplaceholder.typicode.com/posts/${id}`;
-  const config = useMemoSafe(() => ({ url }), [url]);
+  const config = useMemoPrev(() => ({ url }), [url]);
   const asyncTask = useAsyncTaskAxios<Response>(config);
   useAsyncRun(asyncTask);
   const {

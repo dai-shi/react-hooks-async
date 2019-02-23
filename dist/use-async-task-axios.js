@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.useAxios = exports.useAsyncTaskAxios = exports.useMemoSafe = void 0;
+exports.default = exports.useAxios = exports.useAsyncTaskAxios = exports.useMemoPrev = void 0;
 
 require("core-js/modules/es6.array.for-each");
 
@@ -34,7 +34,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 // this can be too naive
-var useMemoSafe = function useMemoSafe(create, inputs) {
+var useMemoPrev = function useMemoPrev(create, inputs) {
   var memoized = (0, _react.useRef)(null);
   var prevInputs = (0, _react.useRef)(null);
 
@@ -46,7 +46,7 @@ var useMemoSafe = function useMemoSafe(create, inputs) {
   return memoized.current;
 };
 
-exports.useMemoSafe = useMemoSafe;
+exports.useMemoPrev = useMemoPrev;
 
 var useAsyncTaskAxios = function useAsyncTaskAxios(config) {
   return (0, _useAsyncTask.useAsyncTask)(function (abortController) {

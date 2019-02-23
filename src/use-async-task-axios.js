@@ -5,7 +5,7 @@ import { useAsyncRun } from './use-async-run';
 import { shallowArrayEqual } from './utils';
 
 // this can be too naive
-export const useMemoSafe = (create, inputs) => {
+export const useMemoPrev = (create, inputs) => {
   const memoized = useRef(null);
   const prevInputs = useRef(null);
   if (!prevInputs.current || !shallowArrayEqual(prevInputs.current, inputs)) {
