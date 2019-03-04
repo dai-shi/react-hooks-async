@@ -1,16 +1,26 @@
-import { useRef } from 'react';
+import { useAsyncTask } from './use-async-task';
 
-import { useAsyncTaskTimeout } from './use-async-task-timeout';
-import { shallowArrayEqual } from './utils';
-
-export const useAsyncTaskDelay = (milliSeconds, inputs) => {
-  const func = useRef(null);
-  const prevInputs = useRef(null);
-  if (!prevInputs.current || !shallowArrayEqual(prevInputs.current, inputs)) {
-    prevInputs.current = inputs;
-    func.current = () => true;
+const createAbortError = (message) => {
+  try {
+    return new DOMException(message, 'AbortError');
+  } catch (e) {
+    const err = new Error(message);
+    err.name = 'AbortError';
+    return err;
   }
-  return useAsyncTaskTimeout(func.current, milliSeconds);
 };
+
+export const useAsyncTaskDelay = (milliSeconds, inputs) => useAsyncTask(
+  abortController => new Promise((resolve, reject) => {
+    const id = setTimeout(() => {
+      resolve(true);
+    }, milliSeconds);
+    abortController.signal.addEventListener('abort', () => {
+      clearTimeout(id);
+      reject(createAbortError('timer aborted'));
+    });
+  }),
+  inputs,
+);
 
 export default useAsyncTaskDelay;
