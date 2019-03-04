@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [1.3.0] - 2019-03-04
 ### Changed
 - Improve the implementation of useAsyncTaskDelay (no ref)
 
