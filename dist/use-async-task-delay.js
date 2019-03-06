@@ -21,7 +21,7 @@ var createAbortError = function createAbortError(message) {
   }
 };
 
-var useAsyncTaskDelay = function useAsyncTaskDelay(milliSeconds, inputs) {
+var useAsyncTaskDelay = function useAsyncTaskDelay(milliSeconds, deps) {
   return (0, _useAsyncTask.useAsyncTask)(function (abortController) {
     return new Promise(function (resolve, reject) {
       var id = setTimeout(function () {
@@ -32,7 +32,7 @@ var useAsyncTaskDelay = function useAsyncTaskDelay(milliSeconds, inputs) {
         reject(createAbortError('timer aborted'));
       });
     });
-  }, inputs);
+  }, deps);
 };
 
 exports.useAsyncTaskDelay = useAsyncTaskDelay;

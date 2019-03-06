@@ -34,12 +34,12 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 // this can be too naive
-var useMemoPrev = function useMemoPrev(create, inputs) {
+var useMemoPrev = function useMemoPrev(create, deps) {
   var memoized = (0, _react.useRef)(null);
-  var prevInputs = (0, _react.useRef)(null);
+  var prevDeps = (0, _react.useRef)(null);
 
-  if (!prevInputs.current || !(0, _utils.shallowArrayEqual)(prevInputs.current, inputs)) {
-    prevInputs.current = inputs;
+  if (!prevDeps.current || !(0, _utils.shallowArrayEqual)(prevDeps.current, deps)) {
+    prevDeps.current = deps;
     memoized.current = create();
   }
 

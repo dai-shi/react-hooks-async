@@ -49,12 +49,12 @@ const createTask = (func, notifyUpdate) => {
   return task;
 };
 
-export const useAsyncTask = (func, inputs) => {
+export const useAsyncTask = (func, deps) => {
   const forceUpdate = useForceUpdate();
-  // inputs
-  const prevInputs = useRef(null);
+  // deps
+  const prevDeps = useRef(null);
   useLayoutEffect(() => {
-    prevInputs.current = inputs;
+    prevDeps.current = deps;
   });
   // task
   const task = useRef(null);
@@ -68,7 +68,7 @@ export const useAsyncTask = (func, inputs) => {
     return cleanup;
   });
   // create task
-  if (!currentTask || !shallowArrayEqual(prevInputs.current, inputs)) {
+  if (!currentTask || !shallowArrayEqual(prevDeps.current, deps)) {
     currentTask = createTask(func, (updatedTask) => {
       // Note: task.start() should be called in useEffect or event handler,
       // otherwise the task will be not updated.

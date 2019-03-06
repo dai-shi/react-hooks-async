@@ -128,12 +128,12 @@ var createTask = function createTask(func, notifyUpdate) {
   return task;
 };
 
-var useAsyncTask = function useAsyncTask(func, inputs) {
-  var forceUpdate = useForceUpdate(); // inputs
+var useAsyncTask = function useAsyncTask(func, deps) {
+  var forceUpdate = useForceUpdate(); // deps
 
-  var prevInputs = (0, _react.useRef)(null);
+  var prevDeps = (0, _react.useRef)(null);
   (0, _react.useLayoutEffect)(function () {
-    prevInputs.current = inputs;
+    prevDeps.current = deps;
   }); // task
 
   var task = (0, _react.useRef)(null);
@@ -149,7 +149,7 @@ var useAsyncTask = function useAsyncTask(func, inputs) {
     return cleanup;
   }); // create task
 
-  if (!currentTask || !(0, _utils.shallowArrayEqual)(prevInputs.current, inputs)) {
+  if (!currentTask || !(0, _utils.shallowArrayEqual)(prevDeps.current, deps)) {
     currentTask = createTask(func, function (updatedTask) {
       // Note: task.start() should be called in useEffect or event handler,
       // otherwise the task will be not updated.

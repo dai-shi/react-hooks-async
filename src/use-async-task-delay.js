@@ -10,7 +10,7 @@ const createAbortError = (message) => {
   }
 };
 
-export const useAsyncTaskDelay = (milliSeconds, inputs) => useAsyncTask(
+export const useAsyncTaskDelay = (milliSeconds, deps) => useAsyncTask(
   abortController => new Promise((resolve, reject) => {
     const id = setTimeout(() => {
       resolve(true);
@@ -20,7 +20,7 @@ export const useAsyncTaskDelay = (milliSeconds, inputs) => useAsyncTask(
       reject(createAbortError('timer aborted'));
     });
   }),
-  inputs,
+  deps,
 );
 
 export default useAsyncTaskDelay;

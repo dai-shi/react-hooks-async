@@ -1,10 +1,10 @@
 import { AxiosRequestConfig } from 'axios';
 // eslint-disable-next-line import/named
-import { AsyncTask } from './index';
+import { AsyncTask, DependencyList } from './index';
 
 export const useMemoPrev: <T>(
   creator: () => T,
-  inputs: unknown[],
+  deps: DependencyList,
 ) => T;
 
 export type UseAsyncTaskAxios = <Result>(

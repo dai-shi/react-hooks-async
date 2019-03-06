@@ -1,4 +1,4 @@
-export type InputIdentityList = ReadonlyArray<unknown>;
+export type DependencyList = ReadonlyArray<unknown>;
 
 export type AsyncTask<Result> = {
   taskId: symbol;
@@ -12,7 +12,7 @@ export type AsyncTask<Result> = {
 
 export type UseAsyncTask = <Result>(
   func: (c: AbortController) => Result,
-  inputs: InputIdentityList,
+  deps: DependencyList,
 ) => AsyncTask<Result>;
 
 type Falsy = false | 0 | '' | null | undefined;

@@ -1,9 +1,9 @@
 // eslint-disable-next-line import/named
-import { AsyncTask, InputIdentityList } from './index';
+import { AsyncTask, DependencyList } from './index';
 
 export type UseAsyncTaskDelay = (
   milliSeconds: number,
-  inputs: InputIdentityList,
+  deps: DependencyList,
 ) => AsyncTask<true>;
 
 export const useAsyncTaskDelay: UseAsyncTaskDelay;

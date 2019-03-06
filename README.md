@@ -130,7 +130,7 @@ Reference
 #### useAsyncTask
 
 ```javascript
-const task = useAsyncTask(func, inputs);
+const task = useAsyncTask(func, deps);
 ```
 
 This function is to create a new async task.
@@ -139,7 +139,7 @@ The first argument `func` is a function with an argument
 which is AbortController. This function returns a promise,
 but the function is responsible to cancel the promise by AbortController.
 
-The second argument `inputs` is an array of inputs just like
+The second argument `deps` is an array of deps just like
 the second argument of `useEffect`.
 This controls when to create an async task.
 
@@ -226,12 +226,12 @@ wrapped by `useCallback`.
 #### useAsyncTaskDelay
 
 ```javascript
-const task = useAsyncTaskDelay(milliSeconds, inputs);
+const task = useAsyncTaskDelay(milliSeconds, deps);
 ```
 
 This function returns an async task that finishes after `milliSeconds`.
 This is a simpler variant of `useAsyncTaskTimeout`.
-The second argument `inputs` is the same as usual.
+The second argument `deps` is the same as usual.
 
 #### useAsyncTaskFetch
 
