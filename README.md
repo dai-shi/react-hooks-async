@@ -1,5 +1,4 @@
-react-hooks-async
-=================
+# react-hooks-async
 
 [![Build Status](https://travis-ci.com/dai-shi/react-hooks-async.svg?branch=master)](https://travis-ci.com/dai-shi/react-hooks-async)
 [![npm version](https://badge.fury.io/js/react-hooks-async.svg)](https://badge.fury.io/js/react-hooks-async)
@@ -7,8 +6,7 @@ react-hooks-async
 
 An abortable async function library with React Hooks
 
-Introduction
-------------
+## Introduction
 
 JavaScript promises are not abortable/cancelable.
 However, DOM provides AbortController which can be
@@ -20,15 +18,13 @@ abortable async functions with React Hooks API.
 It comes with a collection of custom hooks that can be used as is.
 More custom hooks can be developed based on core hooks.
 
-Install
--------
+## Install
 
 ```bash
 npm install react-hooks-async
 ```
 
-Usage
------
+## Usage
 
 A typeahead search example:
 
@@ -100,8 +96,7 @@ const App = () => (
 );
 ```
 
-Examples
---------
+## Examples
 
 The [examples](examples) folder contains working examples.
 You can run one of them with
@@ -122,8 +117,7 @@ You can also try them in codesandbox.io:
 [07](https://codesandbox.io/s/github/dai-shi/react-hooks-async/tree/master/examples/07_race)
 [08](https://codesandbox.io/s/github/dai-shi/react-hooks-async/tree/master/examples/08_wasm)
 
-Reference
----------
+## Reference
 
 ### Core hooks
 
@@ -273,8 +267,7 @@ The second argument `importObject` is passed at instantiating WebAssembly.
 
 The hook `useWasm` has the same signature and runs the async task immediately.
 
-Limitations
------------
+## Limitations
 
 Due to the nature of React Hooks API, creating async tasks dynamically
 is not possible. For example, we cannot create arbitrary numbers of
@@ -282,8 +275,7 @@ async tasks at runtime.
 For such a complex use case, we would use other solutions including
 upcoming react-cache and Suspense.
 
-Blogs
------
+## Blogs
 
 - [Introduction to abortable async functions for React with hooks](https://medium.com/@dai_shi/introduction-to-abortable-async-functions-for-react-with-hooks-768bc72c0a2b)
 - [Developing React custom hooks for abortable async functions with AbortController](https://medium.com/@dai_shi/developing-react-custom-hooks-for-abortable-async-functions-with-abortcontroller-1f2091b5a1c3)
