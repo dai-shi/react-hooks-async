@@ -18,7 +18,7 @@ const Waiting = ({ abort }) => (
 const renderHi = () => <h1>Hi</h1>;
 
 const DelayedMessage = ({ delay }) => {
-  const asyncTask = useAsyncTaskTimeout(renderHi, delay);
+  const asyncTask = useAsyncTaskTimeout(renderHi, delay, [renderHi, delay]);
   useAsyncRun(asyncTask);
   const {
     pending,
