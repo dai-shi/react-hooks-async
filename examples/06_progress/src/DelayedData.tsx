@@ -15,11 +15,11 @@ const renderHello5 = () => <span>Hello5</span>;
 
 const RemoteData: React.FC = () => {
   const asyncTasks = [
-    useAsyncTaskTimeout(renderHello1, 1000),
-    useAsyncTaskTimeout(renderHello2, 2000),
-    useAsyncTaskTimeout(renderHello3, 3000),
-    useAsyncTaskTimeout(renderHello4, 4000),
-    useAsyncTaskTimeout(renderHello5, 5000),
+    useAsyncTaskTimeout(renderHello1, 1000, []),
+    useAsyncTaskTimeout(renderHello2, 2000, []),
+    useAsyncTaskTimeout(renderHello3, 3000, []),
+    useAsyncTaskTimeout(renderHello4, 4000, []),
+    useAsyncTaskTimeout(renderHello5, 5000, []),
   ];
   const combinedTask = useAsyncCombineAll(...asyncTasks);
   useAsyncRun(combinedTask);

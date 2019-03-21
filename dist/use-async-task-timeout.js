@@ -21,7 +21,7 @@ var createAbortError = function createAbortError(message) {
   }
 };
 
-var useAsyncTaskTimeout = function useAsyncTaskTimeout(func, delay) {
+var useAsyncTaskTimeout = function useAsyncTaskTimeout(func, delay, deps) {
   return (0, _useAsyncTask.useAsyncTask)(function (abortController) {
     return new Promise(function (resolve, reject) {
       var id = setTimeout(function () {
@@ -32,7 +32,7 @@ var useAsyncTaskTimeout = function useAsyncTaskTimeout(func, delay) {
         reject(createAbortError('timer aborted'));
       });
     });
-  }, [func, delay]);
+  }, deps);
 };
 
 exports.useAsyncTaskTimeout = useAsyncTaskTimeout;

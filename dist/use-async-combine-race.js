@@ -116,7 +116,8 @@ var useAsyncCombineRace = function useAsyncCombineRace() {
   }, asyncTasks.map(function (_ref4) {
     var start = _ref4.start;
     return start;
-  }));
+  })); // eslint-disable-line react-hooks/exhaustive-deps
+
   return _objectSpread({}, task, {
     pending: asyncTasks.some(function (_ref5) {
       var pending = _ref5.pending;

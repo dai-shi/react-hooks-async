@@ -133,7 +133,7 @@ The first argument `func` is a function with an argument
 which is AbortController. This function returns a promise,
 but the function is responsible to cancel the promise by AbortController.
 
-The second argument `deps` is an array of deps just like
+The second argument `deps` is an array of dependencies just like
 the second argument of `useEffect`.
 This controls when to create an async task.
 
@@ -209,13 +209,12 @@ These hooks are just wrappers of `useAsyncTask`.
 #### useAsyncTaskTimeout
 
 ```javascript
-const task = useAsyncTaskTimeout(func, delay);
+const task = useAsyncTaskTimeout(func, delay, deps);
 ```
 
 This function returns an async task that runs `func` after `delay` ms.
-Note the identity of `func` is important, and if `func` is changed,
-a new async task is created. Hence, typically it is
-wrapped by `useCallback`.
+The third argument `deps` is an array of dependencies,
+which is fed into the second argument of `useAsyncTask`.
 
 #### useAsyncTaskDelay
 
@@ -225,7 +224,7 @@ const task = useAsyncTaskDelay(milliSeconds, deps);
 
 This function returns an async task that finishes after `milliSeconds`.
 This is a simpler variant of `useAsyncTaskTimeout`.
-The second argument `deps` is the same as usual.
+The second argument `deps` is the same as the previous one.
 
 #### useAsyncTaskFetch
 
@@ -244,13 +243,12 @@ The hook `useFetch` has the same signature and runs the async task immediately.
 #### useAsyncTaskAxios
 
 ```javascript
-const task = useAsyncTaskAxios(config);
+const task = useAsyncTaskAxios(config, deps);
 ```
 
 This is similar to `useAsyncTaskFetch` but using
 [axios](https://github.com/axios/axios).
-Note again the identity of `config` matters and
-best to use with `useMemoPrev`.
+The second argument `deps` is the same as the previous one.
 
 The hook `useAxios` has the same signature and runs the async task immediately.
 
@@ -269,11 +267,14 @@ The hook `useWasm` has the same signature and runs the async task immediately.
 
 ## Limitations
 
-Due to the nature of React Hooks API, creating async tasks dynamically
-is not possible. For example, we cannot create arbitrary numbers of
-async tasks at runtime.
-For such a complex use case, we would use other solutions including
-upcoming react-cache and Suspense.
+- Due to the nature of React Hooks API, creating async tasks dynamically
+  is not possible. For example, we cannot create arbitrary numbers of
+  async tasks at runtime.
+  For such a complex use case, we would use other solutions including
+  upcoming react-cache and Suspense.
+- Some hooks require `deps` like `useEffect`, but eslint-plugin-react-hooks
+  can't detect them for the exhaustive-deps rule.
+  Developers need to pay attention without the exhaustive-deps rule.
 
 ## Blogs
 

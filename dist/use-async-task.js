@@ -187,7 +187,8 @@ var useAsyncTask = function useAsyncTask(func, deps) {
     };
 
     return cleanup;
-  }, deps);
+  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
+
   return state;
 };
 

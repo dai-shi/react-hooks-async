@@ -5,6 +5,7 @@
 - Rename "inputs" to "deps"
 - Improve the implementation with useReducer
 - Fix the useRef in useAsyncCombineSeq/Race
+- To avoid memoization, useAsyncTaskTimeout and useAsyncTaskAxios get "deps" (breaking change)
 
 ## [1.3.0] - 2019-03-04
 ### Changed
