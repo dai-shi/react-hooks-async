@@ -1,84 +1,78 @@
-import {
-  useLayoutEffect,
-  useReducer,
-  useRef,
-} from 'react';
+import { useEffect, useReducer } from 'react';
 
-import { shallowArrayEqual } from './utils';
+const initialState = {
+  started: false,
+  pending: true,
+  error: null,
+  result: null,
+  start: null,
+  abort: null,
+};
 
-const forcedReducer = state => !state;
-const useForceUpdate = () => useReducer(forcedReducer, false)[1];
-
-let idCounter = 0;
-
-const createTask = (func, notifyUpdate) => {
-  const taskId = Symbol(`async_task_id_${idCounter += 1}`);
-  let abortController = null;
-  let task = {
-    taskId,
-    started: false,
-    pending: true,
-    error: null,
-    result: null,
-    start: async () => {
-      if (task.started) return;
-      abortController = new AbortController();
-      task = { ...task, started: true };
-      notifyUpdate(task);
-      try {
-        task = {
-          ...task,
-          pending: false,
-          result: await func(abortController),
-        };
-      } catch (e) {
-        task = {
-          ...task,
-          pending: false,
-          error: e,
-        };
-      }
-      notifyUpdate(task);
-    },
-    abort: () => {
-      if (abortController) {
-        abortController.abort();
-      }
-    },
-  };
-  return task;
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'init':
+      return initialState;
+    case 'ready':
+      return {
+        ...state,
+        start: action.start,
+        abort: action.abort,
+      };
+    case 'start':
+      if (state.started) return state; // to bail out just in case
+      return {
+        ...state,
+        started: true,
+      };
+    case 'result':
+      if (!state.pending) return state; // to bail out just in case
+      return {
+        ...state,
+        pending: false,
+        result: action.result,
+      };
+    case 'error':
+      if (!state.pending) return state; // to bail out just in case
+      return {
+        ...state,
+        pending: false,
+        error: action.error,
+      };
+    default:
+      throw new Error(`unexpected action type: ${action.type}`);
+  }
 };
 
 export const useAsyncTask = (func, deps) => {
-  const forceUpdate = useForceUpdate();
-  // deps
-  const prevDeps = useRef(null);
-  useLayoutEffect(() => {
-    prevDeps.current = deps;
-  });
-  // task
-  const task = useRef(null);
-  let currentTask = task.current;
-  useLayoutEffect(() => {
-    // We need to set task.current before event hander can be called.
-    task.current = currentTask;
+  const [state, dispatch] = useReducer(reducer, initialState);
+  useEffect(() => {
+    let dispatchSafe = action => dispatch(action);
+    let abortController = null;
+    const start = async () => {
+      if (abortController) return;
+      abortController = new AbortController();
+      dispatchSafe({ type: 'start' });
+      try {
+        const result = await func(abortController);
+        dispatchSafe({ type: 'result', result });
+      } catch (e) {
+        dispatchSafe({ type: 'error', error: e });
+      }
+    };
+    const abort = () => {
+      if (abortController) {
+        abortController.abort();
+      }
+    };
+    dispatch({ type: 'ready', start, abort });
     const cleanup = () => {
-      task.current = null;
+      dispatchSafe = () => null; // avoid to dispatch after stopped
+      dispatch({ type: 'init' });
     };
     return cleanup;
-  });
-  // create task
-  if (!currentTask || !shallowArrayEqual(prevDeps.current, deps)) {
-    currentTask = createTask(func, (updatedTask) => {
-      // Note: task.start() should be called in useEffect or event handler,
-      // otherwise the task will be not updated.
-      if (task.current && task.current.taskId === updatedTask.taskId) {
-        task.current = updatedTask;
-        forceUpdate();
-      }
-    });
-  }
-  return currentTask;
+  }, deps);
+  return state;
 };
 
 export default useAsyncTask;

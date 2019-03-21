@@ -1,13 +1,12 @@
 export type DependencyList = ReadonlyArray<unknown>;
 
 export type AsyncTask<Result> = {
-  taskId: symbol;
   started: boolean;
   pending: boolean;
   error: Error | null;
   result: Result | null;
-  start: () => void;
-  abort: () => void;
+  start: () => void | null;
+  abort: () => void | null;
 };
 
 export type UseAsyncTask = <Result>(

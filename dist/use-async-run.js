@@ -10,19 +10,22 @@ exports.default = exports.useAsyncRun = void 0;
 var _react = require("react");
 
 var useAsyncRun = function useAsyncRun(asyncTask) {
+  var start = asyncTask && asyncTask.start;
+  var abort = asyncTask && asyncTask.abort;
   (0, _react.useEffect)(function () {
-    if (asyncTask) {
-      asyncTask.start();
+    if (start) {
+      start();
     }
-
+  }, [start]);
+  (0, _react.useEffect)(function () {
     var cleanup = function cleanup() {
-      if (asyncTask) {
-        asyncTask.abort();
+      if (abort) {
+        abort();
       }
     };
 
     return cleanup;
-  }, [asyncTask && asyncTask.taskId]);
+  }, [abort]);
 };
 
 exports.useAsyncRun = useAsyncRun;

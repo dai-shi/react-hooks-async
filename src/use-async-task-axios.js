@@ -2,7 +2,14 @@ import { useRef } from 'react';
 import axios from 'axios';
 import { useAsyncTask } from './use-async-task';
 import { useAsyncRun } from './use-async-run';
-import { shallowArrayEqual } from './utils';
+
+const shallowArrayEqual = (a1, a2) => {
+  if (a1.length !== a2.length) return false;
+  for (let i = 0; i < a1.length; i += 1) {
+    if (a1[i] !== a2[i]) return false;
+  }
+  return true;
+};
 
 // this can be too naive
 export const useMemoPrev = (create, deps) => {

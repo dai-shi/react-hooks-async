@@ -47,11 +47,11 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
   }
 
   var callback = (0, _react.useRef)(null);
-
-  if (callback.current) {
-    callback.current(asyncTasks);
-  }
-
+  (0, _react.useEffect)(function () {
+    if (callback.current) {
+      callback.current(asyncTasks);
+    }
+  });
   var task = (0, _useAsyncTask.useAsyncTask)(
   /*#__PURE__*/
   function () {
@@ -65,7 +65,9 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
             case 0:
               abortController.signal.addEventListener('abort', function () {
                 asyncTasks.forEach(function (asyncTask) {
-                  asyncTask.abort();
+                  if (asyncTask.abort) {
+                    asyncTask.abort();
+                  }
                 });
               });
 
@@ -78,14 +80,24 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
                 var nextTask = tasks[index];
 
                 if (nextTask && prevTask && !prevTask.pending && !prevTask.error) {
+                  if (!nextTask.start) throw new Error('no asyncTask.start');
                   nextTask.start();
                 }
               };
 
               callback.current = startNext;
+
+              if (asyncTasks[0].start) {
+                _context.next = 5;
+                break;
+              }
+
+              throw new Error('no asyncTask.start');
+
+            case 5:
               asyncTasks[0].start();
 
-            case 4:
+            case 6:
             case "end":
               return _context.stop();
           }
@@ -97,24 +109,34 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
       return _ref.apply(this, arguments);
     };
   }(), asyncTasks.map(function (_ref3) {
-    var taskId = _ref3.taskId;
-    return taskId;
+    var start = _ref3.start;
+    return start;
+  }));
+  (0, _react.useEffect)(function () {
+    var cleanup = function cleanup() {
+      callback.current = null;
+    };
+
+    return cleanup;
+  }, asyncTasks.map(function (_ref4) {
+    var start = _ref4.start;
+    return start;
   }));
   return _objectSpread({}, task, {
-    pending: asyncTasks.some(function (_ref4) {
-      var pending = _ref4.pending;
+    pending: asyncTasks.some(function (_ref5) {
+      var pending = _ref5.pending;
       return pending;
     }),
-    error: asyncTasks.find(function (_ref5) {
-      var error = _ref5.error;
-      return error;
-    }),
-    errorAll: asyncTasks.map(function (_ref6) {
+    error: asyncTasks.find(function (_ref6) {
       var error = _ref6.error;
       return error;
     }),
-    result: asyncTasks.map(function (_ref7) {
-      var result = _ref7.result;
+    errorAll: asyncTasks.map(function (_ref7) {
+      var error = _ref7.error;
+      return error;
+    }),
+    result: asyncTasks.map(function (_ref8) {
+      var result = _ref8.result;
       return result;
     })
   });

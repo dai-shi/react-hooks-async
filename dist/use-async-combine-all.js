@@ -54,10 +54,13 @@ var useAsyncCombineAll = function useAsyncCombineAll() {
             case 0:
               abortController.signal.addEventListener('abort', function () {
                 asyncTasks.forEach(function (asyncTask) {
-                  asyncTask.abort();
+                  if (asyncTask.abort) {
+                    asyncTask.abort();
+                  }
                 });
               });
               asyncTasks.forEach(function (asyncTask) {
+                if (!asyncTask.start) throw new Error('no asyncTask.start');
                 asyncTask.start();
               });
 
@@ -73,8 +76,8 @@ var useAsyncCombineAll = function useAsyncCombineAll() {
       return _ref.apply(this, arguments);
     };
   }(), asyncTasks.map(function (_ref2) {
-    var taskId = _ref2.taskId;
-    return taskId;
+    var start = _ref2.start;
+    return start;
   }));
   return _objectSpread({}, task, {
     pending: asyncTasks.some(function (_ref3) {

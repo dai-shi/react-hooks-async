@@ -4,13 +4,16 @@ export const useAsyncCombineAll = (...asyncTasks) => {
   const task = useAsyncTask(async (abortController) => {
     abortController.signal.addEventListener('abort', () => {
       asyncTasks.forEach((asyncTask) => {
-        asyncTask.abort();
+        if (asyncTask.abort) {
+          asyncTask.abort();
+        }
       });
     });
     asyncTasks.forEach((asyncTask) => {
+      if (!asyncTask.start) throw new Error('no asyncTask.start');
       asyncTask.start();
     });
-  }, asyncTasks.map(({ taskId }) => taskId));
+  }, asyncTasks.map(({ start }) => start));
   return {
     ...task,
     pending: asyncTasks.some(({ pending }) => pending),
