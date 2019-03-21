@@ -9,17 +9,19 @@ require("core-js/modules/es6.promise");
 
 require("core-js/modules/es7.symbol.async-iterator");
 
-require("core-js/modules/es6.symbol");
-
 require("core-js/modules/es6.array.is-array");
 
 require("core-js/modules/es6.array.for-each");
 
 require("core-js/modules/es6.array.filter");
 
+require("core-js/modules/es6.symbol");
+
 require("core-js/modules/web.dom.iterable");
 
 require("core-js/modules/es6.array.iterator");
+
+require("core-js/modules/es6.object.to-string");
 
 require("core-js/modules/es6.object.keys");
 
@@ -155,7 +157,7 @@ var useAsyncTask = function useAsyncTask(func, deps) {
                 return _context.stop();
             }
           }
-        }, _callee, this, [[4, 11]]);
+        }, _callee, null, [[4, 11]]);
       }));
 
       return function start() {

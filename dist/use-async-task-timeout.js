@@ -9,6 +9,10 @@ exports.default = exports.useAsyncTaskTimeout = void 0;
 
 require("core-js/modules/es6.promise");
 
+require("core-js/modules/es6.object.to-string");
+
+require("core-js/modules/es6.function.name");
+
 var _useAsyncTask = require("./use-async-task");
 
 var createAbortError = function createAbortError(message) {

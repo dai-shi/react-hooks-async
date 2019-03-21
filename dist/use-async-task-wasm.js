@@ -9,6 +9,8 @@ exports.default = exports.useWasm = exports.useAsyncTaskWasm = void 0;
 
 require("core-js/modules/es6.promise");
 
+require("core-js/modules/es6.object.to-string");
+
 require("regenerator-runtime/runtime");
 
 var _useAsyncTask = require("./use-async-task");
@@ -62,7 +64,7 @@ var useAsyncTaskWasm = function useAsyncTaskWasm(input) {
               return _context.stop();
           }
         }
-      }, _callee, this);
+      }, _callee);
     }));
 
     return function (_x) {

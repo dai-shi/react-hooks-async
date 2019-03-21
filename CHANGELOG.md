@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [2.0.0] - 2019-03-21
 ### Changed
 - Rename "inputs" to "deps"
 - Improve the implementation with useReducer

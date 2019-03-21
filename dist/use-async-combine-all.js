@@ -7,6 +7,10 @@ exports.default = exports.useAsyncCombineAll = void 0;
 
 require("core-js/modules/es6.array.filter");
 
+require("core-js/modules/es6.symbol");
+
+require("core-js/modules/web.dom.iterable");
+
 require("core-js/modules/es6.array.iterator");
 
 require("core-js/modules/es6.object.keys");
@@ -15,13 +19,13 @@ require("core-js/modules/es6.object.define-property");
 
 require("core-js/modules/es6.promise");
 
+require("core-js/modules/es6.object.to-string");
+
 require("core-js/modules/es6.array.find");
 
 require("core-js/modules/es6.array.some");
 
 require("core-js/modules/es6.array.map");
-
-require("core-js/modules/web.dom.iterable");
 
 require("core-js/modules/es6.array.for-each");
 
@@ -69,7 +73,7 @@ var useAsyncCombineAll = function useAsyncCombineAll() {
               return _context.stop();
           }
         }
-      }, _callee, this);
+      }, _callee);
     }));
 
     return function (_x) {

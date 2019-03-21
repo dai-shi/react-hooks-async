@@ -9,6 +9,8 @@ require("core-js/modules/es6.array.for-each");
 
 require("core-js/modules/es6.array.filter");
 
+require("core-js/modules/es6.symbol");
+
 require("core-js/modules/web.dom.iterable");
 
 require("core-js/modules/es6.array.iterator");
@@ -19,7 +21,11 @@ require("core-js/modules/es6.object.define-property");
 
 require("core-js/modules/es6.promise");
 
+require("core-js/modules/es6.object.to-string");
+
 require("regenerator-runtime/runtime");
+
+require("core-js/modules/es6.function.name");
 
 var _useAsyncTask = require("./use-async-task");
 
@@ -87,7 +93,7 @@ var useAsyncTaskFetch = function useAsyncTaskFetch(input) {
               return _context.stop();
           }
         }
-      }, _callee, this);
+      }, _callee);
     }));
 
     return function (_x) {
