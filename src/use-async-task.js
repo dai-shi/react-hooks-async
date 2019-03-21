@@ -71,7 +71,7 @@ export const useAsyncTask = (func, deps) => {
       dispatch({ type: 'init' });
     };
     return cleanup;
-  }, deps);
+  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
   return state;
 };
 
