@@ -10,7 +10,7 @@ export type AsyncTask<Result> = {
 };
 
 export type UseAsyncTask = <Result>(
-  func: (c: AbortController) => Result,
+  func: (c: AbortController) => Promise<Result>,
   deps: DependencyList,
 ) => AsyncTask<Result>;
 
