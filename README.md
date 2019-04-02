@@ -280,3 +280,4 @@ The hook `useWasm` has the same signature and runs the async task immediately.
 
 - [Introduction to abortable async functions for React with hooks](https://medium.com/@dai_shi/introduction-to-abortable-async-functions-for-react-with-hooks-768bc72c0a2b)
 - [Developing React custom hooks for abortable async functions with AbortController](https://medium.com/@dai_shi/developing-react-custom-hooks-for-abortable-async-functions-with-abortcontroller-1f2091b5a1c3)
+- [How to create React custom hooks for data fetching with useEffect](https://medium.com/@dai_shi/how-to-create-react-custom-hooks-for-data-fetching-with-useeffect-74c5dc47000a)
