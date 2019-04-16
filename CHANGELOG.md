@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [2.1.0] - 2019-04-16
 ### Changed
 - Fix a fatal bug in type definition.
 - Update dependencies (incl. core-js@3)
