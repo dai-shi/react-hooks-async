@@ -1,33 +1,35 @@
 "use strict";
 
+require("core-js/modules/es.symbol");
+
+require("core-js/modules/es.array.concat");
+
+require("core-js/modules/es.array.filter");
+
+require("core-js/modules/es.array.find");
+
+require("core-js/modules/es.array.for-each");
+
+require("core-js/modules/es.array.map");
+
+require("core-js/modules/es.array.some");
+
+require("core-js/modules/es.object.define-property");
+
+require("core-js/modules/es.object.get-own-property-descriptor");
+
+require("core-js/modules/es.object.keys");
+
+require("core-js/modules/es.object.to-string");
+
+require("core-js/modules/es.promise");
+
+require("core-js/modules/web.dom-collections.for-each");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.useAsyncCombineAll = void 0;
-
-require("core-js/modules/es6.array.filter");
-
-require("core-js/modules/es6.symbol");
-
-require("core-js/modules/web.dom.iterable");
-
-require("core-js/modules/es6.array.iterator");
-
-require("core-js/modules/es6.object.keys");
-
-require("core-js/modules/es6.object.define-property");
-
-require("core-js/modules/es6.promise");
-
-require("core-js/modules/es6.object.to-string");
-
-require("core-js/modules/es6.array.find");
-
-require("core-js/modules/es6.array.some");
-
-require("core-js/modules/es6.array.map");
-
-require("core-js/modules/es6.array.for-each");
+exports["default"] = exports.useAsyncCombineAll = void 0;
 
 require("regenerator-runtime/runtime");
 
@@ -105,4 +107,4 @@ var useAsyncCombineAll = function useAsyncCombineAll() {
 
 exports.useAsyncCombineAll = useAsyncCombineAll;
 var _default = useAsyncCombineAll;
-exports.default = _default;
+exports["default"] = _default;

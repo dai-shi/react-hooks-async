@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Changed
 - Fix a fatal bug in type definition.
+- Update dependencies (incl. core-js@3)
 
 ## [2.0.0] - 2019-03-21
 ### Changed

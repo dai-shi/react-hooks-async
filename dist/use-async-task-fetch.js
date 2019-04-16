@@ -1,31 +1,33 @@
 "use strict";
 
+require("core-js/modules/es.symbol");
+
+require("core-js/modules/es.array.concat");
+
+require("core-js/modules/es.array.filter");
+
+require("core-js/modules/es.array.for-each");
+
+require("core-js/modules/es.function.name");
+
+require("core-js/modules/es.object.define-property");
+
+require("core-js/modules/es.object.get-own-property-descriptor");
+
+require("core-js/modules/es.object.keys");
+
+require("core-js/modules/es.object.to-string");
+
+require("core-js/modules/es.promise");
+
+require("core-js/modules/web.dom-collections.for-each");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.useFetch = exports.useAsyncTaskFetch = void 0;
-
-require("core-js/modules/es6.array.for-each");
-
-require("core-js/modules/es6.array.filter");
-
-require("core-js/modules/es6.symbol");
-
-require("core-js/modules/web.dom.iterable");
-
-require("core-js/modules/es6.array.iterator");
-
-require("core-js/modules/es6.object.keys");
-
-require("core-js/modules/es6.object.define-property");
-
-require("core-js/modules/es6.promise");
-
-require("core-js/modules/es6.object.to-string");
+exports["default"] = exports.useFetch = exports.useAsyncTaskFetch = void 0;
 
 require("regenerator-runtime/runtime");
-
-require("core-js/modules/es6.function.name");
 
 var _useAsyncTask = require("./use-async-task");
 
@@ -112,4 +114,4 @@ var useFetch = function useFetch() {
 
 exports.useFetch = useFetch;
 var _default = useAsyncTaskFetch;
-exports.default = _default;
+exports["default"] = _default;

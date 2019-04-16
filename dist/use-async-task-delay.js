@@ -1,17 +1,19 @@
 "use strict";
 
-require("core-js/modules/es6.object.define-property");
+require("core-js/modules/es.function.name");
+
+require("core-js/modules/es.object.define-property");
+
+require("core-js/modules/es.object.to-string");
+
+require("core-js/modules/es.promise");
+
+require("core-js/modules/web.timers");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.useAsyncTaskDelay = void 0;
-
-require("core-js/modules/es6.promise");
-
-require("core-js/modules/es6.object.to-string");
-
-require("core-js/modules/es6.function.name");
+exports["default"] = exports.useAsyncTaskDelay = void 0;
 
 var _useAsyncTask = require("./use-async-task");
 
@@ -41,4 +43,4 @@ var useAsyncTaskDelay = function useAsyncTaskDelay(milliSeconds, deps) {
 
 exports.useAsyncTaskDelay = useAsyncTaskDelay;
 var _default = useAsyncTaskDelay;
-exports.default = _default;
+exports["default"] = _default;

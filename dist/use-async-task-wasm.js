@@ -1,15 +1,15 @@
 "use strict";
 
-require("core-js/modules/es6.object.define-property");
+require("core-js/modules/es.object.define-property");
+
+require("core-js/modules/es.object.to-string");
+
+require("core-js/modules/es.promise");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.useWasm = exports.useAsyncTaskWasm = void 0;
-
-require("core-js/modules/es6.promise");
-
-require("core-js/modules/es6.object.to-string");
+exports["default"] = exports.useWasm = exports.useAsyncTaskWasm = void 0;
 
 require("regenerator-runtime/runtime");
 
@@ -83,4 +83,4 @@ var useWasm = function useWasm() {
 
 exports.useWasm = useWasm;
 var _default = useAsyncTaskWasm;
-exports.default = _default;
+exports["default"] = _default;

@@ -1,11 +1,11 @@
 "use strict";
 
-require("core-js/modules/es6.object.define-property");
+require("core-js/modules/es.object.define-property");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.useAsyncRun = void 0;
+exports["default"] = exports.useAsyncRun = void 0;
 
 var _react = require("react");
 
@@ -30,4 +30,4 @@ var useAsyncRun = function useAsyncRun(asyncTask) {
 
 exports.useAsyncRun = useAsyncRun;
 var _default = useAsyncRun;
-exports.default = _default;
+exports["default"] = _default;

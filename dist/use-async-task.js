@@ -1,31 +1,41 @@
 "use strict";
 
+require("core-js/modules/es.symbol");
+
+require("core-js/modules/es.symbol.description");
+
+require("core-js/modules/es.symbol.iterator");
+
+require("core-js/modules/es.array.concat");
+
+require("core-js/modules/es.array.filter");
+
+require("core-js/modules/es.array.for-each");
+
+require("core-js/modules/es.array.is-array");
+
+require("core-js/modules/es.array.iterator");
+
+require("core-js/modules/es.object.define-property");
+
+require("core-js/modules/es.object.get-own-property-descriptor");
+
+require("core-js/modules/es.object.keys");
+
+require("core-js/modules/es.object.to-string");
+
+require("core-js/modules/es.promise");
+
+require("core-js/modules/es.string.iterator");
+
+require("core-js/modules/web.dom-collections.for-each");
+
+require("core-js/modules/web.dom-collections.iterator");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.useAsyncTask = void 0;
-
-require("core-js/modules/es6.promise");
-
-require("core-js/modules/es7.symbol.async-iterator");
-
-require("core-js/modules/es6.array.is-array");
-
-require("core-js/modules/es6.array.for-each");
-
-require("core-js/modules/es6.array.filter");
-
-require("core-js/modules/es6.symbol");
-
-require("core-js/modules/web.dom.iterable");
-
-require("core-js/modules/es6.array.iterator");
-
-require("core-js/modules/es6.object.to-string");
-
-require("core-js/modules/es6.object.keys");
-
-require("core-js/modules/es6.object.define-property");
+exports["default"] = exports.useAsyncTask = void 0;
 
 require("regenerator-runtime/runtime");
 
@@ -196,4 +206,4 @@ var useAsyncTask = function useAsyncTask(func, deps) {
 
 exports.useAsyncTask = useAsyncTask;
 var _default = useAsyncTask;
-exports.default = _default;
+exports["default"] = _default;
