@@ -275,6 +275,9 @@ The hook `useWasm` has the same signature and runs the async task immediately.
 - Some hooks require `deps` like `useEffect`, but eslint-plugin-react-hooks
   can't detect them for the exhaustive-deps rule.
   Developers need to pay attention without the exhaustive-deps rule.
+- Some other hooks require argument object identity to avoid infinite loops.
+  If you need to define objects in render, you are likely to need
+  useMemo or useMemoOne from `use-memo-one` package.
 
 ## Blogs
 
