@@ -49,16 +49,17 @@ export const useAsyncTask = (func, deps) => {
   useEffect(() => {
     let dispatchSafe = action => dispatch(action);
     let abortController = null;
-    const start = async () => {
+    const start = async (...args) => {
       if (abortController) return;
       abortController = new AbortController();
       dispatchSafe({ type: 'start' });
       try {
-        const result = await func(abortController);
+        const result = await func(abortController, ...args);
         dispatchSafe({ type: 'result', result });
       } catch (e) {
         dispatchSafe({ type: 'error', error: e });
       }
+      abortController = null; // allow to run task multile times
     };
     const abort = () => {
       if (abortController) {
