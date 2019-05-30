@@ -1,4 +1,4 @@
-import React, { unstable_ConcurrentMode as ConcurrentMode } from 'react';
+import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 
 import { useAsyncRun } from 'react-hooks-async';
@@ -32,12 +32,12 @@ const DelayedMessage = ({ delay }) => {
 };
 
 const App = () => (
-  <ConcurrentMode>
+  <StrictMode>
     <div>
       <DelayedMessage delay={3000} />
       <DelayedMessage delay={1000} />
     </div>
-  </ConcurrentMode>
+  </StrictMode>
 );
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.unstable_createRoot(document.getElementById('app')).render(<App />);

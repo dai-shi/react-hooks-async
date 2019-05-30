@@ -1,18 +1,14 @@
 import * as React from 'react';
+import { StrictMode } from 'react';
 
 import DelayedData from './DelayedData';
 
-const {
-  // @ts-ignore
-  unstable_ConcurrentMode: ConcurrentMode,
-} = React;
-
 const App = () => (
-  <ConcurrentMode>
+  <StrictMode>
     <div>
       <DelayedData />
     </div>
-  </ConcurrentMode>
+  </StrictMode>
 );
 
 export default App;

@@ -37,7 +37,8 @@
         "node-fetch"
       ]
     }],
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "import/no-duplicates": "off"
   },
   "overrides": [{
     "files": ["__tests__/**/*"],
