@@ -4,7 +4,7 @@ import { AsyncTask } from './index';
 export type UseAsyncTaskFetch = <Result>(
   input: string | Request,
   init?: RequestInit,
-  bodyReader?: (b: Body) => Promise<Result>,
+  bodyReader?: (r: Response) => Promise<Result>,
 ) => AsyncTask<Result>;
 
 export const useAsyncTaskFetch: UseAsyncTaskFetch;
