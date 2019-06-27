@@ -1,4 +1,4 @@
-export type DependencyList = ReadonlyArray<unknown>;
+export type DependencyList = unknown[];
 
 export type AsyncTask<Result> = {
   started: boolean;

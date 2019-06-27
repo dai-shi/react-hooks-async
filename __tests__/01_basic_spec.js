@@ -1,5 +1,5 @@
 import React, { StrictMode } from 'react';
-import { render, cleanup } from 'react-testing-library';
+import { render, cleanup } from '@testing-library/react';
 
 import { useAsyncTask, useAsyncRun, useAsyncTaskTimeout } from '../src/index';
 
