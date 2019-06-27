@@ -25,5 +25,3 @@ export const useWasm = (...args) => {
   useAsyncRun(asyncTask);
   return asyncTask;
 };
-
-export default useAsyncTaskWasm;

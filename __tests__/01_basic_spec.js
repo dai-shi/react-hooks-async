@@ -1,8 +1,7 @@
 import React, { StrictMode } from 'react';
 import { render, cleanup } from 'react-testing-library';
 
-import { useAsyncTask, useAsyncRun } from '../src/index';
-import { useAsyncTaskTimeout } from '../src/use-async-task-timeout';
+import { useAsyncTask, useAsyncRun, useAsyncTaskTimeout } from '../src/index';
 
 // FIXME we should fake timers
 // jest.useFakeTimers();

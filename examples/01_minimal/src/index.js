@@ -1,8 +1,7 @@
 import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 
-import { useAsyncRun } from 'react-hooks-async';
-import { useAsyncTaskTimeout } from 'react-hooks-async/src/use-async-task-timeout';
+import { useAsyncRun, useAsyncTaskTimeout } from 'react-hooks-async';
 
 const Err = ({ error }) => (
   <div>Error:{error.message}</div>

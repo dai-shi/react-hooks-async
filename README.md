@@ -33,9 +33,12 @@ A typeahead search example:
 ```javascript
 import React, { useState } from 'react';
 
-import { useAsyncCombineSeq, useAsyncRun } from 'react-hooks-async';
-import { useAsyncTaskDelay } from 'react-hooks-async/dist/use-async-task-delay';
-import { useAsyncTaskFetch } from 'react-hooks-async/dist/use-async-task-fetch';
+import {
+  useAsyncCombineSeq,
+  useAsyncRun,
+  useAsyncTaskDelay,
+  useAsyncTaskFetch,
+} from 'react-hooks-async';
 
 const Err = ({ error }) => <div>Error:{error.name}{' '}{error.message}</div>;
 
@@ -77,7 +80,7 @@ A simple fetch example:
 ```javascript
 import React from 'react';
 
-import { useFetch } from 'react-hooks-async/dist/use-async-task-fetch';
+import { useFetch } from 'react-hooks-async';
 
 const UserInfo = ({ id }) => {
   const url = `https://reqres.in/api/users/${id}?delay=1`;
@@ -243,12 +246,12 @@ The hook `useFetch` has the same signature and runs the async task immediately.
 #### useAsyncTaskAxios
 
 ```javascript
-const task = useAsyncTaskAxios(config, deps);
+const task = useAsyncTaskAxios(axios, config, deps);
 ```
 
 This is similar to `useAsyncTaskFetch` but using
 [axios](https://github.com/axios/axios).
-The second argument `deps` is the same as the previous one.
+The third argument `deps` is the same as the previous one.
 
 The hook `useAxios` has the same signature and runs the async task immediately.
 

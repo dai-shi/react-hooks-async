@@ -74,5 +74,3 @@ export const useAsyncTask = (func, deps) => {
   }, deps); // eslint-disable-line react-hooks/exhaustive-deps
   return state;
 };
-
-export default useAsyncTask;

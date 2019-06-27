@@ -17,5 +17,3 @@ export const useAsyncRun = (asyncTask) => {
     return cleanup;
   }, [abort]);
 };
-
-export default useAsyncRun;

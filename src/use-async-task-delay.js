@@ -22,5 +22,3 @@ export const useAsyncTaskDelay = (milliSeconds, deps) => useAsyncTask(
   }),
   deps,
 );
-
-export default useAsyncTaskDelay;
