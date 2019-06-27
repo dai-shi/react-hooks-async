@@ -76,7 +76,6 @@ export type UseAsyncTaskAxios = <
 
 export const useAsyncTaskAxios: UseAsyncTaskAxios;
 export const useAxios: UseAsyncTaskAxios;
-export default useAsyncTaskAxios;
 
 // wasm task
 
