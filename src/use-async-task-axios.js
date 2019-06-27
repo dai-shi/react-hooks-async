@@ -1,8 +1,7 @@
-import axios from 'axios';
 import { useAsyncTask } from './use-async-task';
 import { useAsyncRun } from './use-async-run';
 
-export const useAsyncTaskAxios = (config, deps) => useAsyncTask(
+export const useAsyncTaskAxios = (axios, config, deps) => useAsyncTask(
   (abortController) => {
     const source = axios.CancelToken.source();
     abortController.signal.addEventListener('abort', () => {
@@ -21,5 +20,3 @@ export const useAxios = (...args) => {
   useAsyncRun(asyncTask);
   return asyncTask;
 };
-
-export default useAsyncTaskAxios;

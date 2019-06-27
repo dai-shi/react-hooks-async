@@ -1,7 +1,6 @@
 import * as React from 'react';
 
-import { useAsyncRun } from 'react-hooks-async';
-import { useAsyncTaskFetch } from 'react-hooks-async/src/use-async-task-fetch';
+import { useAsyncRun, useAsyncTaskFetch } from 'react-hooks-async';
 
 const Err: React.SFC<{ error: Error }> = ({ error }) => (
   <div>Error:{error.name}{' '}{error.message}</div>

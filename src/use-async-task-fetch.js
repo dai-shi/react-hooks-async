@@ -34,5 +34,3 @@ export const useFetch = (...args) => {
   useAsyncRun(asyncTask);
   return asyncTask;
 };
-
-export default useAsyncTaskFetch;

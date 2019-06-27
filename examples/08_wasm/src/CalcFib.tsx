@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useWasm } from 'react-hooks-async/src/use-async-task-wasm';
+import { useWasm } from 'react-hooks-async';
 
 type Result = {
   exports: {

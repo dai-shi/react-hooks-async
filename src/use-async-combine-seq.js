@@ -44,5 +44,3 @@ export const useAsyncCombineSeq = (...asyncTasks) => {
     result: asyncTasks.map(({ result }) => result),
   };
 };
-
-export default useAsyncCombineSeq;

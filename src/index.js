@@ -4,3 +4,13 @@ export { useAsyncRun } from './use-async-run';
 export { useAsyncCombineAll } from './use-async-combine-all';
 export { useAsyncCombineSeq } from './use-async-combine-seq';
 export { useAsyncCombineRace } from './use-async-combine-race';
+
+export { useAsyncTaskTimeout } from './use-async-task-timeout';
+
+export { useAsyncTaskDelay } from './use-async-task-delay';
+
+export { useAsyncTaskFetch, useFetch } from './use-async-task-fetch';
+
+export { useAsyncTaskAxios, useAxios } from './use-async-task-axios';
+
+export { useAsyncTaskWasm, useWasm } from './use-async-task-wasm';

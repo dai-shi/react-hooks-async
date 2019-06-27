@@ -25,7 +25,7 @@ require("core-js/modules/web.dom-collections.for-each");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.useFetch = exports.useAsyncTaskFetch = void 0;
+exports.useFetch = exports.useAsyncTaskFetch = void 0;
 
 require("regenerator-runtime/runtime");
 
@@ -113,5 +113,3 @@ var useFetch = function useFetch() {
 };
 
 exports.useFetch = useFetch;
-var _default = useAsyncTaskFetch;
-exports["default"] = _default;

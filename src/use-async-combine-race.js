@@ -47,5 +47,3 @@ export const useAsyncCombineRace = (...asyncTasks) => {
     result: asyncTasks.map(({ result }) => result),
   };
 };
-
-export default useAsyncCombineRace;

@@ -1,8 +1,11 @@
 import * as React from 'react';
 
-import { useAsyncCombineSeq, useAsyncRun } from 'react-hooks-async';
-import { useAsyncTaskDelay } from 'react-hooks-async/src/use-async-task-delay';
-import { useAsyncTaskFetch } from 'react-hooks-async/src/use-async-task-fetch';
+import {
+  useAsyncCombineSeq,
+  useAsyncRun,
+  useAsyncTaskDelay,
+  useAsyncTaskFetch,
+} from 'react-hooks-async';
 
 const Err: React.SFC<{ error: Error }> = ({ error }) => (
   <div>Error:{error.name}{' '}{error.message}</div>

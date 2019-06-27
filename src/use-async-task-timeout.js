@@ -22,5 +22,3 @@ export const useAsyncTaskTimeout = (func, delay, deps) => useAsyncTask(
   }),
   deps,
 );
-
-export default useAsyncTaskTimeout;
