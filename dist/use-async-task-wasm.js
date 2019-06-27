@@ -9,7 +9,7 @@ require("core-js/modules/es.promise");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.useWasm = exports.useAsyncTaskWasm = void 0;
+exports.useWasm = exports.useAsyncTaskWasm = void 0;
 
 require("regenerator-runtime/runtime");
 
@@ -82,5 +82,3 @@ var useWasm = function useWasm() {
 };
 
 exports.useWasm = useWasm;
-var _default = useAsyncTaskWasm;
-exports["default"] = _default;

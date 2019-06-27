@@ -13,7 +13,7 @@ require("core-js/modules/web.timers");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.useAsyncTaskTimeout = void 0;
+exports.useAsyncTaskTimeout = void 0;
 
 var _useAsyncTask = require("./use-async-task");
 
@@ -42,5 +42,3 @@ var useAsyncTaskTimeout = function useAsyncTaskTimeout(func, delay, deps) {
 };
 
 exports.useAsyncTaskTimeout = useAsyncTaskTimeout;
-var _default = useAsyncTaskTimeout;
-exports["default"] = _default;

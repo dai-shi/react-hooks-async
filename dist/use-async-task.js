@@ -35,7 +35,7 @@ require("core-js/modules/web.dom-collections.iterator");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.useAsyncTask = void 0;
+exports.useAsyncTask = void 0;
 
 require("regenerator-runtime/runtime");
 
@@ -205,5 +205,3 @@ var useAsyncTask = function useAsyncTask(func, deps) {
 };
 
 exports.useAsyncTask = useAsyncTask;
-var _default = useAsyncTask;
-exports["default"] = _default;

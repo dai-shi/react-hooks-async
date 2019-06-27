@@ -31,7 +31,7 @@ require("core-js/modules/web.dom-collections.for-each");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.useAsyncCombineSeq = void 0;
+exports.useAsyncCombineSeq = void 0;
 
 require("regenerator-runtime/runtime");
 
@@ -150,5 +150,3 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
 };
 
 exports.useAsyncCombineSeq = useAsyncCombineSeq;
-var _default = useAsyncCombineSeq;
-exports["default"] = _default;
