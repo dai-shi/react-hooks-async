@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useAsyncTaskFetch } from 'react-hooks-async';
 
 const Err: React.SFC<{ error: Error }> = ({ error }) => (
-  <div>Error:{error.name}{' '}{error.message}</div>
+  <div>Error: {error.name} {error.message}</div>
 );
 
 const Loading: React.SFC<{ abort: () => void }> = ({ abort }) => (
@@ -28,7 +28,7 @@ const DisplayRemoteData: React.FC<{ id: string }> = ({ id }) => {
   if (error) return <Err error={error} />;
   if (pending) return <Loading abort={abort} />;
   if (!result) return <div>No result</div>;
-  return <div>RemoteData:{result.title}</div>;
+  return <div>RemoteData: {result.title}</div>;
 };
 
 export default DisplayRemoteData;

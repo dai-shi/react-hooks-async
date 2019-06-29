@@ -21,6 +21,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.useAxios = exports.useAsyncTaskAxios = void 0;
 
+var _useMemoOne = require("use-memo-one");
+
 var _useAsyncTask = require("./use-async-task");
 
 var _useAsyncRun = require("./use-async-run");
@@ -29,8 +31,8 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var useAsyncTaskAxios = function useAsyncTaskAxios(axios, config, deps) {
-  return (0, _useAsyncTask.useAsyncTask)(function (abortController) {
+var useAsyncTaskAxios = function useAsyncTaskAxios(axios, config) {
+  return (0, _useAsyncTask.useAsyncTask)((0, _useMemoOne.useCallbackOne)(function (abortController) {
     var source = axios.CancelToken.source();
     abortController.signal.addEventListener('abort', function () {
       source.cancel('canceled');
@@ -38,7 +40,7 @@ var useAsyncTaskAxios = function useAsyncTaskAxios(axios, config, deps) {
     return axios(_objectSpread({}, config, {
       cancelToken: source.token
     }));
-  }, deps);
+  }, [axios, config]));
 };
 
 exports.useAsyncTaskAxios = useAsyncTaskAxios;

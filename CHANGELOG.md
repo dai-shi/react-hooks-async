@@ -1,9 +1,10 @@
 # Change Log
 
 ## [Unreleased]
-### Change
+### Changed
 - No sub directory import (BREAKING CHANGE)
 - useAsyncTaskAxios/useAxios requires axios instance (BREAKING CHANGE)
+- No deps array, arguments should be memoized in caller (BREAKING CHANGE)
 
 ## [2.1.0] - 2019-04-16
 ### Changed

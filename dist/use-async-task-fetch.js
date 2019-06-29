@@ -29,6 +29,8 @@ exports.useFetch = exports.useAsyncTaskFetch = void 0;
 
 require("regenerator-runtime/runtime");
 
+var _useMemoOne = require("use-memo-one");
+
 var _useAsyncTask = require("./use-async-task");
 
 var _useAsyncRun = require("./use-async-run");
@@ -56,7 +58,7 @@ var createFetchError = function createFetchError(message) {
 var useAsyncTaskFetch = function useAsyncTaskFetch(input) {
   var init = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultInit;
   var readBody = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : defaultReadBody;
-  return (0, _useAsyncTask.useAsyncTask)(
+  return (0, _useAsyncTask.useAsyncTask)((0, _useMemoOne.useCallbackOne)(
   /*#__PURE__*/
   function () {
     var _ref = _asyncToGenerator(
@@ -101,7 +103,7 @@ var useAsyncTaskFetch = function useAsyncTaskFetch(input) {
     return function (_x) {
       return _ref.apply(this, arguments);
     };
-  }(), [input, init, readBody]);
+  }(), [input, init, readBody]));
 };
 
 exports.useAsyncTaskFetch = useAsyncTaskFetch;

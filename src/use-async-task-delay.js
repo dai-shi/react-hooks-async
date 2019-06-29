@@ -1,3 +1,5 @@
+import { useCallbackOne as useCallback } from 'use-memo-one';
+
 import { useAsyncTask } from './use-async-task';
 
 const createAbortError = (message) => {
@@ -10,15 +12,15 @@ const createAbortError = (message) => {
   }
 };
 
-export const useAsyncTaskDelay = (milliSeconds, deps) => useAsyncTask(
+export const useAsyncTaskDelay = delay => useAsyncTask(useCallback(
   abortController => new Promise((resolve, reject) => {
     const id = setTimeout(() => {
       resolve(true);
-    }, milliSeconds);
+    }, typeof delay === 'function' ? delay() : delay);
     abortController.signal.addEventListener('abort', () => {
       clearTimeout(id);
       reject(createAbortError('timer aborted'));
     });
   }),
-  deps,
-);
+  [delay],
+));

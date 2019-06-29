@@ -1,3 +1,5 @@
+import { useCallbackOne as useCallback } from 'use-memo-one';
+
 import { useAsyncTask } from './use-async-task';
 import { useAsyncRun } from './use-async-run';
 
@@ -14,7 +16,7 @@ export const useAsyncTaskFetch = (
   input,
   init = defaultInit,
   readBody = defaultReadBody,
-) => useAsyncTask(
+) => useAsyncTask(useCallback(
   async (abortController) => {
     const response = await fetch(input, {
       signal: abortController.signal,
@@ -27,7 +29,7 @@ export const useAsyncTaskFetch = (
     return body;
   },
   [input, init, readBody],
-);
+));
 
 export const useFetch = (...args) => {
   const asyncTask = useAsyncTaskFetch(...args);
