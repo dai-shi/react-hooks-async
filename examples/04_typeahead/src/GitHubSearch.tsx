@@ -1,4 +1,7 @@
+/* eslint no-new-wrappers: off */
+
 import * as React from 'react';
+import { useCallbackOne as useCallback } from 'use-memo-one';
 
 import {
   useAsyncCombineSeq,
@@ -8,7 +11,7 @@ import {
 } from 'react-hooks-async';
 
 const Err: React.SFC<{ error: Error }> = ({ error }) => (
-  <div>Error:{error.name}{' '}{error.message}</div>
+  <div>Error: {error.name} {error.message}</div>
 );
 
 const Loading: React.SFC<{ abort: () => void }> = ({ abort }) => (
@@ -30,7 +33,8 @@ type Result = {
 
 const GitHubSearch: React.FC<{ query: string }> = ({ query }) => {
   const url = `https://api.github.com/search/repositories?q=${query}`;
-  const delayTask = useAsyncTaskDelay(500, [query]);
+  const delay = useCallback(() => 500, [url]); // eslint-disable-line react-hooks/exhaustive-deps
+  const delayTask = useAsyncTaskDelay(delay);
   const fetchTask = useAsyncTaskFetch<Result>(url);
   const combinedTask = useAsyncCombineSeq(delayTask, fetchTask);
   useAsyncRun(combinedTask);

@@ -1,7 +1,9 @@
+import { useCallbackOne as useCallback } from 'use-memo-one';
+
 import { useAsyncTask } from './use-async-task';
 import { useAsyncRun } from './use-async-run';
 
-export const useAsyncTaskAxios = (axios, config, deps) => useAsyncTask(
+export const useAsyncTaskAxios = (axios, config) => useAsyncTask(useCallback(
   (abortController) => {
     const source = axios.CancelToken.source();
     abortController.signal.addEventListener('abort', () => {
@@ -12,8 +14,8 @@ export const useAsyncTaskAxios = (axios, config, deps) => useAsyncTask(
       cancelToken: source.token,
     });
   },
-  deps,
-);
+  [axios, config],
+));
 
 export const useAxios = (...args) => {
   const asyncTask = useAsyncTaskAxios(...args);

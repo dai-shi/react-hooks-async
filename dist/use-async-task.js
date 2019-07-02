@@ -105,7 +105,7 @@ var reducer = function reducer(state, action) {
   }
 };
 
-var useAsyncTask = function useAsyncTask(func, deps) {
+var useAsyncTask = function useAsyncTask(func) {
   var _useReducer = (0, _react.useReducer)(reducer, initialState),
       _useReducer2 = _slicedToArray(_useReducer, 2),
       state = _useReducer2[0],
@@ -199,8 +199,7 @@ var useAsyncTask = function useAsyncTask(func, deps) {
     };
 
     return cleanup;
-  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
-
+  }, [func]);
   return state;
 };
 

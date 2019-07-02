@@ -1,5 +1,3 @@
-export type DependencyList = unknown[];
-
 export type AsyncTask<Result> = {
   started: boolean;
   pending: boolean;
@@ -11,7 +9,6 @@ export type AsyncTask<Result> = {
 
 export type UseAsyncTask = <Result>(
   func: (c: AbortController) => Promise<Result>,
-  deps: DependencyList,
 ) => AsyncTask<Result>;
 
 type Falsy = false | 0 | '' | null | undefined;
@@ -37,7 +34,6 @@ export const useAsyncCombineRace: UseAsyncCombine;
 export type UseAsyncTaskTimeout = <Result>(
   func: () => Result,
   delay: number,
-  deps: DependencyList,
 ) => AsyncTask<Result>;
 
 export const useAsyncTaskTimeout: UseAsyncTaskTimeout;
@@ -45,8 +41,7 @@ export const useAsyncTaskTimeout: UseAsyncTaskTimeout;
 // delay task
 
 export type UseAsyncTaskDelay = (
-  milliSeconds: number,
-  deps: DependencyList,
+  delay: number | (() => number),
 ) => AsyncTask<true>;
 
 export const useAsyncTaskDelay: UseAsyncTaskDelay;
@@ -71,7 +66,6 @@ export type UseAsyncTaskAxios = <
 >(
   axios: AxiosInstance,
   config: AxiosRequestConfig,
-  deps: DependencyList,
 ) => AsyncTask<Result>;
 
 export const useAsyncTaskAxios: UseAsyncTaskAxios;

@@ -13,6 +13,8 @@ exports.useWasm = exports.useAsyncTaskWasm = void 0;
 
 require("regenerator-runtime/runtime");
 
+var _useMemoOne = require("use-memo-one");
+
 var _useAsyncTask = require("./use-async-task");
 
 var _useAsyncRun = require("./use-async-run");
@@ -25,7 +27,7 @@ var defaultImportObject = {};
 
 var useAsyncTaskWasm = function useAsyncTaskWasm(input) {
   var importObject = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultImportObject;
-  return (0, _useAsyncTask.useAsyncTask)(
+  return (0, _useAsyncTask.useAsyncTask)((0, _useMemoOne.useCallbackOne)(
   /*#__PURE__*/
   function () {
     var _ref = _asyncToGenerator(
@@ -70,7 +72,7 @@ var useAsyncTaskWasm = function useAsyncTaskWasm(input) {
     return function (_x) {
       return _ref.apply(this, arguments);
     };
-  }(), [input, importObject]);
+  }(), [input, importObject]));
 };
 
 exports.useAsyncTaskWasm = useAsyncTaskWasm;

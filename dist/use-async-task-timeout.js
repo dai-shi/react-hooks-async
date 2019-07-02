@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.useAsyncTaskTimeout = void 0;
 
+var _useMemoOne = require("use-memo-one");
+
 var _useAsyncTask = require("./use-async-task");
 
 var createAbortError = function createAbortError(message) {
@@ -27,8 +29,8 @@ var createAbortError = function createAbortError(message) {
   }
 };
 
-var useAsyncTaskTimeout = function useAsyncTaskTimeout(func, delay, deps) {
-  return (0, _useAsyncTask.useAsyncTask)(function (abortController) {
+var useAsyncTaskTimeout = function useAsyncTaskTimeout(func, delay) {
+  return (0, _useAsyncTask.useAsyncTask)((0, _useMemoOne.useCallbackOne)(function (abortController) {
     return new Promise(function (resolve, reject) {
       var id = setTimeout(function () {
         resolve(func());
@@ -38,7 +40,7 @@ var useAsyncTaskTimeout = function useAsyncTaskTimeout(func, delay, deps) {
         reject(createAbortError('timer aborted'));
       });
     });
-  }, deps);
+  }, [func, delay]));
 };
 
 exports.useAsyncTaskTimeout = useAsyncTaskTimeout;

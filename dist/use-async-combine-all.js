@@ -33,6 +33,8 @@ exports.useAsyncCombineAll = void 0;
 
 require("regenerator-runtime/runtime");
 
+var _useMemoOne = require("use-memo-one");
+
 var _useAsyncTask = require("./use-async-task");
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
@@ -48,7 +50,7 @@ var useAsyncCombineAll = function useAsyncCombineAll() {
     asyncTasks[_key] = arguments[_key];
   }
 
-  var task = (0, _useAsyncTask.useAsyncTask)(
+  var task = (0, _useAsyncTask.useAsyncTask)((0, _useMemoOne.useCallbackOne)(
   /*#__PURE__*/
   function () {
     var _ref = _asyncToGenerator(
@@ -81,10 +83,12 @@ var useAsyncCombineAll = function useAsyncCombineAll() {
     return function (_x) {
       return _ref.apply(this, arguments);
     };
-  }(), asyncTasks.map(function (_ref2) {
+  }(), // TODO Do we have a better way?
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  asyncTasks.map(function (_ref2) {
     var start = _ref2.start;
     return start;
-  }));
+  })));
   return _objectSpread({}, task, {
     pending: asyncTasks.some(function (_ref3) {
       var pending = _ref3.pending;

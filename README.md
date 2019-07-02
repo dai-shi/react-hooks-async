@@ -31,7 +31,7 @@ A typeahead search example:
 <img src="./examples/04_typeahead/screencast.gif" alt="Preview" width="350" />
 
 ```javascript
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import {
   useAsyncCombineSeq,
@@ -40,13 +40,13 @@ import {
   useAsyncTaskFetch,
 } from 'react-hooks-async';
 
-const Err = ({ error }) => <div>Error:{error.name}{' '}{error.message}</div>;
+const Err = ({ error }) => <div>Error: {error.name} {error.message}</div>;
 
 const Loading = ({ abort }) => <div>Loading...<button onClick={abort}>Abort</button></div>;
 
 const GitHubSearch = ({ query }) => {
   const url = `https://api.github.com/search/repositories?q=${query}`;
-  const delayTask = useAsyncTaskDelay(500, [query]);
+  const delayTask = useAsyncTaskDelay(useCallback(() => 500, [query]));
   const fetchTask = useAsyncTaskFetch(url);
   const combinedTask = useAsyncCombineSeq(delayTask, fetchTask);
   useAsyncRun(combinedTask);
@@ -86,9 +86,9 @@ const UserInfo = ({ id }) => {
   const url = `https://reqres.in/api/users/${id}?delay=1`;
   const { pending, error, result, abort } = useFetch(url);
   if (pending) return <div>Loading...<button onClick={abort}>Abort</button></div>;
-  if (error) return <div>Error:{error.name}{' '}{error.message}</div>;
+  if (error) return <div>Error: {error.name} {error.message}</div>;
   if (!result) return <div>No result</div>;
-  return <div>First Name:{result.data.first_name}</div>;
+  return <div>First Name: {result.data.first_name}</div>;
 };
 
 const App = () => (
@@ -122,12 +122,17 @@ You can also try them in codesandbox.io:
 
 ## Reference
 
+Note: Almost all hooks check referential equality of arguments.
+Arguments must be memoized if they would change in re-renders.
+Consider defining them outside of render,
+or useMemo/useMemoOne/useCallback/useCallbackOne.
+
 ### Core hooks
 
 #### useAsyncTask
 
 ```javascript
-const task = useAsyncTask(func, deps);
+const task = useAsyncTask(func);
 ```
 
 This function is to create a new async task.
@@ -136,9 +141,7 @@ The first argument `func` is a function with an argument
 which is AbortController. This function returns a promise,
 but the function is responsible to cancel the promise by AbortController.
 
-The second argument `deps` is an array of dependencies just like
-the second argument of `useEffect`.
-This controls when to create an async task.
+When `func` is referentially changed, a new async task will be created.
 
 The return value `task` is an object that contains information about
 the state of the task and some internal information.
@@ -212,22 +215,24 @@ These hooks are just wrappers of `useAsyncTask`.
 #### useAsyncTaskTimeout
 
 ```javascript
-const task = useAsyncTaskTimeout(func, delay, deps);
+const task = useAsyncTaskTimeout(func, delay);
 ```
 
 This function returns an async task that runs `func` after `delay` ms.
-The third argument `deps` is an array of dependencies,
-which is fed into the second argument of `useAsyncTask`.
+
+When `func` is referentially changed, a new async task will be created.
 
 #### useAsyncTaskDelay
 
 ```javascript
-const task = useAsyncTaskDelay(milliSeconds, deps);
+const task = useAsyncTaskDelay(delay);
 ```
 
-This function returns an async task that finishes after `milliSeconds`.
+This function returns an async task that finishes after `delay`.
 This is a simpler variant of `useAsyncTaskTimeout`.
-The second argument `deps` is the same as the previous one.
+`delay` is either a number or a function that returns a number.
+
+When `delay` is referentially changed, a new async task will be created.
 
 #### useAsyncTaskFetch
 
@@ -241,17 +246,20 @@ The first argument `input` and the second argument `init`
 are simply fed into `fetch`. The third argument `bodyReader`
 is to read the response body, which defaults to JSON parser.
 
+When `input` or other arguments is referentially changed, a new async task will be created.
+
 The hook `useFetch` has the same signature and runs the async task immediately.
 
 #### useAsyncTaskAxios
 
 ```javascript
-const task = useAsyncTaskAxios(axios, config, deps);
+const task = useAsyncTaskAxios(axios, config);
 ```
 
 This is similar to `useAsyncTaskFetch` but using
 [axios](https://github.com/axios/axios).
-The third argument `deps` is the same as the previous one.
+
+When `config` or other arguments is referentially changed, a new async task will be created.
 
 The hook `useAxios` has the same signature and runs the async task immediately.
 
@@ -266,6 +274,8 @@ and creates a WebAssembly instance.
 The first argument `input` is simply fed into `fetch`.
 The second argument `importObject` is passed at instantiating WebAssembly.
 
+When `input` or other arguments is referentially changed, a new async task will be created.
+
 The hook `useWasm` has the same signature and runs the async task immediately.
 
 ## Limitations
@@ -275,12 +285,6 @@ The hook `useWasm` has the same signature and runs the async task immediately.
   async tasks at runtime.
   For such a complex use case, we would use other solutions including
   upcoming react-cache and Suspense.
-- Some hooks require `deps` like `useEffect`, but eslint-plugin-react-hooks
-  can't detect them for the exhaustive-deps rule.
-  Developers need to pay attention without the exhaustive-deps rule.
-- Some other hooks require argument object identity to avoid infinite loops.
-  If you need to define objects in render, you are likely to need
-  useMemo or useMemoOne from `use-memo-one` package.
 
 ## Blogs
 

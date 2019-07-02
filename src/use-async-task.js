@@ -44,7 +44,7 @@ const reducer = (state, action) => {
   }
 };
 
-export const useAsyncTask = (func, deps) => {
+export const useAsyncTask = (func) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
     let dispatchSafe = action => dispatch(action);
@@ -71,6 +71,6 @@ export const useAsyncTask = (func, deps) => {
       dispatch({ type: 'init' });
     };
     return cleanup;
-  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [func]);
   return state;
 };
