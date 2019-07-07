@@ -31,9 +31,9 @@ describe('basic spec', () => {
         result,
         abort,
       } = asyncTask;
-      if (error) return <div>Error:{error.message}</div>;
+      if (error) return <div>Error: {error.message}</div>;
       if (pending) return <Waiting abort={abort} />;
-      return <div>Result:{result}</div>;
+      return <div>Result: {result}</div>;
     };
     const App = () => (
       <StrictMode>

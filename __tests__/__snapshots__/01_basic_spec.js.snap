@@ -35,7 +35,7 @@ exports[`basic spec should create a component with timeout 2`] = `
       </button>
     </div>
     <div>
-      Result:
+      Result: 
       <h1>
         Hi
       </h1>
@@ -48,13 +48,13 @@ exports[`basic spec should create a component with timeout 3`] = `
 <div>
   <div>
     <div>
-      Result:
+      Result: 
       <h1>
         Hi
       </h1>
     </div>
     <div>
-      Result:
+      Result: 
       <h1>
         Hi
       </h1>
