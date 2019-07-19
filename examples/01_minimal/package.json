@@ -6,7 +6,7 @@
     "core-js": "^3.1.4",
     "react": "latest",
     "react-dom": "latest",
-    "react-hooks-async": "next",
+    "react-hooks-async": "latest",
     "react-scripts": "^2.1.1"
   },
   "scripts": {
