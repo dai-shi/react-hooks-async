@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [3.0.0] - 2019-07-19
 ### Changed
 - No sub directory import (BREAKING CHANGE)
 - useAsyncTaskAxios/useAxios requires axios instance (BREAKING CHANGE)
