@@ -1,27 +1,48 @@
-import { useEffect, useLayoutEffect, useReducer } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
+import { useMemoOne as useMemo } from 'use-memo-one';
 
-const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+const createTask = (func, dispatchRef) => {
+  let abortController = null;
+  const abort = () => {
+    if (abortController) {
+      abortController.abort();
+      abortController = null;
+    }
+  };
+  const start = async (...args) => {
+    abort();
+    abortController = new AbortController();
+    dispatchRef.current({ type: 'start', func });
+    try {
+      const result = await func(abortController, ...args);
+      dispatchRef.current({ type: 'result', func, result });
+    } catch (e) {
+      dispatchRef.current({ type: 'error', func, error: e });
+    }
+  };
+  return {
+    start,
+    abort,
+  };
+};
 
 const initialState = {
+  func: null,
   started: false,
   pending: true,
   error: null,
   result: null,
-  start: null,
-  abort: null,
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'init':
-      return initialState;
-    case 'ready':
       return {
-        ...state,
-        start: action.start,
-        abort: action.abort,
+        ...initialState,
+        func: action.func,
       };
     case 'start':
+      if (state.func !== action.func) return state; // bail out
       return {
         ...state,
         started: true,
@@ -30,12 +51,14 @@ const reducer = (state, action) => {
         result: null,
       };
     case 'result':
+      if (state.func !== action.func) return state; // bail out
       return {
         ...state,
         pending: false,
         result: action.result,
       };
     case 'error':
+      if (state.func !== action.func) return state; // bail out
       return {
         ...state,
         pending: false,
@@ -48,32 +71,30 @@ const reducer = (state, action) => {
 
 export const useAsyncTask = (func) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  useIsomorphicLayoutEffect(() => {
-    let dispatchSafe = action => dispatch(action);
-    let abortController = null;
-    const abort = () => {
-      if (abortController) {
-        abortController.abort();
-        abortController = null;
-      }
-    };
-    const start = async (...args) => {
-      abort();
-      abortController = new AbortController();
-      dispatchSafe({ type: 'start' });
-      try {
-        const result = await func(abortController, ...args);
-        dispatchSafe({ type: 'result', result });
-      } catch (e) {
-        dispatchSafe({ type: 'error', error: e });
-      }
-    };
-    dispatch({ type: 'ready', start, abort });
+  const dispatchRef = useRef(dispatch);
+  const task = useMemo(() => createTask(func, dispatchRef), [func]);
+  if (func !== state.func) {
+    dispatch({ type: 'init', func });
+  }
+  useEffect(() => {
     const cleanup = () => {
-      dispatchSafe = () => null; // avoid to dispatch after stopped
-      dispatch({ type: 'init' });
+      dispatchRef.current = () => null;
     };
     return cleanup;
-  }, [func]);
-  return state;
+  }, []);
+  return useMemo(() => ({
+    started: state.started,
+    pending: state.pending,
+    error: state.error,
+    result: state.result,
+    start: task.start,
+    abort: task.abort,
+  }), [
+    state.started,
+    state.pending,
+    state.error,
+    state.result,
+    task.start,
+    task.abort,
+  ]);
 };

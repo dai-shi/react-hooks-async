@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Support custom args and reusable tasks (#17)
 
 ## [3.0.0] - 2019-07-19
 ### Changed
