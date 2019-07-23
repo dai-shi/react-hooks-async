@@ -1,4 +1,6 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useLayoutEffect, useReducer } from 'react';
+
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 const initialState = {
   started: false,
@@ -20,20 +22,20 @@ const reducer = (state, action) => {
         abort: action.abort,
       };
     case 'start':
-      if (state.started) return state; // to bail out just in case
       return {
         ...state,
         started: true,
+        pending: true,
+        error: null,
+        result: null,
       };
     case 'result':
-      if (!state.pending) return state; // to bail out just in case
       return {
         ...state,
         pending: false,
         result: action.result,
       };
     case 'error':
-      if (!state.pending) return state; // to bail out just in case
       return {
         ...state,
         pending: false,
@@ -46,23 +48,24 @@ const reducer = (state, action) => {
 
 export const useAsyncTask = (func) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     let dispatchSafe = action => dispatch(action);
     let abortController = null;
-    const start = async () => {
-      if (abortController) return;
-      abortController = new AbortController();
-      dispatchSafe({ type: 'start' });
-      try {
-        const result = await func(abortController);
-        dispatchSafe({ type: 'result', result });
-      } catch (e) {
-        dispatchSafe({ type: 'error', error: e });
-      }
-    };
     const abort = () => {
       if (abortController) {
         abortController.abort();
+        abortController = null;
+      }
+    };
+    const start = async (...args) => {
+      abort();
+      abortController = new AbortController();
+      dispatchSafe({ type: 'start' });
+      try {
+        const result = await func(abortController, ...args);
+        dispatchSafe({ type: 'result', result });
+      } catch (e) {
+        dispatchSafe({ type: 'error', error: e });
       }
     };
     dispatch({ type: 'ready', start, abort });

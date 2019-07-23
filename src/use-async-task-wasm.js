@@ -9,8 +9,11 @@ export const useAsyncTaskWasm = (
   input,
   importObject = defaultImportObject,
 ) => useAsyncTask(useCallback(
-  async (abortController) => {
-    const response = await fetch(input, {
+  async (abortController, inputOverride) => {
+    const inputToUse = (
+      typeof input === 'object' && typeof inputOverride === 'object'
+    ) ? { ...input, ...inputOverride } : (inputOverride || input);
+    const response = await fetch(inputToUse, {
       signal: abortController.signal,
     });
     if (!response.ok) {

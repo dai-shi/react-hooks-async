@@ -44,7 +44,8 @@ export const useAsyncCombineRace = (...asyncTasks) => {
       callback.current = null;
     };
     return cleanup;
-  }, asyncTasks.map(({ start }) => start)); // eslint-disable-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, asyncTasks.map(({ start }) => start));
   return {
     ...task,
     pending: asyncTasks.some(({ pending }) => pending),
