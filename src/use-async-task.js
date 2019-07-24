@@ -1,5 +1,12 @@
-import { useEffect, useReducer, useRef } from 'react';
+import {
+  useEffect,
+  useLayoutEffect,
+  useReducer,
+  useRef,
+} from 'react';
 import { useMemoOne as useMemo } from 'use-memo-one';
+
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 const createTask = (func, dispatchRef) => {
   let abortController = null;
@@ -73,28 +80,23 @@ export const useAsyncTask = (func) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const dispatchRef = useRef(dispatch);
   const task = useMemo(() => createTask(func, dispatchRef), [func]);
-  if (func !== state.func) {
-    dispatch({ type: 'init', func });
-  }
+  useIsomorphicLayoutEffect(() => {
+    if (func !== state.func) {
+      dispatch({ type: 'init', func });
+    }
+  });
   useEffect(() => {
     const cleanup = () => {
       dispatchRef.current = () => null;
     };
     return cleanup;
   }, []);
-  return useMemo(() => ({
+  return {
     started: state.started,
     pending: state.pending,
     error: state.error,
     result: state.result,
     start: task.start,
     abort: task.abort,
-  }), [
-    state.started,
-    state.pending,
-    state.error,
-    state.result,
-    task.start,
-    task.abort,
-  ]);
+  };
 };

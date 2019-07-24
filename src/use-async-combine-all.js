@@ -7,17 +7,14 @@ export const useAsyncCombineAll = (...asyncTasks) => {
     async (abortController) => {
       abortController.signal.addEventListener('abort', () => {
         asyncTasks.forEach((asyncTask) => {
-          if (asyncTask.abort) {
-            asyncTask.abort();
-          }
+          asyncTask.abort();
         });
       });
+      // start everything
       asyncTasks.forEach((asyncTask) => {
-        if (!asyncTask.start) throw new Error('no asyncTask.start');
         asyncTask.start();
       });
     },
-    // TODO Do we have a better way?
     // eslint-disable-next-line react-hooks/exhaustive-deps
     asyncTasks.map(({ start }) => start),
   ));

@@ -1,56 +1,19 @@
-import { useEffect, useRef } from 'react';
-import { useCallbackOne as useCallback } from 'use-memo-one';
+import { useEffect } from 'react';
 
-import { useAsyncTask } from './use-async-task';
+import { useAsyncCombineAll } from './use-async-combine-all';
 
 export const useAsyncCombineRace = (...asyncTasks) => {
-  const callback = useRef(null);
+  const task = useAsyncCombineAll(...asyncTasks);
+  const finishedIndex = asyncTasks.findIndex(({ pending }) => !pending);
   useEffect(() => {
-    if (callback.current) {
-      callback.current(asyncTasks);
+    // if there's one task finished, abort all the others
+    if (finishedIndex >= 0) {
+      asyncTasks.forEach((asyncTask, i) => {
+        if (i !== finishedIndex) {
+          asyncTask.abort();
+        }
+      });
     }
   });
-  const task = useAsyncTask(useCallback(
-    async (abortController) => {
-      abortController.signal.addEventListener('abort', () => {
-        asyncTasks.forEach((asyncTask) => {
-          if (asyncTask.abort) {
-            asyncTask.abort();
-          }
-        });
-      });
-      const stopOthers = (tasks) => {
-        const index = tasks.findIndex(({ pending }) => !pending);
-        if (index >= 0) {
-          tasks.forEach((asyncTask, i) => {
-            if (i !== index && asyncTask.abort) {
-              asyncTask.abort();
-            }
-          });
-        }
-      };
-      callback.current = stopOthers;
-      asyncTasks.forEach((asyncTask) => {
-        if (!asyncTask.start) throw new Error('no asyncTask.start');
-        asyncTask.start();
-      });
-    },
-    // TODO Do we have a better way?
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    asyncTasks.map(({ start }) => start),
-  ));
-  useEffect(() => {
-    const cleanup = () => {
-      callback.current = null;
-    };
-    return cleanup;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, asyncTasks.map(({ start }) => start));
-  return {
-    ...task,
-    pending: asyncTasks.some(({ pending }) => pending),
-    error: asyncTasks.find(({ error }) => error),
-    errorAll: asyncTasks.map(({ error }) => error),
-    result: asyncTasks.map(({ result }) => result),
-  };
+  return task;
 };
