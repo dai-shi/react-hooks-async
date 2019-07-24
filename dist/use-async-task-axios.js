@@ -36,12 +36,12 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var useAsyncTaskAxios = function useAsyncTaskAxios(axios, config) {
-  return (0, _useAsyncTask.useAsyncTask)((0, _useMemoOne.useCallbackOne)(function (abortController) {
+  return (0, _useAsyncTask.useAsyncTask)((0, _useMemoOne.useCallbackOne)(function (abortController, configOverride) {
     var source = axios.CancelToken.source();
     abortController.signal.addEventListener('abort', function () {
       source.cancel('canceled');
     });
-    return axios(_objectSpread({}, config, {
+    return axios(_objectSpread({}, config, {}, configOverride, {
       cancelToken: source.token
     }));
   }, [axios, config]));

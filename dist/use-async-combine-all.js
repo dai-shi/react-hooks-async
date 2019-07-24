@@ -66,13 +66,11 @@ var useAsyncCombineAll = function useAsyncCombineAll() {
             case 0:
               abortController.signal.addEventListener('abort', function () {
                 asyncTasks.forEach(function (asyncTask) {
-                  if (asyncTask.abort) {
-                    asyncTask.abort();
-                  }
+                  asyncTask.abort();
                 });
-              });
+              }); // start everything
+
               asyncTasks.forEach(function (asyncTask) {
-                if (!asyncTask.start) throw new Error('no asyncTask.start');
                 asyncTask.start();
               });
 
@@ -87,8 +85,7 @@ var useAsyncCombineAll = function useAsyncCombineAll() {
     return function (_x) {
       return _ref.apply(this, arguments);
     };
-  }(), // TODO Do we have a better way?
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }(), // eslint-disable-next-line react-hooks/exhaustive-deps
   asyncTasks.map(function (_ref2) {
     var start = _ref2.start;
     return start;

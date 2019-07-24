@@ -6,6 +6,8 @@ require("core-js/modules/es.symbol.description");
 
 require("core-js/modules/es.symbol.iterator");
 
+require("core-js/modules/es.array.concat");
+
 require("core-js/modules/es.array.filter");
 
 require("core-js/modules/es.array.for-each");
@@ -43,9 +45,7 @@ require("regenerator-runtime/runtime");
 
 var _react = require("react");
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+var _useMemoOne = require("use-memo-one");
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
@@ -61,35 +61,118 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var useIsomorphicLayoutEffect = typeof window !== 'undefined' ? _react.useLayoutEffect : _react.useEffect;
+
+var createTask = function createTask(func, dispatchRef) {
+  var abortController = null;
+
+  var abort = function abort() {
+    if (abortController) {
+      abortController.abort();
+      abortController = null;
+    }
+  };
+
+  var start =
+  /*#__PURE__*/
+  function () {
+    var _ref = _asyncToGenerator(
+    /*#__PURE__*/
+    regeneratorRuntime.mark(function _callee() {
+      var _len,
+          args,
+          _key,
+          result,
+          _args = arguments;
+
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              abort();
+              abortController = new AbortController();
+              dispatchRef.current({
+                type: 'start',
+                func: func
+              });
+              _context.prev = 3;
+
+              for (_len = _args.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = _args[_key];
+              }
+
+              _context.next = 7;
+              return func.apply(void 0, [abortController].concat(args));
+
+            case 7:
+              result = _context.sent;
+              dispatchRef.current({
+                type: 'result',
+                func: func,
+                result: result
+              });
+              _context.next = 14;
+              break;
+
+            case 11:
+              _context.prev = 11;
+              _context.t0 = _context["catch"](3);
+              dispatchRef.current({
+                type: 'error',
+                func: func,
+                error: _context.t0
+              });
+
+            case 14:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, null, [[3, 11]]);
+    }));
+
+    return function start() {
+      return _ref.apply(this, arguments);
+    };
+  }();
+
+  return {
+    start: start,
+    abort: abort
+  };
+};
+
 var initialState = {
+  func: null,
   started: false,
   pending: true,
   error: null,
-  result: null,
-  start: null,
-  abort: null
+  result: null
 };
 
 var reducer = function reducer(state, action) {
   switch (action.type) {
     case 'init':
-      return initialState;
-
-    case 'ready':
-      return _objectSpread({}, state, {
-        start: action.start,
-        abort: action.abort
+      return _objectSpread({}, initialState, {
+        func: action.func
       });
 
     case 'start':
-      if (state.started) return state; // to bail out just in case
+      if (state.func !== action.func) return state; // bail out
 
       return _objectSpread({}, state, {
-        started: true
+        started: true,
+        pending: true,
+        error: null,
+        result: null
       });
 
     case 'result':
-      if (!state.pending) return state; // to bail out just in case
+      if (state.func !== action.func) return state; // bail out
 
       return _objectSpread({}, state, {
         pending: false,
@@ -97,7 +180,7 @@ var reducer = function reducer(state, action) {
       });
 
     case 'error':
-      if (!state.pending) return state; // to bail out just in case
+      if (state.func !== action.func) return state; // bail out
 
       return _objectSpread({}, state, {
         pending: false,
@@ -115,96 +198,35 @@ var useAsyncTask = function useAsyncTask(func) {
       state = _useReducer2[0],
       dispatch = _useReducer2[1];
 
-  (0, _react.useEffect)(function () {
-    var dispatchSafe = function dispatchSafe(action) {
-      return dispatch(action);
-    };
-
-    var abortController = null;
-
-    var start =
-    /*#__PURE__*/
-    function () {
-      var _ref = _asyncToGenerator(
-      /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee() {
-        var result;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                if (!abortController) {
-                  _context.next = 2;
-                  break;
-                }
-
-                return _context.abrupt("return");
-
-              case 2:
-                abortController = new AbortController();
-                dispatchSafe({
-                  type: 'start'
-                });
-                _context.prev = 4;
-                _context.next = 7;
-                return func(abortController);
-
-              case 7:
-                result = _context.sent;
-                dispatchSafe({
-                  type: 'result',
-                  result: result
-                });
-                _context.next = 14;
-                break;
-
-              case 11:
-                _context.prev = 11;
-                _context.t0 = _context["catch"](4);
-                dispatchSafe({
-                  type: 'error',
-                  error: _context.t0
-                });
-
-              case 14:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, null, [[4, 11]]);
-      }));
-
-      return function start() {
-        return _ref.apply(this, arguments);
-      };
-    }();
-
-    var abort = function abort() {
-      if (abortController) {
-        abortController.abort();
-      }
-    };
-
-    dispatch({
-      type: 'ready',
-      start: start,
-      abort: abort
-    });
-
-    var cleanup = function cleanup() {
-      dispatchSafe = function dispatchSafe() {
-        return null;
-      }; // avoid to dispatch after stopped
-
-
+  var dispatchRef = (0, _react.useRef)(dispatch);
+  var task = (0, _useMemoOne.useMemoOne)(function () {
+    return createTask(func, dispatchRef);
+  }, [func]);
+  useIsomorphicLayoutEffect(function () {
+    if (func !== state.func) {
       dispatch({
-        type: 'init'
+        type: 'init',
+        func: func
       });
+    }
+  });
+  (0, _react.useEffect)(function () {
+    var cleanup = function cleanup() {
+      dispatchRef.current = function () {
+        return null;
+      };
     };
 
     return cleanup;
-  }, [func]);
-  return state;
+  }, []);
+  return {
+    started: state.started,
+    pending: state.pending,
+    error: state.error,
+    result: state.result,
+    start: task.start,
+    abort: task.abort
+  };
 };
 
 exports.useAsyncTask = useAsyncTask;

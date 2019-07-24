@@ -67,16 +67,16 @@ var useAsyncTaskFetch = function useAsyncTaskFetch(input) {
   function () {
     var _ref = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee(abortController) {
+    regeneratorRuntime.mark(function _callee(abortController, inputOverride, initOverride) {
       var response, body;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return fetch(input, _objectSpread({
+              return fetch(inputOverride || input, _objectSpread({}, init, {}, initOverride, {
                 signal: abortController.signal
-              }, init));
+              }));
 
             case 2:
               response = _context.sent;
@@ -104,7 +104,7 @@ var useAsyncTaskFetch = function useAsyncTaskFetch(input) {
       }, _callee);
     }));
 
-    return function (_x) {
+    return function (_x, _x2, _x3) {
       return _ref.apply(this, arguments);
     };
   }(), [input, init, readBody]));

@@ -58,58 +58,25 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
     asyncTasks[_key] = arguments[_key];
   }
 
-  var callback = (0, _react.useRef)(null);
-  (0, _react.useEffect)(function () {
-    if (callback.current) {
-      callback.current(asyncTasks);
-    }
-  });
   var task = (0, _useAsyncTask.useAsyncTask)((0, _useMemoOne.useCallbackOne)(
   /*#__PURE__*/
   function () {
     var _ref = _asyncToGenerator(
     /*#__PURE__*/
     regeneratorRuntime.mark(function _callee(abortController) {
-      var startNext;
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               abortController.signal.addEventListener('abort', function () {
                 asyncTasks.forEach(function (asyncTask) {
-                  if (asyncTask.abort) {
-                    asyncTask.abort();
-                  }
+                  asyncTask.abort();
                 });
-              });
+              }); // start the first one
 
-              startNext = function startNext(tasks) {
-                var index = tasks.findIndex(function (_ref2) {
-                  var started = _ref2.started;
-                  return !started;
-                });
-                var prevTask = tasks[index - 1];
-                var nextTask = tasks[index];
-
-                if (nextTask && prevTask && !prevTask.pending && !prevTask.error) {
-                  if (!nextTask.start) throw new Error('no asyncTask.start');
-                  nextTask.start();
-                }
-              };
-
-              callback.current = startNext;
-
-              if (asyncTasks[0].start) {
-                _context.next = 5;
-                break;
-              }
-
-              throw new Error('no asyncTask.start');
-
-            case 5:
               asyncTasks[0].start();
 
-            case 6:
+            case 2:
             case "end":
               return _context.stop();
           }
@@ -120,38 +87,39 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
     return function (_x) {
       return _ref.apply(this, arguments);
     };
-  }(), // TODO Do we have a better way?
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  asyncTasks.map(function (_ref3) {
-    var start = _ref3.start;
+  }(), // eslint-disable-next-line react-hooks/exhaustive-deps
+  asyncTasks.map(function (_ref2) {
+    var start = _ref2.start;
     return start;
   })));
   (0, _react.useEffect)(function () {
-    var cleanup = function cleanup() {
-      callback.current = null;
-    };
+    // if prev task is finished, start next task
+    var index = asyncTasks.findIndex(function (_ref3) {
+      var started = _ref3.started;
+      return !started;
+    });
+    var prevTask = asyncTasks[index - 1];
+    var nextTask = asyncTasks[index];
 
-    return cleanup;
-  }, asyncTasks.map(function (_ref4) {
-    var start = _ref4.start;
-    return start;
-  })); // eslint-disable-line react-hooks/exhaustive-deps
-
+    if (nextTask && prevTask && !prevTask.pending && !prevTask.error) {
+      nextTask.start();
+    }
+  });
   return _objectSpread({}, task, {
-    pending: asyncTasks.some(function (_ref5) {
-      var pending = _ref5.pending;
+    pending: asyncTasks.some(function (_ref4) {
+      var pending = _ref4.pending;
       return pending;
     }),
-    error: asyncTasks.find(function (_ref6) {
+    error: asyncTasks.find(function (_ref5) {
+      var error = _ref5.error;
+      return error;
+    }),
+    errorAll: asyncTasks.map(function (_ref6) {
       var error = _ref6.error;
       return error;
     }),
-    errorAll: asyncTasks.map(function (_ref7) {
-      var error = _ref7.error;
-      return error;
-    }),
-    result: asyncTasks.map(function (_ref8) {
-      var result = _ref8.result;
+    result: asyncTasks.map(function (_ref7) {
+      var result = _ref7.result;
       return result;
     })
   });
