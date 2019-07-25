@@ -1,9 +1,5 @@
 "use strict";
 
-require("core-js/modules/es.symbol");
-
-require("core-js/modules/es.array.filter");
-
 require("core-js/modules/es.array.find");
 
 require("core-js/modules/es.array.for-each");
@@ -12,15 +8,7 @@ require("core-js/modules/es.array.map");
 
 require("core-js/modules/es.array.some");
 
-require("core-js/modules/es.object.define-properties");
-
 require("core-js/modules/es.object.define-property");
-
-require("core-js/modules/es.object.get-own-property-descriptor");
-
-require("core-js/modules/es.object.get-own-property-descriptors");
-
-require("core-js/modules/es.object.keys");
 
 require("core-js/modules/es.object.to-string");
 
@@ -39,15 +27,16 @@ var _useMemoOne = require("use-memo-one");
 
 var _useAsyncTask = require("./use-async-task");
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+// eslint-disable-next-line react-hooks/exhaustive-deps
+var useMemoList = function useMemoList(items) {
+  return (0, _useMemoOne.useMemoOne)(function () {
+    return items;
+  }, items);
+};
 
 var useAsyncCombineAll = function useAsyncCombineAll() {
   for (var _len = arguments.length, asyncTasks = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -90,24 +79,33 @@ var useAsyncCombineAll = function useAsyncCombineAll() {
     var start = _ref2.start;
     return start;
   })));
-  return _objectSpread({}, task, {
-    pending: asyncTasks.some(function (_ref3) {
-      var pending = _ref3.pending;
-      return pending;
-    }),
-    error: asyncTasks.find(function (_ref4) {
-      var error = _ref4.error;
-      return error;
-    }),
-    errorAll: asyncTasks.map(function (_ref5) {
-      var error = _ref5.error;
-      return error;
-    }),
-    result: asyncTasks.map(function (_ref6) {
-      var result = _ref6.result;
-      return result;
-    })
+  var taskPending = asyncTasks.some(function (_ref3) {
+    var pending = _ref3.pending;
+    return pending;
   });
+  var taskError = asyncTasks.find(function (_ref4) {
+    var error = _ref4.error;
+    return error;
+  });
+  var taskErrorAll = useMemoList(asyncTasks.map(function (_ref5) {
+    var error = _ref5.error;
+    return error;
+  }));
+  var taskResult = useMemoList(asyncTasks.map(function (_ref6) {
+    var result = _ref6.result;
+    return result;
+  }));
+  return (0, _useMemoOne.useMemoOne)(function () {
+    return {
+      start: task.start,
+      abort: task.abort,
+      started: task.started,
+      pending: taskPending,
+      error: taskError,
+      errorAll: taskErrorAll,
+      result: taskResult
+    };
+  }, [task.start, task.abort, task.started, taskPending, taskError, taskErrorAll, taskResult]);
 };
 
 exports.useAsyncCombineAll = useAsyncCombineAll;
