@@ -1,10 +1,10 @@
 export type AsyncTask<Result, Args extends unknown[] = unknown[]> = {
+  start: (...args: Args) => void;
+  abort: () => void;
   started: boolean;
   pending: boolean;
   error: Error | null;
   result: Result | null;
-  start: (...args: Args) => void;
-  abort: () => void;
 };
 
 export type UseAsyncTask = <Result>(

@@ -1,102 +1,74 @@
 import {
   useEffect,
-  useLayoutEffect,
   useReducer,
   useRef,
 } from 'react';
 import { useMemoOne as useMemo } from 'use-memo-one';
 
-const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+const forcedReducer = state => state + 1;
+const useForceUpdate = () => useReducer(forcedReducer, 0)[1];
 
-const createTask = (func, dispatchRef) => {
-  let abortController = null;
-  const abort = () => {
-    if (abortController) {
-      abortController.abort();
-      abortController = null;
-    }
+const createTask = (func, forceUpdateRef) => {
+  const task = {
+    abortController: null,
+    start: async (...args) => {
+      task.abort();
+      task.abortController = new AbortController();
+      task.started = true;
+      task.pending = true;
+      task.error = null;
+      task.result = null;
+      forceUpdateRef.current(func);
+      try {
+        task.result = await func(task.abortController, ...args);
+      } catch (e) {
+        task.error = e;
+      }
+      task.pending = false;
+      forceUpdateRef.current(func);
+    },
+    abort: () => {
+      if (task.abortController) {
+        task.abortController.abort();
+        task.abortController = null;
+      }
+    },
+    started: false,
+    pending: true,
+    error: null,
+    result: null,
   };
-  const start = async (...args) => {
-    abort();
-    abortController = new AbortController();
-    dispatchRef.current({ type: 'start', func });
-    try {
-      const result = await func(abortController, ...args);
-      dispatchRef.current({ type: 'result', func, result });
-    } catch (e) {
-      dispatchRef.current({ type: 'error', func, error: e });
-    }
-  };
-  return {
-    start,
-    abort,
-  };
-};
-
-const initialState = {
-  func: null,
-  started: false,
-  pending: true,
-  error: null,
-  result: null,
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'init':
-      return {
-        ...initialState,
-        func: action.func,
-      };
-    case 'start':
-      if (state.func !== action.func) return state; // bail out
-      return {
-        ...state,
-        started: true,
-        pending: true,
-        error: null,
-        result: null,
-      };
-    case 'result':
-      if (state.func !== action.func) return state; // bail out
-      return {
-        ...state,
-        pending: false,
-        result: action.result,
-      };
-    case 'error':
-      if (state.func !== action.func) return state; // bail out
-      return {
-        ...state,
-        pending: false,
-        error: action.error,
-      };
-    default:
-      throw new Error(`unexpected action type: ${action.type}`);
-  }
+  return task;
 };
 
 export const useAsyncTask = (func) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const dispatchRef = useRef(dispatch);
-  const task = useMemo(() => createTask(func, dispatchRef), [func]);
-  useIsomorphicLayoutEffect(() => {
-    if (func !== state.func) {
-      dispatch({ type: 'init', func });
-    }
-  });
+  const forceUpdate = useForceUpdate();
+  const forceUpdateRef = useRef(forceUpdate);
+  const task = useMemo(() => createTask(func, forceUpdateRef), [func]);
   useEffect(() => {
+    forceUpdateRef.current = (f) => {
+      if (f === func) {
+        forceUpdate();
+      }
+    };
     const cleanup = () => {
-      dispatchRef.current = () => null;
+      forceUpdateRef.current = () => null;
     };
     return cleanup;
-  }, []);
-  return {
-    started: state.started,
-    pending: state.pending,
-    error: state.error,
-    result: state.result,
+  }, [func, forceUpdate]);
+  return useMemo(() => ({
     start: task.start,
     abort: task.abort,
-  };
+    started: task.started,
+    pending: task.pending,
+    error: task.error,
+    result: task.result,
+  }), [
+    task.start,
+    task.abort,
+    task.started,
+    task.pending,
+    task.error,
+    task.result,
+  ]);
 };
