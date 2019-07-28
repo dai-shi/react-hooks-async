@@ -1,76 +1,74 @@
-import { useEffect, useReducer } from 'react';
+import {
+  useEffect,
+  useReducer,
+  useRef,
+} from 'react';
+import { useMemoOne as useMemo } from 'use-memo-one';
 
-const initialState = {
-  started: false,
-  pending: true,
-  error: null,
-  result: null,
-  start: null,
-  abort: null,
-};
+const forcedReducer = state => state + 1;
+const useForceUpdate = () => useReducer(forcedReducer, 0)[1];
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'init':
-      return initialState;
-    case 'ready':
-      return {
-        ...state,
-        start: action.start,
-        abort: action.abort,
-      };
-    case 'start':
-      if (state.started) return state; // to bail out just in case
-      return {
-        ...state,
-        started: true,
-      };
-    case 'result':
-      if (!state.pending) return state; // to bail out just in case
-      return {
-        ...state,
-        pending: false,
-        result: action.result,
-      };
-    case 'error':
-      if (!state.pending) return state; // to bail out just in case
-      return {
-        ...state,
-        pending: false,
-        error: action.error,
-      };
-    default:
-      throw new Error(`unexpected action type: ${action.type}`);
-  }
+const createTask = (func, forceUpdateRef) => {
+  const task = {
+    abortController: null,
+    start: async (...args) => {
+      task.abort();
+      task.abortController = new AbortController();
+      task.started = true;
+      task.pending = true;
+      task.error = null;
+      task.result = null;
+      forceUpdateRef.current(func);
+      try {
+        task.result = await func(task.abortController, ...args);
+      } catch (e) {
+        task.error = e;
+      }
+      task.pending = false;
+      forceUpdateRef.current(func);
+    },
+    abort: () => {
+      if (task.abortController) {
+        task.abortController.abort();
+        task.abortController = null;
+      }
+    },
+    started: false,
+    pending: true,
+    error: null,
+    result: null,
+  };
+  return task;
 };
 
 export const useAsyncTask = (func) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const forceUpdate = useForceUpdate();
+  const forceUpdateRef = useRef(forceUpdate);
+  const task = useMemo(() => createTask(func, forceUpdateRef), [func]);
   useEffect(() => {
-    let dispatchSafe = action => dispatch(action);
-    let abortController = null;
-    const start = async () => {
-      if (abortController) return;
-      abortController = new AbortController();
-      dispatchSafe({ type: 'start' });
-      try {
-        const result = await func(abortController);
-        dispatchSafe({ type: 'result', result });
-      } catch (e) {
-        dispatchSafe({ type: 'error', error: e });
+    forceUpdateRef.current = (f) => {
+      if (f === func) {
+        forceUpdate();
       }
     };
-    const abort = () => {
-      if (abortController) {
-        abortController.abort();
-      }
-    };
-    dispatch({ type: 'ready', start, abort });
     const cleanup = () => {
-      dispatchSafe = () => null; // avoid to dispatch after stopped
-      dispatch({ type: 'init' });
+      forceUpdateRef.current = () => null;
     };
     return cleanup;
-  }, [func]);
-  return state;
+  }, [func, forceUpdate]);
+  return useMemo(() => ({
+    start: task.start,
+    abort: task.abort,
+    started: task.started,
+    pending: task.pending,
+    error: task.error,
+    result: task.result,
+  }), [
+    task.start,
+    task.abort,
+    task.started,
+    task.pending,
+    task.error,
+    task.result,
+  ]);
 };

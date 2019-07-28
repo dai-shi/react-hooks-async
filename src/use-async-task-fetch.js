@@ -17,10 +17,11 @@ export const useAsyncTaskFetch = (
   init = defaultInit,
   readBody = defaultReadBody,
 ) => useAsyncTask(useCallback(
-  async (abortController) => {
-    const response = await fetch(input, {
-      signal: abortController.signal,
+  async (abortController, inputOverride, initOverride) => {
+    const response = await fetch(inputOverride || input, {
       ...init,
+      ...initOverride,
+      signal: abortController.signal,
     });
     if (!response.ok) {
       throw createFetchError(response.statusText);

@@ -4,13 +4,14 @@ import { useAsyncTask } from './use-async-task';
 import { useAsyncRun } from './use-async-run';
 
 export const useAsyncTaskAxios = (axios, config) => useAsyncTask(useCallback(
-  (abortController) => {
+  (abortController, configOverride) => {
     const source = axios.CancelToken.source();
     abortController.signal.addEventListener('abort', () => {
       source.cancel('canceled');
     });
     return axios({
       ...config,
+      ...configOverride,
       cancelToken: source.token,
     });
   },

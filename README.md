@@ -140,6 +140,8 @@ This function is to create a new async task.
 The first argument `func` is a function with an argument
 which is AbortController. This function returns a promise,
 but the function is responsible to cancel the promise by AbortController.
+If `func` receives the second or rest arguments, those can be passed by
+`useAsyncRun(task, ...args)` or `task.start(...args)`.
 
 When `func` is referentially changed, a new async task will be created.
 
@@ -151,10 +153,15 @@ The state of the task can be destructured like the following:
 const { pending, error, result } = task;
 ```
 
+When a task is created, it's not started.
+To run a task, either
+call `useAsyncRun(task, [...args])` in render, or
+call `task.start([...args])` in callback.
+
 #### useAsyncRun
 
 ```javascript
-useAsyncRun(task);
+useAsyncRun(task, ...args);
 ```
 
 This function is to run an async task.
@@ -168,6 +175,10 @@ it won't run any tasks. Hence, it's possible to control the timing by:
 ```javascript
 useAsyncRun(ready && task);
 ```
+
+The second or rest arguments are optional.
+If they are provided, the referential equality matters,
+so useMemo/useMemoOne would be necessary.
 
 The return value of this function is `void`.
 You need to keep using `task` to get the state of the task.

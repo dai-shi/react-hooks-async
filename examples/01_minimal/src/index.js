@@ -1,4 +1,4 @@
-import React, { StrictMode } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { useAsyncRun, useAsyncTaskTimeout } from 'react-hooks-async';
@@ -31,12 +31,10 @@ const DelayedMessage = ({ delay }) => {
 };
 
 const App = () => (
-  <StrictMode>
-    <div>
-      <DelayedMessage delay={3000} />
-      <DelayedMessage delay={1000} />
-    </div>
-  </StrictMode>
+  <div>
+    <DelayedMessage delay={3000} />
+    <DelayedMessage delay={1000} />
+  </div>
 );
 
 ReactDOM.unstable_createRoot(document.getElementById('app')).render(<App />);

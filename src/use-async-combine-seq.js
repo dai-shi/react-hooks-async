@@ -1,52 +1,56 @@
-import { useEffect, useRef } from 'react';
-import { useCallbackOne as useCallback } from 'use-memo-one';
+import { useEffect } from 'react';
+import {
+  useCallbackOne as useCallback,
+  useMemoOne as useMemo,
+} from 'use-memo-one';
 
 import { useAsyncTask } from './use-async-task';
 
+// eslint-disable-next-line react-hooks/exhaustive-deps
+const useMemoList = items => useMemo(() => items, items);
+
 export const useAsyncCombineSeq = (...asyncTasks) => {
-  const callback = useRef(null);
-  useEffect(() => {
-    if (callback.current) {
-      callback.current(asyncTasks);
-    }
-  });
   const task = useAsyncTask(useCallback(
     async (abortController) => {
       abortController.signal.addEventListener('abort', () => {
         asyncTasks.forEach((asyncTask) => {
-          if (asyncTask.abort) {
-            asyncTask.abort();
-          }
+          asyncTask.abort();
         });
       });
-      const startNext = (tasks) => {
-        const index = tasks.findIndex(({ started }) => !started);
-        const prevTask = tasks[index - 1];
-        const nextTask = tasks[index];
-        if (nextTask && prevTask && !prevTask.pending && !prevTask.error) {
-          if (!nextTask.start) throw new Error('no asyncTask.start');
-          nextTask.start();
-        }
-      };
-      callback.current = startNext;
-      if (!asyncTasks[0].start) throw new Error('no asyncTask.start');
+      // start the first one
       asyncTasks[0].start();
     },
-    // TODO Do we have a better way?
     // eslint-disable-next-line react-hooks/exhaustive-deps
     asyncTasks.map(({ start }) => start),
   ));
   useEffect(() => {
-    const cleanup = () => {
-      callback.current = null;
-    };
-    return cleanup;
-  }, asyncTasks.map(({ start }) => start)); // eslint-disable-line react-hooks/exhaustive-deps
-  return {
-    ...task,
-    pending: asyncTasks.some(({ pending }) => pending),
-    error: asyncTasks.find(({ error }) => error),
-    errorAll: asyncTasks.map(({ error }) => error),
-    result: asyncTasks.map(({ result }) => result),
-  };
+    // if prev task is finished, start next task
+    const index = asyncTasks.findIndex(({ started }) => !started);
+    const prevTask = asyncTasks[index - 1];
+    const nextTask = asyncTasks[index];
+    if (nextTask && prevTask && !prevTask.pending && !prevTask.error) {
+      nextTask.start();
+    }
+  });
+  const taskPending = asyncTasks.some(({ pending }) => pending);
+  const taskError = asyncTasks.find(({ error }) => error);
+  const taskErrorAll = useMemoList(asyncTasks.map(({ error }) => error));
+  const taskResult = useMemoList(asyncTasks.map(({ result }) => result));
+  return useMemo(() => ({
+    start: task.start,
+    abort: task.abort,
+    started: task.started,
+    pending: taskPending,
+    error: taskError,
+    errorAll: taskErrorAll,
+    result: taskResult,
+  }), [
+    task.start,
+    task.abort,
+    task.started,
+    taskPending,
+    taskError,
+    taskErrorAll,
+    taskResult,
+  ]);
 };

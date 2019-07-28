@@ -30,11 +30,12 @@ var createAbortError = function createAbortError(message) {
 };
 
 var useAsyncTaskDelay = function useAsyncTaskDelay(delay) {
-  return (0, _useAsyncTask.useAsyncTask)((0, _useMemoOne.useCallbackOne)(function (abortController) {
+  return (0, _useAsyncTask.useAsyncTask)((0, _useMemoOne.useCallbackOne)(function (abortController, delayOverride) {
     return new Promise(function (resolve, reject) {
+      var delayToUse = delayOverride || delay;
       var id = setTimeout(function () {
         resolve(true);
-      }, typeof delay === 'function' ? delay() : delay);
+      }, typeof delayToUse === 'function' ? delayToUse() : delayToUse);
       abortController.signal.addEventListener('abort', function () {
         clearTimeout(id);
         reject(createAbortError('timer aborted'));

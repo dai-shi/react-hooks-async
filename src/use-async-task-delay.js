@@ -13,10 +13,11 @@ const createAbortError = (message) => {
 };
 
 export const useAsyncTaskDelay = delay => useAsyncTask(useCallback(
-  abortController => new Promise((resolve, reject) => {
+  (abortController, delayOverride) => new Promise((resolve, reject) => {
+    const delayToUse = delayOverride || delay;
     const id = setTimeout(() => {
       resolve(true);
-    }, typeof delay === 'function' ? delay() : delay);
+    }, typeof delayToUse === 'function' ? delayToUse() : delayToUse);
     abortController.signal.addEventListener('abort', () => {
       clearTimeout(id);
       reject(createAbortError('timer aborted'));

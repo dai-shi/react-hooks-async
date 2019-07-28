@@ -1,10 +1,10 @@
-export type AsyncTask<Result> = {
+export type AsyncTask<Result, Args extends unknown[] = unknown[]> = {
+  start: (...args: Args) => void;
+  abort: () => void;
   started: boolean;
   pending: boolean;
   error: Error | null;
   result: Result | null;
-  start: () => void | null;
-  abort: () => void | null;
 };
 
 export type UseAsyncTask = <Result>(
@@ -12,7 +12,10 @@ export type UseAsyncTask = <Result>(
 ) => AsyncTask<Result>;
 
 type Falsy = false | 0 | '' | null | undefined;
-export type UseAsyncRun = (t: AsyncTask<unknown> | Falsy) => void;
+export type UseAsyncRun = <Result, Args extends unknown[] = unknown[]>(
+  task: AsyncTask<Result> | Falsy,
+  ...args: Args,
+) => void;
 
 export type UseAsyncCombine = (
   ...ts: AsyncTask<unknown>[],
