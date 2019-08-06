@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`conditional runnning spec should run task conditionally 1`] = `
+<div>
+  <div>
+    <div>
+      <div>
+        Started: 
+        init
+      </div>
+      <div>
+        Pending: 
+        pending
+      </div>
+      <div>
+        Result: 
+      </div>
+    </div>
+    <button
+      type="button"
+    >
+      click
+    </button>
+  </div>
+</div>
+`;
+
+exports[`conditional runnning spec should run task conditionally 2`] = `
+<div>
+  <div>
+    <div>
+      <div>
+        Started: 
+        started
+      </div>
+      <div>
+        Pending: 
+        done
+      </div>
+      <div>
+        Result: 
+        1234
+      </div>
+    </div>
+    <button
+      type="button"
+    >
+      click
+    </button>
+  </div>
+</div>
+`;

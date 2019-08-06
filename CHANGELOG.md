@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.1.1] - 2019-08-07
+### Changed
+- Fix degradation in useAsyncRun (#20)
+
 ## [3.1.0] - 2019-07-28
 ### Changed
 - Support custom args and reusable tasks (#18)

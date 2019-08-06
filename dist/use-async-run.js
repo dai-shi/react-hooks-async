@@ -16,14 +16,19 @@ var useAsyncRun = function useAsyncRun(asyncTask) {
     args[_key - 1] = arguments[_key];
   }
 
-  var start = asyncTask.start,
-      abort = asyncTask.abort;
+  var start = asyncTask && asyncTask.start;
+  var abort = asyncTask && asyncTask.abort;
   (0, _react.useEffect)(function () {
-    start.apply(void 0, args); // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asyncTask.start].concat(args));
+    if (start) {
+      start.apply(void 0, args);
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
+
+  }, [start].concat(args));
   (0, _react.useEffect)(function () {
     var cleanup = function cleanup() {
-      abort();
+      if (abort) {
+        abort();
+      }
     };
 
     return cleanup;

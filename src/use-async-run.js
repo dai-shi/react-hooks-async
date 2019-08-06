@@ -1,14 +1,19 @@
 import { useEffect } from 'react';
 
 export const useAsyncRun = (asyncTask, ...args) => {
-  const { start, abort } = asyncTask;
+  const start = asyncTask && asyncTask.start;
+  const abort = asyncTask && asyncTask.abort;
   useEffect(() => {
-    start(...args);
+    if (start) {
+      start(...args);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asyncTask.start, ...args]);
+  }, [start, ...args]);
   useEffect(() => {
     const cleanup = () => {
-      abort();
+      if (abort) {
+        abort();
+      }
     };
     return cleanup;
   }, [abort]);
