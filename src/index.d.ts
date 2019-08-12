@@ -2,10 +2,23 @@ export type AsyncTask<Result, Args extends unknown[] = unknown[]> = {
   start: (...args: Args) => void;
   abort: () => void;
   started: boolean;
-  pending: boolean;
-  error: Error | null;
-  result: Result | null;
-};
+} & (
+  | {
+    pending: true;
+    error: null;
+    result: null;
+  }
+  | {
+    pending: false;
+    error: Error;
+    result: null;
+  }
+  | {
+    pending: false;
+    error: null;
+    result: Result;
+  }
+);
 
 export type UseAsyncTask = <Result>(
   func: (c: AbortController) => Promise<Result>,

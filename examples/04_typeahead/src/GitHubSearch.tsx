@@ -41,7 +41,6 @@ const GitHubSearch: React.FC<{ query: string }> = ({ query }) => {
   if (delayTask.pending) return <div>Waiting...</div>;
   if (fetchTask.error) return <Err error={fetchTask.error} />;
   if (fetchTask.pending) return <Loading abort={fetchTask.abort} />;
-  if (!fetchTask.result) return <div>No result</div>;
   return (
     <ul>
       {fetchTask.result.items.map(({ id, name, html_url }) => (

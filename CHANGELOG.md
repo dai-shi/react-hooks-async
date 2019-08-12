@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Improve type definition of AsyncTask
 
 ## [3.1.1] - 2019-08-07
 ### Changed

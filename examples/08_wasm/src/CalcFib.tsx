@@ -21,16 +21,9 @@ const Loading: React.SFC<{ abort: () => void }> = ({ abort }) => (
 
 const CalcFib: React.FC<{ count: number }> = ({ count }) => {
   const asyncTask = useWasm<Result>('./slow_fib.wasm');
-  const {
-    pending,
-    error,
-    result,
-    abort,
-  } = asyncTask;
-  if (error) return <Err error={error} />;
-  if (pending) return <Loading abort={abort} />;
-  if (!result) return <div>No result</div>;
-  return <div>Fib: {result.exports.fib(count)}</div>;
+  if (asyncTask.error) return <Err error={asyncTask.error} />;
+  if (asyncTask.pending) return <Loading abort={asyncTask.abort} />;
+  return <div>Fib: {asyncTask.result.exports.fib(count)}</div>;
 };
 
 export default CalcFib;
