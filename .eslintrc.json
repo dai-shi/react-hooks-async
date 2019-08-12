@@ -38,7 +38,8 @@
       ]
     }],
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
-    "import/no-duplicates": "off"
+    "import/no-duplicates": "off",
+    "arrow-parens": ["error", "as-needed", { "requireForBlockBody": true }]
   },
   "overrides": [{
     "files": ["__tests__/**/*"],
