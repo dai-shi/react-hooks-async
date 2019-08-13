@@ -4,25 +4,23 @@ import {
 } from 'use-memo-one';
 
 import { useAsyncTask } from './use-async-task';
-
-// eslint-disable-next-line react-hooks/exhaustive-deps
-const useMemoList = items => useMemo(() => items, items);
+import { useMemoList } from './utils';
 
 export const useAsyncCombineAll = (...asyncTasks) => {
+  const memoAsyncTasks = useMemoList(asyncTasks, (a, b) => a.start === b.start);
   const task = useAsyncTask(useCallback(
     async (abortController) => {
       abortController.signal.addEventListener('abort', () => {
-        asyncTasks.forEach((asyncTask) => {
+        memoAsyncTasks.forEach((asyncTask) => {
           asyncTask.abort();
         });
       });
       // start everything
-      asyncTasks.forEach((asyncTask) => {
+      memoAsyncTasks.forEach((asyncTask) => {
         asyncTask.start();
       });
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    asyncTasks.map(({ start }) => start),
+    [memoAsyncTasks],
   ));
   const taskPending = asyncTasks.some(({ pending }) => pending);
   const taskError = asyncTasks.find(({ error }) => error);
