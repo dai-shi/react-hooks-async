@@ -119,6 +119,7 @@ You can also try them in codesandbox.io:
 [06](https://codesandbox.io/s/github/dai-shi/react-hooks-async/tree/master/examples/06_progress)
 [07](https://codesandbox.io/s/github/dai-shi/react-hooks-async/tree/master/examples/07_race)
 [08](https://codesandbox.io/s/github/dai-shi/react-hooks-async/tree/master/examples/08_wasm)
+[09](https://codesandbox.io/s/github/dai-shi/react-hooks-async/tree/master/examples/09_args)
 
 ## Reference
 
