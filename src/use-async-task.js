@@ -5,9 +5,6 @@ import {
 } from 'react';
 import { useMemoOne as useMemo } from 'use-memo-one';
 
-const forcedReducer = state => state + 1;
-const useForceUpdate = () => useReducer(forcedReducer, 0)[1];
-
 const createTask = (func, forceUpdateRef) => {
   const task = {
     abortController: null,
@@ -42,7 +39,7 @@ const createTask = (func, forceUpdateRef) => {
 };
 
 export const useAsyncTask = (func) => {
-  const forceUpdate = useForceUpdate();
+  const [, forceUpdate] = useReducer(c => c + 1, 0);
   const forceUpdateRef = useRef(forceUpdate);
   const task = useMemo(() => createTask(func, forceUpdateRef), [func]);
   useEffect(() => {
@@ -55,7 +52,7 @@ export const useAsyncTask = (func) => {
       forceUpdateRef.current = () => null;
     };
     return cleanup;
-  }, [func, forceUpdate]);
+  }, [func]);
   return useMemo(() => ({
     start: task.start,
     abort: task.abort,

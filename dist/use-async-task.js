@@ -1,12 +1,26 @@
 "use strict";
 
+require("core-js/modules/es.symbol");
+
+require("core-js/modules/es.symbol.description");
+
+require("core-js/modules/es.symbol.iterator");
+
 require("core-js/modules/es.array.concat");
+
+require("core-js/modules/es.array.is-array");
+
+require("core-js/modules/es.array.iterator");
 
 require("core-js/modules/es.object.define-property");
 
 require("core-js/modules/es.object.to-string");
 
 require("core-js/modules/es.promise");
+
+require("core-js/modules/es.string.iterator");
+
+require("core-js/modules/web.dom-collections.iterator");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -19,17 +33,17 @@ var _react = require("react");
 
 var _useMemoOne = require("use-memo-one");
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-var forcedReducer = function forcedReducer(state) {
-  return state + 1;
-};
-
-var useForceUpdate = function useForceUpdate() {
-  return (0, _react.useReducer)(forcedReducer, 0)[1];
-};
 
 var createTask = function createTask(func, forceUpdateRef) {
   var task = {
@@ -106,7 +120,12 @@ var createTask = function createTask(func, forceUpdateRef) {
 };
 
 var useAsyncTask = function useAsyncTask(func) {
-  var forceUpdate = useForceUpdate();
+  var _useReducer = (0, _react.useReducer)(function (c) {
+    return c + 1;
+  }, 0),
+      _useReducer2 = _slicedToArray(_useReducer, 2),
+      forceUpdate = _useReducer2[1];
+
   var forceUpdateRef = (0, _react.useRef)(forceUpdate);
   var task = (0, _useMemoOne.useMemoOne)(function () {
     return createTask(func, forceUpdateRef);
@@ -125,7 +144,7 @@ var useAsyncTask = function useAsyncTask(func) {
     };
 
     return cleanup;
-  }, [func, forceUpdate]);
+  }, [func]);
   return (0, _useMemoOne.useMemoOne)(function () {
     return {
       start: task.start,
