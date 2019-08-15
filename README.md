@@ -53,7 +53,6 @@ const GitHubSearch = ({ query }) => {
   if (delayTask.pending) return <div>Waiting...</div>;
   if (fetchTask.error) return <Err error={fetchTask.error} />;
   if (fetchTask.pending) return <Loading abort={fetchTask.abort} />;
-  if (!fetchTask.result) return <div>No result</div>;
   return (
     <ul>
       {fetchTask.result.items.map(({ id, name, html_url }) => (
@@ -87,7 +86,6 @@ const UserInfo = ({ id }) => {
   const { pending, error, result, abort } = useFetch(url);
   if (pending) return <div>Loading...<button onClick={abort}>Abort</button></div>;
   if (error) return <div>Error: {error.name} {error.message}</div>;
-  if (!result) return <div>No result</div>;
   return <div>First Name: {result.data.first_name}</div>;
 };
 
