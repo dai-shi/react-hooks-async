@@ -31,22 +31,20 @@ var _useMemoOne = require("use-memo-one");
 
 var _useAsyncTask = require("./use-async-task");
 
+var _utils = require("./utils");
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-// eslint-disable-next-line react-hooks/exhaustive-deps
-var useMemoList = function useMemoList(items) {
-  return (0, _useMemoOne.useMemoOne)(function () {
-    return items;
-  }, items);
-};
 
 var useAsyncCombineSeq = function useAsyncCombineSeq() {
   for (var _len = arguments.length, asyncTasks = new Array(_len), _key = 0; _key < _len; _key++) {
     asyncTasks[_key] = arguments[_key];
   }
 
+  var memoAsyncTasks = (0, _utils.useMemoList)(asyncTasks, function (a, b) {
+    return a.start === b.start;
+  });
   var task = (0, _useAsyncTask.useAsyncTask)((0, _useMemoOne.useCallbackOne)(
   /*#__PURE__*/
   function () {
@@ -58,12 +56,12 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
           switch (_context.prev = _context.next) {
             case 0:
               abortController.signal.addEventListener('abort', function () {
-                asyncTasks.forEach(function (asyncTask) {
+                memoAsyncTasks.forEach(function (asyncTask) {
                   asyncTask.abort();
                 });
               }); // start the first one
 
-              asyncTasks[0].start();
+              memoAsyncTasks[0].start();
 
             case 2:
             case "end":
@@ -76,15 +74,11 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
     return function (_x) {
       return _ref.apply(this, arguments);
     };
-  }(), // eslint-disable-next-line react-hooks/exhaustive-deps
-  asyncTasks.map(function (_ref2) {
-    var start = _ref2.start;
-    return start;
-  })));
+  }(), [memoAsyncTasks]));
   (0, _react.useEffect)(function () {
     // if prev task is finished, start next task
-    var index = asyncTasks.findIndex(function (_ref3) {
-      var started = _ref3.started;
+    var index = asyncTasks.findIndex(function (_ref2) {
+      var started = _ref2.started;
       return !started;
     });
     var prevTask = asyncTasks[index - 1];
@@ -94,20 +88,20 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
       nextTask.start();
     }
   });
-  var taskPending = asyncTasks.some(function (_ref4) {
-    var pending = _ref4.pending;
+  var taskPending = asyncTasks.some(function (_ref3) {
+    var pending = _ref3.pending;
     return pending;
   });
-  var taskError = asyncTasks.find(function (_ref5) {
-    var error = _ref5.error;
+  var taskError = asyncTasks.find(function (_ref4) {
+    var error = _ref4.error;
     return error;
   });
-  var taskErrorAll = useMemoList(asyncTasks.map(function (_ref6) {
-    var error = _ref6.error;
+  var taskErrorAll = (0, _utils.useMemoList)(asyncTasks.map(function (_ref5) {
+    var error = _ref5.error;
     return error;
   }));
-  var taskResult = useMemoList(asyncTasks.map(function (_ref7) {
-    var result = _ref7.result;
+  var taskResult = (0, _utils.useMemoList)(asyncTasks.map(function (_ref6) {
+    var result = _ref6.result;
     return result;
   }));
   return (0, _useMemoOne.useMemoOne)(function () {

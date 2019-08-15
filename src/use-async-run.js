@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
 
+import { useMemoList } from './utils';
+
 export const useAsyncRun = (asyncTask, ...args) => {
   const start = asyncTask && asyncTask.start;
   const abort = asyncTask && asyncTask.abort;
+  const memoArgs = useMemoList(args);
   useEffect(() => {
     if (start) {
-      start(...args);
+      start(...memoArgs);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [start, ...args]);
+  }, [start, memoArgs]);
   useEffect(() => {
     const cleanup = () => {
       if (abort) {
