@@ -1,8 +1,10 @@
 # Change Log
 
 ## [Unreleased]
+
+## [3.3.0] - 2019-08-15
 ### Changed
-- Fix variable args/task length scenario (#21)
+- Fix variable args/tasks length scenario (#21)
 
 ## [3.2.0] - 2019-08-12
 ### Changed
