@@ -195,7 +195,7 @@ const combinedTask = useAsyncCombineSeq(task1, task2, ...);
 This function combines multiple tasks in a sequential manner.
 
 The arguments `task1`, `task2`, ... are tasks created by `useAsyncTask`.
-They shouldn't be started running.
+They shouldn't be started.
 
 The return value `combinedTask` is a newly created combined task which
 holds an array of each task results in the result property.
