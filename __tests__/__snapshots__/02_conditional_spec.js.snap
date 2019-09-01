@@ -31,7 +31,7 @@ exports[`conditional runnning spec should run task conditionally 2`] = `
     <div>
       <div>
         Started: 
-        started
+        init
       </div>
       <div>
         Pending: 
