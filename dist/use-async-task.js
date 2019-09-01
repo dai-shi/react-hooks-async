@@ -113,6 +113,7 @@ var createTask = function createTask(func, forceUpdate) {
                 if (task.id === taskId) {
                   task.result = result;
                   task.error = err;
+                  task.started = false;
                   task.pending = false;
                   forceUpdate();
                 }
