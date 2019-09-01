@@ -1,28 +1,45 @@
 import {
   useEffect,
   useReducer,
-  useRef,
 } from 'react';
 import { useMemoOne as useMemo } from 'use-memo-one';
 
-const createTask = (func, forceUpdateRef) => {
+let idCount = 0;
+const nextId = () => {
+  idCount += 1;
+  return idCount;
+};
+
+const createTask = (func, forceUpdate) => {
   const task = {
     abortController: null,
     start: async (...args) => {
+      if (task.id === null) {
+        // already cleaned up
+        return;
+      }
       task.abort();
       task.abortController = new AbortController();
+      const taskId = nextId();
+      task.id = taskId;
       task.started = true;
       task.pending = true;
       task.error = null;
       task.result = null;
-      forceUpdateRef.current(func);
+      forceUpdate();
+      let result = null;
+      let err = null;
       try {
-        task.result = await func(task.abortController, ...args);
+        result = await func(task.abortController, ...args);
       } catch (e) {
-        task.error = e;
+        err = e;
       }
-      task.pending = false;
-      forceUpdateRef.current(func);
+      if (task.id === taskId) {
+        task.result = result;
+        task.error = err;
+        task.pending = false;
+        forceUpdate();
+      }
     },
     abort: () => {
       if (task.abortController) {
@@ -30,6 +47,7 @@ const createTask = (func, forceUpdateRef) => {
         task.abortController = null;
       }
     },
+    id: 0,
     started: false,
     pending: true,
     error: null,
@@ -40,19 +58,14 @@ const createTask = (func, forceUpdateRef) => {
 
 export const useAsyncTask = (func) => {
   const [, forceUpdate] = useReducer(c => c + 1, 0);
-  const forceUpdateRef = useRef(forceUpdate);
-  const task = useMemo(() => createTask(func, forceUpdateRef), [func]);
+  const task = useMemo(() => createTask(func, forceUpdate), [func]);
   useEffect(() => {
-    forceUpdateRef.current = (f) => {
-      if (f === func) {
-        forceUpdate();
-      }
-    };
     const cleanup = () => {
-      forceUpdateRef.current = () => null;
+      task.id = null;
+      task.abort();
     };
     return cleanup;
-  }, [func]);
+  }, [task]);
   return useMemo(() => ({
     start: task.start,
     abort: task.abort,

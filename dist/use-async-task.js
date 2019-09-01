@@ -45,14 +45,24 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var createTask = function createTask(func, forceUpdateRef) {
+var idCount = 0;
+
+var nextId = function nextId() {
+  idCount += 1;
+  return idCount;
+};
+
+var createTask = function createTask(func, forceUpdate) {
   var task = {
     abortController: null,
     start: function () {
       var _start = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee() {
-        var _len,
+        var taskId,
+            result,
+            err,
+            _len,
             args,
             _key,
             _args = arguments;
@@ -61,42 +71,58 @@ var createTask = function createTask(func, forceUpdateRef) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                if (!(task.id === null)) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 2:
                 task.abort();
                 task.abortController = new AbortController();
+                taskId = nextId();
+                task.id = taskId;
                 task.started = true;
                 task.pending = true;
                 task.error = null;
                 task.result = null;
-                forceUpdateRef.current(func);
-                _context.prev = 7;
+                forceUpdate();
+                result = null;
+                err = null;
+                _context.prev = 13;
 
                 for (_len = _args.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
                   args[_key] = _args[_key];
                 }
 
-                _context.next = 11;
+                _context.next = 17;
                 return func.apply(void 0, [task.abortController].concat(args));
 
-              case 11:
-                task.result = _context.sent;
-                _context.next = 17;
+              case 17:
+                result = _context.sent;
+                _context.next = 23;
                 break;
 
-              case 14:
-                _context.prev = 14;
-                _context.t0 = _context["catch"](7);
-                task.error = _context.t0;
+              case 20:
+                _context.prev = 20;
+                _context.t0 = _context["catch"](13);
+                err = _context.t0;
 
-              case 17:
-                task.pending = false;
-                forceUpdateRef.current(func);
+              case 23:
+                if (task.id === taskId) {
+                  task.result = result;
+                  task.error = err;
+                  task.pending = false;
+                  forceUpdate();
+                }
 
-              case 19:
+              case 24:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[7, 14]]);
+        }, _callee, null, [[13, 20]]);
       }));
 
       function start() {
@@ -111,6 +137,7 @@ var createTask = function createTask(func, forceUpdateRef) {
         task.abortController = null;
       }
     },
+    id: 0,
     started: false,
     pending: true,
     error: null,
@@ -126,25 +153,17 @@ var useAsyncTask = function useAsyncTask(func) {
       _useReducer2 = _slicedToArray(_useReducer, 2),
       forceUpdate = _useReducer2[1];
 
-  var forceUpdateRef = (0, _react.useRef)(forceUpdate);
   var task = (0, _useMemoOne.useMemoOne)(function () {
-    return createTask(func, forceUpdateRef);
+    return createTask(func, forceUpdate);
   }, [func]);
   (0, _react.useEffect)(function () {
-    forceUpdateRef.current = function (f) {
-      if (f === func) {
-        forceUpdate();
-      }
-    };
-
     var cleanup = function cleanup() {
-      forceUpdateRef.current = function () {
-        return null;
-      };
+      task.id = null;
+      task.abort();
     };
 
     return cleanup;
-  }, [func]);
+  }, [task]);
   return (0, _useMemoOne.useMemoOne)(function () {
     return {
       start: task.start,
