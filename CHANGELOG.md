@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [3.4.0] - 2019-09-01
 ### Changed
 - Workaround for terser minification (#19)
 - Fix updating with the old task (#22)
