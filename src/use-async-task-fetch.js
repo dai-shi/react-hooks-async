@@ -15,22 +15,26 @@ const createFetchError = (message) => {
 export const useAsyncTaskFetch = (
   input,
   init = defaultInit,
-  readBody = defaultReadBody,
-) => useAsyncTask(useCallback(
-  async (abortController, inputOverride, initOverride) => {
-    const response = await fetch(inputOverride || input, {
-      ...init,
-      ...initOverride,
-      signal: abortController.signal,
-    });
-    if (!response.ok) {
-      throw createFetchError(response.statusText);
-    }
-    const body = await readBody(response);
-    return body;
-  },
-  [input, init, readBody],
-));
+  argReadBody,
+) => {
+  // a workaround for terser (#19)
+  const readBody = argReadBody || defaultReadBody;
+  return useAsyncTask(useCallback(
+    async (abortController, inputOverride, initOverride) => {
+      const response = await fetch(inputOverride || input, {
+        ...init,
+        ...initOverride,
+        signal: abortController.signal,
+      });
+      if (!response.ok) {
+        throw createFetchError(response.statusText);
+      }
+      const body = await readBody(response);
+      return body;
+    },
+    [input, init, readBody],
+  ));
+};
 
 export const useFetch = (...args) => {
   const asyncTask = useAsyncTaskFetch(...args);

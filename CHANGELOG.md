@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Workaround for terser minification (#19)
 
 ## [3.3.0] - 2019-08-15
 ### Changed
