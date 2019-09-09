@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   useCallbackOne as useCallback,
   useMemoOne as useMemo,
@@ -8,6 +8,7 @@ import { useAsyncTask } from './use-async-task';
 import { useMemoList } from './utils';
 
 export const useAsyncCombineSeq = (...asyncTasks) => {
+  const indexRef = useRef(0);
   const memoAsyncTasks = useMemoList(asyncTasks, (a, b) => a.start === b.start);
   const task = useAsyncTask(useCallback(
     async (abortController) => {
@@ -18,16 +19,17 @@ export const useAsyncCombineSeq = (...asyncTasks) => {
       });
       // start the first one
       memoAsyncTasks[0].start();
+      indexRef.current = 0;
     },
     [memoAsyncTasks],
   ));
   useEffect(() => {
-    // if prev task is finished, start next task
-    const index = asyncTasks.findIndex(({ started }) => !started);
-    const prevTask = asyncTasks[index - 1];
-    const nextTask = asyncTasks[index];
-    if (nextTask && prevTask && !prevTask.pending && !prevTask.error) {
+    // if current task is finished, start next task
+    const currTask = asyncTasks[indexRef.current];
+    const nextTask = asyncTasks[indexRef.current + 1];
+    if (nextTask && currTask && !currTask.pending && !currTask.error) {
       nextTask.start();
+      indexRef.current += 1;
     }
   });
   const taskPending = asyncTasks.some(({ pending }) => pending);

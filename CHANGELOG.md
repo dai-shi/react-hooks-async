@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.4.1] - 2019-09-09
+### Changed
+- Fix a fatal bug in useAsyncCombineSeq
+
 ## [3.4.0] - 2019-09-01
 ### Changed
 - Workaround for terser minification (#19)

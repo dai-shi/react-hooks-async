@@ -2,8 +2,6 @@
 
 require("core-js/modules/es.array.find");
 
-require("core-js/modules/es.array.find-index");
-
 require("core-js/modules/es.array.for-each");
 
 require("core-js/modules/es.array.map");
@@ -42,6 +40,7 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
     asyncTasks[_key] = arguments[_key];
   }
 
+  var indexRef = (0, _react.useRef)(0);
   var memoAsyncTasks = (0, _utils.useMemoList)(asyncTasks, function (a, b) {
     return a.start === b.start;
   });
@@ -62,8 +61,9 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
               }); // start the first one
 
               memoAsyncTasks[0].start();
+              indexRef.current = 0;
 
-            case 2:
+            case 3:
             case "end":
               return _context.stop();
           }
@@ -76,32 +76,29 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
     };
   }(), [memoAsyncTasks]));
   (0, _react.useEffect)(function () {
-    // if prev task is finished, start next task
-    var index = asyncTasks.findIndex(function (_ref2) {
-      var started = _ref2.started;
-      return !started;
-    });
-    var prevTask = asyncTasks[index - 1];
-    var nextTask = asyncTasks[index];
+    // if current task is finished, start next task
+    var currTask = asyncTasks[indexRef.current];
+    var nextTask = asyncTasks[indexRef.current + 1];
 
-    if (nextTask && prevTask && !prevTask.pending && !prevTask.error) {
+    if (nextTask && currTask && !currTask.pending && !currTask.error) {
       nextTask.start();
+      indexRef.current += 1;
     }
   });
-  var taskPending = asyncTasks.some(function (_ref3) {
-    var pending = _ref3.pending;
+  var taskPending = asyncTasks.some(function (_ref2) {
+    var pending = _ref2.pending;
     return pending;
   });
-  var taskError = asyncTasks.find(function (_ref4) {
-    var error = _ref4.error;
+  var taskError = asyncTasks.find(function (_ref3) {
+    var error = _ref3.error;
     return error;
   });
-  var taskErrorAll = (0, _utils.useMemoList)(asyncTasks.map(function (_ref5) {
-    var error = _ref5.error;
+  var taskErrorAll = (0, _utils.useMemoList)(asyncTasks.map(function (_ref4) {
+    var error = _ref4.error;
     return error;
   }));
-  var taskResult = (0, _utils.useMemoList)(asyncTasks.map(function (_ref6) {
-    var result = _ref6.result;
+  var taskResult = (0, _utils.useMemoList)(asyncTasks.map(function (_ref5) {
+    var result = _ref5.result;
     return result;
   }));
   return (0, _useMemoOne.useMemoOne)(function () {
