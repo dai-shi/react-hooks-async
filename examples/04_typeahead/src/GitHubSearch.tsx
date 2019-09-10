@@ -1,5 +1,3 @@
-/* eslint no-new-wrappers: off */
-
 import * as React from 'react';
 import { useCallbackOne as useCallback } from 'use-memo-one';
 

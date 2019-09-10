@@ -1,18 +1,16 @@
 {
   "compilerOptions": {
     "strict": true,
-    "lib": ["es2015", "dom"],
+    "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node",
     "jsx": "react",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "react-hooks-async": ["."],
-      "react-hooks-async/src/use-async-task-timeout": ["./src/use-async-task-timeout"],
-      "react-hooks-async/src/use-async-task-delay": ["./src/use-async-task-delay"],
-      "react-hooks-async/src/use-async-task-fetch": ["./src/use-async-task-fetch"],
-      "react-hooks-async/src/use-async-task-axios": ["./src/use-async-task-axios"],
-      "react-hooks-async/src/use-async-task-wasm": ["./src/use-async-task-wasm"]
+      "react-hooks-async": ["."]
     }
   }
 }
