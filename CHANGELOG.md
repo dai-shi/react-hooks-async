@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Parse error response body in useAsyncTaskFetch (#24)
 
 ## [3.4.1] - 2019-09-09
 ### Changed

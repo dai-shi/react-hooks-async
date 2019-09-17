@@ -6,10 +6,19 @@ import { useAsyncRun } from './use-async-run';
 const defaultInit = {};
 const defaultReadBody = body => body.json();
 
-const createFetchError = (message) => {
+const createFetchError = (message, responseBody) => {
   const err = new Error(message);
   err.name = 'FetchError';
+  err.responseBody = responseBody;
   return err;
+};
+
+const safeReadBody = async (readBody, response) => {
+  try {
+    return await readBody(response);
+  } catch (e) {
+    return null;
+  }
 };
 
 export const useAsyncTaskFetch = (
@@ -27,7 +36,8 @@ export const useAsyncTaskFetch = (
         signal: abortController.signal,
       });
       if (!response.ok) {
-        throw createFetchError(response.statusText);
+        const responseBody = await safeReadBody(readBody, response);
+        throw createFetchError(response.statusText, responseBody);
       }
       const body = await readBody(response);
       return body;
