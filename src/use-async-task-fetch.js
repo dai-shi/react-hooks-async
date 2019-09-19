@@ -35,12 +35,11 @@ export const useAsyncTaskFetch = (
         ...initOverride,
         signal: abortController.signal,
       });
+      const responseBody = await safeReadBody(readBody, response);  
       if (!response.ok) {
-        const responseBody = await safeReadBody(readBody, response);
         throw createFetchError(response.statusText, responseBody);
       }
-      const body = await readBody(response);
-      return body;
+      return responseBody;
     },
     [input, init, readBody],
   ));
