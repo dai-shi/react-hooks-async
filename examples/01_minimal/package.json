@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "core-js": "^3.1.4",
+    "core-js": "latest",
     "react": "latest",
     "react-dom": "latest",
     "react-hooks-async": "latest",
