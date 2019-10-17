@@ -1,5 +1,5 @@
 export type AsyncTask<Result, Args extends unknown[] = unknown[]> = {
-  start: (...args: Args) => void;
+  start: (...args: Args) => Promise<Result | null>;
   abort: () => void;
   started: boolean;
 } & (

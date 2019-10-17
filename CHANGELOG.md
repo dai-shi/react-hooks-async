@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- task.start returns a promise (#28)
 
 ## [3.4.2] - 2019-09-17
 ### Changed

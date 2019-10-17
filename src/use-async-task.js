@@ -16,7 +16,7 @@ const createTask = (func, forceUpdate) => {
     start: async (...args) => {
       if (task.id === null) {
         // already cleaned up
-        return;
+        return null;
       }
       task.abort();
       task.abortController = new AbortController();
@@ -41,6 +41,8 @@ const createTask = (func, forceUpdate) => {
         task.pending = false;
         forceUpdate();
       }
+      if (err) throw err;
+      return result;
     },
     abort: () => {
       if (task.abortController) {
