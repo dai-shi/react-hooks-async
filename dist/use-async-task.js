@@ -80,7 +80,7 @@ var createTask = function createTask(func, forceUpdate) {
                   break;
                 }
 
-                return _context.abrupt("return");
+                return _context.abrupt("return", null);
 
               case 2:
                 task.abort();
@@ -122,7 +122,17 @@ var createTask = function createTask(func, forceUpdate) {
                   forceUpdate();
                 }
 
-              case 24:
+                if (!err) {
+                  _context.next = 26;
+                  break;
+                }
+
+                throw err;
+
+              case 26:
+                return _context.abrupt("return", result);
+
+              case 27:
               case "end":
                 return _context.stop();
             }
