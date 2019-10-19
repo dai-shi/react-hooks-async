@@ -31,8 +31,7 @@
     "import/prefer-default-export": "off",
     "import/no-unresolved": ["error", { "ignore": ["react-hooks-async", "node-fetch"] }],
     "import/no-duplicates": "off",
-    "arrow-parens": ["error", "as-needed", { "requireForBlockBody": true }],
-    "symbol-description": "off"
+    "arrow-parens": ["error", "as-needed", { "requireForBlockBody": true }]
   },
   "overrides": [{
     "files": ["__tests__/**/*"],

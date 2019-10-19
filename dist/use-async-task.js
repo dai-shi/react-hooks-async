@@ -49,12 +49,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var nextId = function nextId() {
-  return process.env.NODE_ENV !== 'production' ? Symbol("created at: ".concat(new Date()))
-  /* for production */
-  : Symbol();
-};
-
 var createTask = function createTask(func, forceUpdate) {
   var task = {
     abortController: null,
@@ -84,7 +78,7 @@ var createTask = function createTask(func, forceUpdate) {
               case 2:
                 task.abort();
                 task.abortController = new AbortController();
-                taskId = nextId();
+                taskId = Symbol('TASK_ID');
                 task.id = taskId;
                 task.started = true;
                 task.pending = true;

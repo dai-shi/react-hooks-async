@@ -4,11 +4,6 @@ import {
 } from 'react';
 import { useMemoOne as useMemo } from 'use-memo-one';
 
-const nextId = () => (
-  process.env.NODE_ENV !== 'production' ? Symbol(`created at: ${new Date()}`)
-  /* for production */ : Symbol()
-);
-
 const createTask = (func, forceUpdate) => {
   const task = {
     abortController: null,
@@ -19,7 +14,7 @@ const createTask = (func, forceUpdate) => {
       }
       task.abort();
       task.abortController = new AbortController();
-      const taskId = nextId();
+      const taskId = Symbol('TASK_ID');
       task.id = taskId;
       task.started = true;
       task.pending = true;
