@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [3.5.1] - 2019-10-19
 ### Changed
 - Side effects free for webpack v4
 
