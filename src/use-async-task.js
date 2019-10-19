@@ -4,11 +4,10 @@ import {
 } from 'react';
 import { useMemoOne as useMemo } from 'use-memo-one';
 
-let idCount = 0;
-const nextId = () => {
-  idCount += 1;
-  return idCount;
-};
+const nextId = () => (
+  process.env.NODE_ENV !== 'production' ? Symbol(`created at: ${new Date()}`)
+  /* for production */ : Symbol()
+);
 
 const createTask = (func, forceUpdate) => {
   const task = {
