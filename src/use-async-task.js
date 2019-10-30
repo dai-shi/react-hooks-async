@@ -26,7 +26,9 @@ const createTask = (func, forceUpdate) => {
       try {
         result = await func(task.abortController, ...args);
       } catch (e) {
-        err = e;
+        if (e.name !== 'AbortError') {
+          err = e;
+        }
       }
       if (task.id === taskId) {
         task.result = result;
