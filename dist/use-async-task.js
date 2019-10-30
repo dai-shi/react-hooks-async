@@ -14,6 +14,8 @@ require("core-js/modules/es.array.iterator");
 
 require("core-js/modules/es.date.to-string");
 
+require("core-js/modules/es.function.name");
+
 require("core-js/modules/es.object.define-property");
 
 require("core-js/modules/es.object.to-string");
@@ -104,7 +106,10 @@ var createTask = function createTask(func, forceUpdate) {
               case 20:
                 _context.prev = 20;
                 _context.t0 = _context["catch"](13);
-                err = _context.t0;
+
+                if (_context.t0.name !== 'AbortError') {
+                  err = _context.t0;
+                }
 
               case 23:
                 if (task.id === taskId) {
