@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [3.6.0] - 2019-10-30
 ### Changed
 - Do not throw an error when request is aborted (#31)
 
