@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Improve typings (#32)
 
 ## [3.6.0] - 2019-10-30
 ### Changed
