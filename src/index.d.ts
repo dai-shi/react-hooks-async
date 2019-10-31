@@ -20,9 +20,9 @@ export type AsyncTask<Result, Args extends unknown[] = unknown[]> = {
   }
 );
 
-export type UseAsyncTask = <Result>(
-  func: (c: AbortController) => Promise<Result>,
-) => AsyncTask<Result>;
+export type UseAsyncTask = <Result, Args extends unknown[] = unknown[]>(
+  func: (c: AbortController, ...args: Args) => Promise<Result>
+) => AsyncTask<Result, Args>;
 
 type Falsy = false | 0 | '' | null | undefined;
 export type UseAsyncRun = <Result, Args extends unknown[] = unknown[]>(
