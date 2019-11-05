@@ -1,83 +1,105 @@
 import {
-  useEffect,
+  useLayoutEffect,
   useReducer,
+  useRef,
 } from 'react';
-import { useMemoOne as useMemo } from 'use-memo-one';
 
-const createTask = (func, forceUpdate) => {
-  const task = {
-    abortController: null,
+const createTask = ({ func, dispatchRef }) => {
+  const taskId = Symbol('TASK_ID');
+  let abortController = null;
+  return {
+    func,
+    taskId,
+    runId: null,
     start: async (...args) => {
-      if (task.id === null) {
-        // already cleaned up
-        return null;
+      if (abortController) {
+        abortController.abort();
       }
-      task.abort();
-      task.abortController = new AbortController();
-      const taskId = Symbol('TASK_ID');
-      task.id = taskId;
-      task.started = true;
-      task.pending = true;
-      task.error = null;
-      task.result = null;
-      forceUpdate();
+      abortController = new AbortController();
+      const runId = Symbol('RUN_ID');
+      dispatchRef.current({
+        type: 'START',
+        taskId,
+        runId,
+      });
       let result = null;
-      let err = null;
+      let error = null;
       try {
-        result = await func(task.abortController, ...args);
+        result = await func(abortController, ...args);
       } catch (e) {
         if (e.name !== 'AbortError') {
-          err = e;
+          error = e;
         }
       }
-      if (task.id === taskId) {
-        task.result = result;
-        task.error = err;
-        task.started = false;
-        task.pending = false;
-        forceUpdate();
-      }
-      if (err) throw err;
+      dispatchRef.current({
+        type: 'END',
+        taskId,
+        runId,
+        result,
+        error,
+      });
+      if (error) throw error;
       return result;
     },
     abort: () => {
-      if (task.abortController) {
-        task.abortController.abort();
-        task.abortController = null;
+      if (abortController) {
+        abortController.abort();
+        abortController = null;
       }
     },
-    id: 0,
     started: false,
     pending: true,
     error: null,
     result: null,
   };
-  return task;
+};
+
+const reducer = (task, action) => {
+  switch (action.type) {
+    case 'INIT':
+      return createTask(action);
+    case 'START':
+      if (task.taskId !== action.taskId) {
+        return task; // bail out
+      }
+      return {
+        ...task,
+        runId: action.runId,
+        started: true,
+        pending: true,
+        error: null,
+        result: null,
+      };
+    case 'END':
+      if (task.taskId !== action.taskId || task.runId !== action.runId) {
+        return task; // bail out
+      }
+      return {
+        ...task,
+        started: false,
+        pending: false,
+        error: action.error,
+        result: action.result,
+      };
+    default:
+      throw new Error(`unknown action type: ${action.type}`);
+  }
 };
 
 export const useAsyncTask = (func) => {
-  const [, forceUpdate] = useReducer(c => c + 1, 0);
-  const task = useMemo(() => createTask(func, forceUpdate), [func]);
-  useEffect(() => {
+  const dispatchRef = useRef(() => { throw new Error('not initialized'); });
+  const [task, dispatch] = useReducer(reducer, { func, dispatchRef }, createTask);
+  useLayoutEffect(() => {
+    if (task.func !== func) {
+      dispatch({ type: 'INIT', func, dispatchRef });
+    }
+  });
+  useLayoutEffect(() => {
+    dispatchRef.current = dispatch;
     const cleanup = () => {
-      task.id = null;
-      task.abort();
+      dispatchRef.current = () => {};
     };
     return cleanup;
-  }, [task]);
-  return useMemo(() => ({
-    start: task.start,
-    abort: task.abort,
-    started: task.started,
-    pending: task.pending,
-    error: task.error,
-    result: task.result,
-  }), [
-    task.start,
-    task.abort,
-    task.started,
-    task.pending,
-    task.error,
-    task.result,
-  ]);
+  }, []);
+  return task;
 };
