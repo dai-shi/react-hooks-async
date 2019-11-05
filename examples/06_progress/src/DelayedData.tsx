@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { useAsyncCombineAll, useAsyncRun, useAsyncTaskTimeout } from 'react-hooks-async';
 
