@@ -8,6 +8,10 @@ require("core-js/modules/es.symbol.iterator");
 
 require("core-js/modules/es.array.concat");
 
+require("core-js/modules/es.array.filter");
+
+require("core-js/modules/es.array.for-each");
+
 require("core-js/modules/es.array.is-array");
 
 require("core-js/modules/es.array.iterator");
@@ -16,7 +20,15 @@ require("core-js/modules/es.date.to-string");
 
 require("core-js/modules/es.function.name");
 
+require("core-js/modules/es.object.define-properties");
+
 require("core-js/modules/es.object.define-property");
+
+require("core-js/modules/es.object.get-own-property-descriptor");
+
+require("core-js/modules/es.object.get-own-property-descriptors");
+
+require("core-js/modules/es.object.keys");
 
 require("core-js/modules/es.object.to-string");
 
@@ -25,6 +37,8 @@ require("core-js/modules/es.promise");
 require("core-js/modules/es.regexp.to-string");
 
 require("core-js/modules/es.string.iterator");
+
+require("core-js/modules/web.dom-collections.for-each");
 
 require("core-js/modules/web.dom-collections.iterator");
 
@@ -37,8 +51,6 @@ require("regenerator-runtime/runtime");
 
 var _react = require("react");
 
-var _useMemoOne = require("use-memo-one");
-
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -47,146 +59,175 @@ function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) ||
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-var createTask = function createTask(func, forceUpdate) {
-  var task = {
-    abortController: null,
-    start: function () {
-      var _start = _asyncToGenerator(
-      /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee() {
-        var taskId,
-            result,
-            err,
-            _len,
-            args,
-            _key,
-            _args = arguments;
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                if (!(task.id === null)) {
-                  _context.next = 2;
-                  break;
-                }
+var createTask = function createTask(_ref) {
+  var func = _ref.func,
+      dispatchRef = _ref.dispatchRef;
+  var taskId = Symbol('TASK_ID');
+  var abortController = null;
+  return {
+    func: func,
+    taskId: taskId,
+    runId: null,
+    start: function start() {
+      var runId,
+          result,
+          error,
+          _len,
+          args,
+          _key,
+          _args = arguments;
 
-                return _context.abrupt("return", null);
+      return regeneratorRuntime.async(function start$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (abortController) {
+                abortController.abort();
+              }
 
-              case 2:
-                task.abort();
-                task.abortController = new AbortController();
-                taskId = Symbol('TASK_ID');
-                task.id = taskId;
-                task.started = true;
-                task.pending = true;
-                task.error = null;
-                task.result = null;
-                forceUpdate();
-                result = null;
-                err = null;
-                _context.prev = 13;
+              abortController = new AbortController();
+              runId = Symbol('RUN_ID');
+              dispatchRef.current({
+                type: 'START',
+                taskId: taskId,
+                runId: runId
+              });
+              result = null;
+              error = null;
+              _context.prev = 6;
 
-                for (_len = _args.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-                  args[_key] = _args[_key];
-                }
+              for (_len = _args.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+                args[_key] = _args[_key];
+              }
 
-                _context.next = 17;
-                return func.apply(void 0, [task.abortController].concat(args));
+              _context.next = 10;
+              return regeneratorRuntime.awrap(func.apply(void 0, [abortController].concat(args)));
 
-              case 17:
-                result = _context.sent;
-                _context.next = 23;
+            case 10:
+              result = _context.sent;
+              _context.next = 16;
+              break;
+
+            case 13:
+              _context.prev = 13;
+              _context.t0 = _context["catch"](6);
+
+              if (_context.t0.name !== 'AbortError') {
+                error = _context.t0;
+              }
+
+            case 16:
+              dispatchRef.current({
+                type: 'END',
+                taskId: taskId,
+                runId: runId,
+                result: result,
+                error: error
+              });
+
+              if (!error) {
+                _context.next = 19;
                 break;
+              }
 
-              case 20:
-                _context.prev = 20;
-                _context.t0 = _context["catch"](13);
+              throw error;
 
-                if (_context.t0.name !== 'AbortError') {
-                  err = _context.t0;
-                }
+            case 19:
+              return _context.abrupt("return", result);
 
-              case 23:
-                if (task.id === taskId) {
-                  task.result = result;
-                  task.error = err;
-                  task.started = false;
-                  task.pending = false;
-                  forceUpdate();
-                }
-
-                if (!err) {
-                  _context.next = 26;
-                  break;
-                }
-
-                throw err;
-
-              case 26:
-                return _context.abrupt("return", result);
-
-              case 27:
-              case "end":
-                return _context.stop();
-            }
+            case 20:
+            case "end":
+              return _context.stop();
           }
-        }, _callee, null, [[13, 20]]);
-      }));
-
-      function start() {
-        return _start.apply(this, arguments);
-      }
-
-      return start;
-    }(),
+        }
+      }, null, null, [[6, 13]]);
+    },
     abort: function abort() {
-      if (task.abortController) {
-        task.abortController.abort();
-        task.abortController = null;
+      if (abortController) {
+        abortController.abort();
+        abortController = null;
       }
     },
-    id: 0,
     started: false,
     pending: true,
     error: null,
     result: null
   };
-  return task;
+};
+
+var reducer = function reducer(task, action) {
+  switch (action.type) {
+    case 'INIT':
+      return createTask(action);
+
+    case 'START':
+      if (task.taskId !== action.taskId) {
+        return task; // bail out
+      }
+
+      return _objectSpread({}, task, {
+        runId: action.runId,
+        started: true,
+        pending: true,
+        error: null,
+        result: null
+      });
+
+    case 'END':
+      if (task.taskId !== action.taskId || task.runId !== action.runId) {
+        return task; // bail out
+      }
+
+      return _objectSpread({}, task, {
+        started: false,
+        pending: false,
+        error: action.error,
+        result: action.result
+      });
+
+    default:
+      throw new Error("unknown action type: ".concat(action.type));
+  }
 };
 
 var useAsyncTask = function useAsyncTask(func) {
-  var _useReducer = (0, _react.useReducer)(function (c) {
-    return c + 1;
-  }, 0),
-      _useReducer2 = _slicedToArray(_useReducer, 2),
-      forceUpdate = _useReducer2[1];
+  var dispatchRef = (0, _react.useRef)(function () {
+    throw new Error('not initialized');
+  });
 
-  var task = (0, _useMemoOne.useMemoOne)(function () {
-    return createTask(func, forceUpdate);
-  }, [func]);
-  (0, _react.useEffect)(function () {
+  var _useReducer = (0, _react.useReducer)(reducer, {
+    func: func,
+    dispatchRef: dispatchRef
+  }, createTask),
+      _useReducer2 = _slicedToArray(_useReducer, 2),
+      task = _useReducer2[0],
+      dispatch = _useReducer2[1];
+
+  (0, _react.useLayoutEffect)(function () {
+    if (task.func !== func) {
+      dispatch({
+        type: 'INIT',
+        func: func,
+        dispatchRef: dispatchRef
+      });
+    }
+  });
+  (0, _react.useLayoutEffect)(function () {
+    dispatchRef.current = dispatch;
+
     var cleanup = function cleanup() {
-      task.id = null;
-      task.abort();
+      dispatchRef.current = function () {};
     };
 
     return cleanup;
-  }, [task]);
-  return (0, _useMemoOne.useMemoOne)(function () {
-    return {
-      start: task.start,
-      abort: task.abort,
-      started: task.started,
-      pending: task.pending,
-      error: task.error,
-      result: task.result
-    };
-  }, [task.start, task.abort, task.started, task.pending, task.error, task.result]);
+  }, []);
+  return task;
 };
 
 exports.useAsyncTask = useAsyncTask;

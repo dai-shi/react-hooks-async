@@ -43,10 +43,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
 var defaultInit = {};
 
 var defaultReadBody = function defaultReadBody(body) {
@@ -60,97 +56,77 @@ var createFetchError = function createFetchError(message, responseBody) {
   return err;
 };
 
-var safeReadBody =
-/*#__PURE__*/
-function () {
-  var _ref = _asyncToGenerator(
-  /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee(readBody, response) {
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.prev = 0;
-            _context.next = 3;
-            return readBody(response);
+var safeReadBody = function safeReadBody(readBody, response) {
+  return regeneratorRuntime.async(function safeReadBody$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          _context.prev = 0;
+          _context.next = 3;
+          return regeneratorRuntime.awrap(readBody(response));
 
-          case 3:
-            return _context.abrupt("return", _context.sent);
+        case 3:
+          return _context.abrupt("return", _context.sent);
 
-          case 6:
-            _context.prev = 6;
-            _context.t0 = _context["catch"](0);
-            return _context.abrupt("return", null);
+        case 6:
+          _context.prev = 6;
+          _context.t0 = _context["catch"](0);
+          return _context.abrupt("return", null);
 
-          case 9:
-          case "end":
-            return _context.stop();
-        }
+        case 9:
+        case "end":
+          return _context.stop();
       }
-    }, _callee, null, [[0, 6]]);
-  }));
-
-  return function safeReadBody(_x, _x2) {
-    return _ref.apply(this, arguments);
-  };
-}();
+    }
+  }, null, null, [[0, 6]]);
+};
 
 var useAsyncTaskFetch = function useAsyncTaskFetch(input) {
   var init = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultInit;
   var argReadBody = arguments.length > 2 ? arguments[2] : undefined;
   // a workaround for terser (#19)
   var readBody = argReadBody || defaultReadBody;
-  return (0, _useAsyncTask.useAsyncTask)((0, _useMemoOne.useCallbackOne)(
-  /*#__PURE__*/
-  function () {
-    var _ref2 = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee2(abortController, inputOverride, initOverride) {
-      var response, responseBody, body;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.next = 2;
-              return fetch(inputOverride || input, _objectSpread({}, init, {}, initOverride, {
-                signal: abortController.signal
-              }));
+  return (0, _useAsyncTask.useAsyncTask)((0, _useMemoOne.useCallbackOne)(function _callee(abortController, inputOverride, initOverride) {
+    var response, responseBody, body;
+    return regeneratorRuntime.async(function _callee$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return regeneratorRuntime.awrap(fetch(inputOverride || input, _objectSpread({}, init, {}, initOverride, {
+              signal: abortController.signal
+            })));
 
-            case 2:
-              response = _context2.sent;
+          case 2:
+            response = _context2.sent;
 
-              if (response.ok) {
-                _context2.next = 8;
-                break;
-              }
+            if (response.ok) {
+              _context2.next = 8;
+              break;
+            }
 
-              _context2.next = 6;
-              return safeReadBody(readBody, response);
+            _context2.next = 6;
+            return regeneratorRuntime.awrap(safeReadBody(readBody, response));
 
-            case 6:
-              responseBody = _context2.sent;
-              throw createFetchError(response.statusText, responseBody);
+          case 6:
+            responseBody = _context2.sent;
+            throw createFetchError(response.statusText, responseBody);
 
-            case 8:
-              _context2.next = 10;
-              return readBody(response);
+          case 8:
+            _context2.next = 10;
+            return regeneratorRuntime.awrap(readBody(response));
 
-            case 10:
-              body = _context2.sent;
-              return _context2.abrupt("return", body);
+          case 10:
+            body = _context2.sent;
+            return _context2.abrupt("return", body);
 
-            case 12:
-            case "end":
-              return _context2.stop();
-          }
+          case 12:
+          case "end":
+            return _context2.stop();
         }
-      }, _callee2);
-    }));
-
-    return function (_x3, _x4, _x5) {
-      return _ref2.apply(this, arguments);
-    };
-  }(), [input, init, readBody]));
+      }
+    });
+  }, [input, init, readBody]));
 };
 
 exports.useAsyncTaskFetch = useAsyncTaskFetch;

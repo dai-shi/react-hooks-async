@@ -2,8 +2,6 @@
 
 require("core-js/modules/es.function.name");
 
-require("core-js/modules/es.object.define-property");
-
 require("core-js/modules/es.object.to-string");
 
 require("core-js/modules/es.promise");

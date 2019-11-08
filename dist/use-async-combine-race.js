@@ -4,8 +4,6 @@ require("core-js/modules/es.array.find-index");
 
 require("core-js/modules/es.array.for-each");
 
-require("core-js/modules/es.object.define-property");
-
 require("core-js/modules/web.dom-collections.for-each");
 
 Object.defineProperty(exports, "__esModule", {
