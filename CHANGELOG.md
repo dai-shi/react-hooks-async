@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [3.7.0] - 2019-11-09
 ### Changed
 - useAsyncTaskAxios follows the change in #31
 - Rewrite useAsyncTask with useReducer (#33)
