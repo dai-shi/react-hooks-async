@@ -4,7 +4,6 @@ import { useMemoList } from './utils';
 
 export const useAsyncRun = (asyncTask, ...args) => {
   const start = asyncTask && asyncTask.start;
-  const started = asyncTask && asyncTask.started;
   const abort = asyncTask && asyncTask.abort;
   const memoArgs = useMemoList(args);
   useEffect(() => {
@@ -14,10 +13,10 @@ export const useAsyncRun = (asyncTask, ...args) => {
   }, [start, memoArgs]);
   useEffect(() => {
     const cleanup = () => {
-      if (started && abort) {
+      if (abort) {
         abort();
       }
     };
     return cleanup;
-  }, [started, abort]);
+  }, [abort]);
 };

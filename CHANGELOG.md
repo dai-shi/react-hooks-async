@@ -1,8 +1,6 @@
 # Change Log
 
 ## [Unreleased]
-### Changed
-- Fix useAsyncRun for some cases with conditional running
 
 ## [3.7.0] - 2019-11-09
 ### Changed
