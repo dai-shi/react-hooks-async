@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Changed
 - Fix inifinite loop in edge cases by avoiding slow memoization
+- Fix useAsyncRun for some cases with conditional running
 
 ## [3.7.0] - 2019-11-09
 ### Changed
