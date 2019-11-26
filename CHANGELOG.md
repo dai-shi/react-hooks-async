@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [3.8.0] - 2019-11-26
 ### Changed
 - Fix inifinite loop in edge cases by avoiding slow memoization
 - Fix useAsyncRun for some cases with conditional running
