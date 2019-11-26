@@ -1,4 +1,4 @@
-export type AsyncTask<Result, Args extends unknown[] = unknown[]> = {
+export type AsyncTask<Result, Args extends unknown[]> = {
   start: (...args: Args) => Promise<Result | null>;
   abort: () => void;
   started: boolean;
@@ -21,19 +21,19 @@ export type AsyncTask<Result, Args extends unknown[] = unknown[]> = {
   }
 );
 
-export type UseAsyncTask = <Result, Args extends unknown[] = unknown[]>(
+export type UseAsyncTask = <Result, Args extends unknown[]>(
   func: (c: AbortController, ...args: Args) => Promise<Result>,
 ) => AsyncTask<Result, Args>;
 
 type Falsy = false | 0 | '' | null | undefined;
-export type UseAsyncRun = <Result, Args extends unknown[] = unknown[]>(
+export type UseAsyncRun = <Result, Args extends unknown[]>(
   task: AsyncTask<Result, Args> | Falsy,
   ...args: Args,
 ) => void;
 
-export type UseAsyncCombine = (
-  ...ts: AsyncTask<unknown>[],
-) => AsyncTask<unknown> & { errorAll: (Error | null)[] };
+export type UseAsyncCombine = <Results, Args extends unknown[]>(
+  ...ts: unknown[], // FIXME better typings?
+) => AsyncTask<Results, Args> & { errorAll: (Error | null)[] };
 
 // core async hooks
 
@@ -51,7 +51,7 @@ export const useAsyncCombineRace: UseAsyncCombine;
 export type UseAsyncTaskTimeout = <Result>(
   func: () => Result,
   delay: number,
-) => AsyncTask<Result>;
+) => AsyncTask<Result, [] | [() => Result]>;
 
 export const useAsyncTaskTimeout: UseAsyncTaskTimeout;
 
@@ -59,7 +59,7 @@ export const useAsyncTaskTimeout: UseAsyncTaskTimeout;
 
 export type UseAsyncTaskDelay = (
   delay: number | (() => number),
-) => AsyncTask<true>;
+) => AsyncTask<true, [] | [number | (() => number)]>;
 
 export const useAsyncTaskDelay: UseAsyncTaskDelay;
 
@@ -69,7 +69,10 @@ export type UseAsyncTaskFetch = <Result>(
   input: string | Request,
   init?: RequestInit,
   bodyReader?: (b: Body) => Promise<Result>,
-) => AsyncTask<Result>;
+) => AsyncTask<
+  Result,
+  [] | [string | Request] | [string | Request | null, RequestInit]
+>;
 
 export const useAsyncTaskFetch: UseAsyncTaskFetch;
 export const useFetch: UseAsyncTaskFetch;
@@ -83,7 +86,7 @@ export type UseAsyncTaskAxios = <
 >(
   axios: AxiosInstance,
   config: AxiosRequestConfig,
-) => AsyncTask<Result>;
+) => AsyncTask<Result, [] | [AxiosRequestConfig]>;
 
 export const useAsyncTaskAxios: UseAsyncTaskAxios;
 export const useAxios: UseAsyncTaskAxios;
@@ -93,7 +96,7 @@ export const useAxios: UseAsyncTaskAxios;
 export type UseAsyncTaskWasm = <Result>(
   input: string | Request,
   importObject?: object,
-) => AsyncTask<Result>;
+) => AsyncTask<Result, [] | [string | Request]>;
 
 export const useAsyncTaskWasm: UseAsyncTaskWasm;
 export const useWasm: UseAsyncTaskWasm;
