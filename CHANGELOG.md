@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Fix inifinite loop in edge cases by avoiding slow memoization
 
 ## [3.7.0] - 2019-11-09
 ### Changed

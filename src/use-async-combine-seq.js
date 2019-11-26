@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
 import {
-  useCallbackOne as useCallback,
-  useMemoOne as useMemo,
-} from 'use-memo-one';
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 
 import { useAsyncTask } from './use-async-task';
 import { useMemoList } from './utils';

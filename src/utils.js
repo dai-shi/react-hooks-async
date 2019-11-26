@@ -1,13 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 export const useMemoList = (list, compareFn = (a, b) => a === b) => {
   const listRef = useRef(list);
   const listChanged = list.length !== listRef.current.length
     || list.some((arg, index) => !compareFn(arg, listRef.current[index]));
-  useEffect(() => {
-    if (listChanged) {
-      listRef.current = list;
-    }
-  });
-  return listChanged ? list : listRef.current;
+  if (listChanged) {
+    // we can't do this in effects, which run too late.
+    listRef.current = list;
+  }
+  return listRef.current;
 };

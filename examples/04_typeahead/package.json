@@ -11,8 +11,7 @@
     "react-dom": "experimental",
     "react-hooks-async": "latest",
     "react-scripts": "^2.1.1",
-    "typescript": "latest",
-    "use-memo-one": "latest"
+    "typescript": "latest"
   },
   "scripts": {
     "start": "react-scripts start",

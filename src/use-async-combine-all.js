@@ -1,7 +1,4 @@
-import {
-  useCallbackOne as useCallback,
-  useMemoOne as useMemo,
-} from 'use-memo-one';
+import { useCallback, useMemo } from 'react';
 
 import { useAsyncTask } from './use-async-task';
 import { useMemoList } from './utils';

@@ -89,11 +89,9 @@ const reducer = (task, action) => {
 export const useAsyncTask = (func) => {
   const dispatchRef = useRef(() => { throw new Error('not initialized'); });
   const [task, dispatch] = useReducer(reducer, { func, dispatchRef }, createTask);
-  useLayoutEffect(() => {
-    if (task.func !== func) {
-      dispatch({ type: 'INIT', func, dispatchRef });
-    }
-  });
+  if (task.func !== func) {
+    dispatch({ type: 'INIT', func, dispatchRef });
+  }
   useLayoutEffect(() => {
     dispatchRef.current = dispatch;
     const cleanup = () => {

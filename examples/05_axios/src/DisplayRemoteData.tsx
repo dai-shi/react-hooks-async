@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import axios from 'axios';
-import { useMemoOne as useMemo } from 'use-memo-one';
 
 import { useAsyncRun, useAsyncTaskAxios } from 'react-hooks-async';
 

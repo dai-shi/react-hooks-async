@@ -1,5 +1,4 @@
 import React from 'react';
-import { useCallbackOne as useCallback } from 'use-memo-one';
 
 import {
   useAsyncCombineSeq,
@@ -31,8 +30,7 @@ type Result = {
 
 const GitHubSearch: React.FC<{ query: string }> = ({ query }) => {
   const url = `https://api.github.com/search/repositories?q=${query}`;
-  const delay = useCallback(() => 500, [url]); // eslint-disable-line react-hooks/exhaustive-deps
-  const delayTask = useAsyncTaskDelay(delay);
+  const delayTask = useAsyncTaskDelay(500);
   const fetchTask = useAsyncTaskFetch<Result>(url);
   const combinedTask = useAsyncCombineSeq(delayTask, fetchTask);
   useAsyncRun(combinedTask);
