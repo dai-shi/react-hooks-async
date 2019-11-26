@@ -1,8 +1,4 @@
-import {
-  useLayoutEffect,
-  useReducer,
-  useRef,
-} from 'react';
+import { useLayoutEffect, useReducer, useRef } from 'react';
 
 const createTask = ({ func, dispatchRef }) => {
   const taskId = Symbol('TASK_ID');
@@ -17,29 +13,19 @@ const createTask = ({ func, dispatchRef }) => {
       }
       abortController = new AbortController();
       const runId = Symbol('RUN_ID');
-      dispatchRef.current({
-        type: 'START',
-        taskId,
-        runId,
-      });
-      let result = null;
-      let error = null;
+      dispatchRef.current({ type: 'START', taskId, runId });
       try {
-        result = await func(abortController, ...args);
-      } catch (e) {
-        if (e.name !== 'AbortError') {
-          error = e;
+        const result = await func(abortController, ...args);
+        dispatchRef.current({ type: 'RESULT', taskId, runId, result });
+        return result;
+      } catch (error) {
+        if (error.name === 'AbortError') {
+          dispatchRef.current({ type: 'ABORT', taskId, runId });
+          return null;
         }
+        dispatchRef.current({ type: 'ERROR', taskId, runId, error });
+        throw error;
       }
-      dispatchRef.current({
-        type: 'END',
-        taskId,
-        runId,
-        result,
-        error,
-      });
-      if (error) throw error;
-      return result;
     },
     abort: () => {
       if (abortController) {
@@ -49,6 +35,7 @@ const createTask = ({ func, dispatchRef }) => {
     },
     started: false,
     pending: true,
+    aborted: false,
     error: null,
     result: null,
   };
@@ -67,10 +54,30 @@ const reducer = (task, action) => {
         runId: action.runId,
         started: true,
         pending: true,
+        aborted: false,
         error: null,
         result: null,
       };
-    case 'END':
+    case 'RESULT':
+      if (task.taskId !== action.taskId || task.runId !== action.runId) {
+        return task; // bail out
+      }
+      return {
+        ...task,
+        started: false,
+        pending: false,
+        result: action.result,
+      };
+    case 'ABORT':
+      if (task.taskId !== action.taskId || task.runId !== action.runId) {
+        return task; // bail out
+      }
+      return {
+        ...task,
+        started: false,
+        aborted: true,
+      };
+    case 'ERROR':
       if (task.taskId !== action.taskId || task.runId !== action.runId) {
         return task; // bail out
       }
@@ -79,7 +86,6 @@ const reducer = (task, action) => {
         started: false,
         pending: false,
         error: action.error,
-        result: action.result,
       };
     default:
       throw new Error(`unknown action type: ${action.type}`);

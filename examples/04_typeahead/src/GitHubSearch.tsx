@@ -35,6 +35,7 @@ const GitHubSearch: React.FC<{ query: string }> = ({ query }) => {
   const combinedTask = useAsyncCombineSeq(delayTask, fetchTask);
   useAsyncRun(combinedTask);
   if (delayTask.pending) return <div>Waiting...</div>;
+  if (fetchTask.aborted) return <Err error={new Error('Aborted')} />;
   if (fetchTask.error) return <Err error={fetchTask.error} />;
   if (fetchTask.pending) return <Loading abort={fetchTask.abort} />;
   return (

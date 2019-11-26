@@ -17,6 +17,7 @@ const DisplayRemoteData: React.FC<{ id: string }> = ({ id }) => {
   const url = `https://jsonplaceholder.typicode.com/posts/${id}`;
   const asyncTask = useAsyncTaskFetch<{ title: string }>(url);
   useAsyncRun(asyncTask);
+  if (asyncTask.aborted) return <Err error={new Error('Aborted')} />;
   if (asyncTask.error) return <Err error={asyncTask.error} />;
   if (asyncTask.pending) return <Loading abort={asyncTask.abort} />;
   return <div>RemoteData: {asyncTask.result.title}</div>;

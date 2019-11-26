@@ -2,6 +2,7 @@ export type AsyncTask<Result, Args extends unknown[] = unknown[]> = {
   start: (...args: Args) => Promise<Result | null>;
   abort: () => void;
   started: boolean;
+  aborted: boolean;
 } & (
   | {
     pending: true;
@@ -32,7 +33,7 @@ export type UseAsyncRun = <Result, Args extends unknown[] = unknown[]>(
 
 export type UseAsyncCombine = (
   ...ts: AsyncTask<unknown>[],
-) => AsyncTask<unknown> & { errorAll?: Error[] };
+) => AsyncTask<unknown> & { errorAll: (Error | null)[] };
 
 // core async hooks
 

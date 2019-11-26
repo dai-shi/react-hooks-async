@@ -25,6 +25,7 @@ const DisplayRemoteData: React.FC<{ id: string }> = ({ id }) => {
   const config = useMemo(() => ({ url }), [url]);
   const asyncTask = useAsyncTaskAxios<Response>(axios, config);
   useAsyncRun(asyncTask);
+  if (asyncTask.aborted) return <Err error={new Error('Aborted')} />;
   if (asyncTask.error) return <Err error={asyncTask.error} />;
   if (asyncTask.pending) return <Loading abort={asyncTask.abort} />;
   return <div>RemoteData: {asyncTask.result.data.title}</div>;

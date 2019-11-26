@@ -26,12 +26,14 @@ const UserInfo: React.FC<{ id: string }> = ({ id }) => {
   const asyncTask = useAsyncTaskFetch<Result>(url);
   const {
     started,
+    aborted,
     pending,
     error,
     result,
     start,
     abort,
   } = asyncTask;
+  if (aborted) return <Err error={new Error('Aborted')} />;
   if (error) return <Err error={error} />;
   if (started && pending) return <Loading abort={abort} />;
   if (result) return <div>First Name: {result.data.first_name}</div>;

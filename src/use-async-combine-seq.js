@@ -33,6 +33,7 @@ export const useAsyncCombineSeq = (...asyncTasks) => {
       indexRef.current += 1;
     }
   });
+  const taskAborted = asyncTasks.some(({ aborted }) => aborted);
   const taskPending = asyncTasks.some(({ pending }) => pending);
   const taskError = asyncTasks.find(({ error }) => error);
   const taskErrorAll = useMemoList(asyncTasks.map(({ error }) => error));
@@ -41,14 +42,16 @@ export const useAsyncCombineSeq = (...asyncTasks) => {
     start: task.start,
     abort: task.abort,
     started: task.started,
+    aborted: taskAborted,
     pending: taskPending,
     error: taskError,
     errorAll: taskErrorAll,
-    result: taskResult,
+    result: taskPending ? null : taskResult,
   }), [
     task.start,
     task.abort,
     task.started,
+    taskAborted,
     taskPending,
     taskError,
     taskErrorAll,

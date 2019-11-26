@@ -4,6 +4,9 @@
 ### Changed
 - Fix inifinite loop in edge cases by avoiding slow memoization
 - Fix useAsyncRun for some cases with conditional running
+- Fix typings which are broken in #31
+  - The state now has the aborted flag.
+  - This is technically a breaking change, but releasing it as a minor update.
 
 ## [3.7.0] - 2019-11-09
 ### Changed
