@@ -61,7 +61,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -76,11 +76,10 @@ var createTask = function createTask(_ref) {
     runId: null,
     start: function start() {
       var runId,
-          result,
-          error,
           _len,
           args,
           _key,
+          result,
           _args = arguments;
 
       return regeneratorRuntime.async(function start$(_context) {
@@ -98,55 +97,56 @@ var createTask = function createTask(_ref) {
                 taskId: taskId,
                 runId: runId
               });
-              result = null;
-              error = null;
-              _context.prev = 6;
+              _context.prev = 4;
 
               for (_len = _args.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
                 args[_key] = _args[_key];
               }
 
-              _context.next = 10;
+              _context.next = 8;
               return regeneratorRuntime.awrap(func.apply(void 0, [abortController].concat(args)));
 
-            case 10:
+            case 8:
               result = _context.sent;
-              _context.next = 16;
-              break;
+              dispatchRef.current({
+                type: 'RESULT',
+                taskId: taskId,
+                runId: runId,
+                result: result
+              });
+              return _context.abrupt("return", result);
 
             case 13:
               _context.prev = 13;
-              _context.t0 = _context["catch"](6);
+              _context.t0 = _context["catch"](4);
 
-              if (_context.t0.name !== 'AbortError') {
-                error = _context.t0;
-              }
-
-            case 16:
-              dispatchRef.current({
-                type: 'END',
-                taskId: taskId,
-                runId: runId,
-                result: result,
-                error: error
-              });
-
-              if (!error) {
-                _context.next = 19;
+              if (!(_context.t0.name === 'AbortError')) {
+                _context.next = 18;
                 break;
               }
 
-              throw error;
+              dispatchRef.current({
+                type: 'ABORT',
+                taskId: taskId,
+                runId: runId
+              });
+              return _context.abrupt("return", null);
 
-            case 19:
-              return _context.abrupt("return", result);
+            case 18:
+              dispatchRef.current({
+                type: 'ERROR',
+                taskId: taskId,
+                runId: runId,
+                error: _context.t0
+              });
+              throw _context.t0;
 
             case 20:
             case "end":
               return _context.stop();
           }
         }
-      }, null, null, [[6, 13]]);
+      }, null, null, [[4, 13]]);
     },
     abort: function abort() {
       if (abortController) {
@@ -156,6 +156,7 @@ var createTask = function createTask(_ref) {
     },
     started: false,
     pending: true,
+    aborted: false,
     error: null,
     result: null
   };
@@ -175,11 +176,12 @@ var reducer = function reducer(task, action) {
         runId: action.runId,
         started: true,
         pending: true,
+        aborted: false,
         error: null,
         result: null
       });
 
-    case 'END':
+    case 'RESULT':
       if (task.taskId !== action.taskId || task.runId !== action.runId) {
         return task; // bail out
       }
@@ -187,8 +189,28 @@ var reducer = function reducer(task, action) {
       return _objectSpread({}, task, {
         started: false,
         pending: false,
-        error: action.error,
         result: action.result
+      });
+
+    case 'ABORT':
+      if (task.taskId !== action.taskId || task.runId !== action.runId) {
+        return task; // bail out
+      }
+
+      return _objectSpread({}, task, {
+        started: false,
+        aborted: true
+      });
+
+    case 'ERROR':
+      if (task.taskId !== action.taskId || task.runId !== action.runId) {
+        return task; // bail out
+      }
+
+      return _objectSpread({}, task, {
+        started: false,
+        pending: false,
+        error: action.error
       });
 
     default:
@@ -209,15 +231,14 @@ var useAsyncTask = function useAsyncTask(func) {
       task = _useReducer2[0],
       dispatch = _useReducer2[1];
 
-  (0, _react.useLayoutEffect)(function () {
-    if (task.func !== func) {
-      dispatch({
-        type: 'INIT',
-        func: func,
-        dispatchRef: dispatchRef
-      });
-    }
-  });
+  if (task.func !== func) {
+    dispatch({
+      type: 'INIT',
+      func: func,
+      dispatchRef: dispatchRef
+    });
+  }
+
   (0, _react.useLayoutEffect)(function () {
     dispatchRef.current = dispatch;
 

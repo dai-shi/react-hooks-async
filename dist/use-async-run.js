@@ -41,27 +41,37 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 var useAsyncRun = function useAsyncRun(asyncTask) {
   var start = asyncTask && asyncTask.start;
-  var abort = asyncTask && asyncTask.abort;
 
   for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     args[_key - 1] = arguments[_key];
   }
 
   var memoArgs = (0, _utils.useMemoList)(args);
+  var abort = asyncTask && asyncTask.abort;
+  var lastAbort = (0, _react.useRef)(null);
   (0, _react.useEffect)(function () {
     if (start) {
+      if (lastAbort.current) {
+        lastAbort.current();
+      }
+
       start.apply(void 0, _toConsumableArray(memoArgs));
     }
   }, [start, memoArgs]);
   (0, _react.useEffect)(function () {
+    if (abort) {
+      lastAbort.current = abort;
+    }
+  }, [abort]);
+  (0, _react.useEffect)(function () {
     var cleanup = function cleanup() {
-      if (abort) {
-        abort();
+      if (lastAbort.current) {
+        lastAbort.current();
       }
     };
 
     return cleanup;
-  }, [abort]);
+  }, []);
 };
 
 exports.useAsyncRun = useAsyncRun;

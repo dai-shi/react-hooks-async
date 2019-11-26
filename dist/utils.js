@@ -17,12 +17,13 @@ var useMemoList = function useMemoList(list) {
   var listChanged = list.length !== listRef.current.length || list.some(function (arg, index) {
     return !compareFn(arg, listRef.current[index]);
   });
-  (0, _react.useEffect)(function () {
-    if (listChanged) {
-      listRef.current = list;
-    }
-  });
-  return listChanged ? list : listRef.current;
+
+  if (listChanged) {
+    // we can't do this in effects, which run too late.
+    listRef.current = list;
+  }
+
+  return listRef.current;
 };
 
 exports.useMemoList = useMemoList;

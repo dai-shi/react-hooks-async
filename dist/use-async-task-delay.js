@@ -13,7 +13,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.useAsyncTaskDelay = void 0;
 
-var _useMemoOne = require("use-memo-one");
+var _react = require("react");
 
 var _useAsyncTask = require("./use-async-task");
 
@@ -28,7 +28,7 @@ var createAbortError = function createAbortError(message) {
 };
 
 var useAsyncTaskDelay = function useAsyncTaskDelay(delay) {
-  return (0, _useAsyncTask.useAsyncTask)((0, _useMemoOne.useCallbackOne)(function (abortController, delayOverride) {
+  return (0, _useAsyncTask.useAsyncTask)((0, _react.useCallback)(function (abortController, delayOverride) {
     return new Promise(function (resolve, reject) {
       var delayToUse = delayOverride || delay;
       var id = setTimeout(function () {

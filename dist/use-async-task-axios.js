@@ -31,7 +31,7 @@ exports.useAxios = exports.useAsyncTaskAxios = void 0;
 
 require("regenerator-runtime/runtime");
 
-var _useMemoOne = require("use-memo-one");
+var _react = require("react");
 
 var _useAsyncTask = require("./use-async-task");
 
@@ -39,12 +39,12 @@ var _useAsyncRun = require("./use-async-run");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var useAsyncTaskAxios = function useAsyncTaskAxios(axios, config) {
-  return (0, _useAsyncTask.useAsyncTask)((0, _useMemoOne.useCallbackOne)(function _callee(abortController, configOverride) {
+  return (0, _useAsyncTask.useAsyncTask)((0, _react.useCallback)(function _callee(abortController, configOverride) {
     var source, error;
     return regeneratorRuntime.async(function _callee$(_context) {
       while (1) {
