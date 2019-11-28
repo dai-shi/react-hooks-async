@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 ### Changed
-- Use useIsomorphicLayoutEffect hack to avoid warning in SSR
+- Do not useLayoutEffect which shows warning in SSR
 
 ## [3.8.0] - 2019-11-26
 ### Changed

@@ -1,6 +1,4 @@
-import { useEffect, useLayoutEffect, useReducer, useRef } from 'react';
-
-const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+import { useEffect, useReducer, useRef } from 'react';
 
 const createTask = ({ func, dispatchRef }) => {
   const taskId = Symbol('TASK_ID');
@@ -100,8 +98,8 @@ export const useAsyncTask = (func) => {
   if (task.func !== func) {
     dispatch({ type: 'INIT', func, dispatchRef });
   }
-  useIsomorphicLayoutEffect(() => {
-    dispatchRef.current = dispatch;
+  dispatchRef.current = dispatch;
+  useEffect(() => {
     const cleanup = () => {
       dispatchRef.current = () => {};
     };
