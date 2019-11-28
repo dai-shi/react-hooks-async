@@ -118,6 +118,7 @@ You can also try them in codesandbox.io:
 [07](https://codesandbox.io/s/github/dai-shi/react-hooks-async/tree/master/examples/07_race)
 [08](https://codesandbox.io/s/github/dai-shi/react-hooks-async/tree/master/examples/08_wasm)
 [09](https://codesandbox.io/s/github/dai-shi/react-hooks-async/tree/master/examples/09_args)
+[10](https://codesandbox.io/s/github/dai-shi/react-hooks-async/tree/master/examples/10_pagination)
 
 ## Reference
 

@@ -29,7 +29,8 @@
     "examples:progress": "DIR=06_progress webpack-dev-server",
     "examples:race": "DIR=07_race webpack-dev-server",
     "examples:wasm": "DIR=08_wasm webpack-dev-server",
-    "examples:args": "DIR=09_args webpack-dev-server"
+    "examples:args": "DIR=09_args webpack-dev-server",
+    "examples:pagination": "DIR=10_pagination webpack-dev-server"
   },
   "keywords": [
     "react",
