@@ -1,14 +1,16 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Fix useAsyncCombineRace which was totally broken in v3.8.0
 
 ## [3.8.0] - 2019-11-26
 ### Changed
 - Fix inifinite loop in edge cases by avoiding slow memoization
 - Fix useAsyncRun for some cases with conditional running
 - Fix typings which are broken in #31
-  - The state now has the aborted flag.
-  - This is technically a breaking change, but releasing it as a minor update.
+  - The state now has the aborted flag
+  - This is technically a breaking change, but releasing it as a minor update
 - Fix typings around Args
 
 ## [3.7.0] - 2019-11-09
@@ -70,7 +72,7 @@
 
 ## [2.1.0] - 2019-04-16
 ### Changed
-- Fix a fatal bug in type definition.
+- Fix a fatal bug in type definition
 - Update dependencies (incl. core-js@3)
 
 ## [2.0.0] - 2019-03-21
@@ -87,7 +89,7 @@
 ## [1.2.0] - 2019-02-23
 ### Changed
 - Rename useMemoSafe to useMemoPrev
-  - Although this is technically a breaking change, we release it as a minor update.
+  - Although this is technically a breaking change, we release it as a minor update
 
 ## [1.1.0] - 2019-02-18
 ### Changed
