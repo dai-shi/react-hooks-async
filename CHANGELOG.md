@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [3.8.1] - 2019-11-28
 ### Changed
 - Fix useAsyncCombineRace which was totally broken in v3.8.0
 - Do not useLayoutEffect which shows warning in SSR (#35)

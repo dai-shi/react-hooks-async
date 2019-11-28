@@ -1,7 +1,7 @@
 {
   "name": "react-hooks-async",
   "description": "An abortable async function library with React Hooks",
-  "version": "3.8.0",
+  "version": "3.8.1",
   "author": "Daishi Kato",
   "repository": {
     "type": "git",
