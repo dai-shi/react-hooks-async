@@ -1,4 +1,4 @@
-import { useLayoutEffect, useReducer, useRef } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
 
 const createTask = ({ func, dispatchRef }) => {
   const taskId = Symbol('TASK_ID');
@@ -98,8 +98,8 @@ export const useAsyncTask = (func) => {
   if (task.func !== func) {
     dispatch({ type: 'INIT', func, dispatchRef });
   }
-  useLayoutEffect(() => {
-    dispatchRef.current = dispatch;
+  dispatchRef.current = dispatch;
+  useEffect(() => {
     const cleanup = () => {
       dispatchRef.current = () => {};
     };
