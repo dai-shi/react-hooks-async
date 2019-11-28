@@ -239,9 +239,8 @@ var useAsyncTask = function useAsyncTask(func) {
     });
   }
 
-  (0, _react.useLayoutEffect)(function () {
-    dispatchRef.current = dispatch;
-
+  dispatchRef.current = dispatch;
+  (0, _react.useEffect)(function () {
     var cleanup = function cleanup() {
       dispatchRef.current = function () {};
     };
