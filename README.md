@@ -46,7 +46,7 @@ const Loading = ({ abort }) => <div>Loading...<button onClick={abort}>Abort</but
 
 const GitHubSearch = ({ query }) => {
   const url = `https://api.github.com/search/repositories?q=${query}`;
-  const delayTask = useAsyncTaskDelay(useCallback(() => 500, [query]));
+  const delayTask = useAsyncTaskDelay(500);
   const fetchTask = useAsyncTaskFetch(url);
   const combinedTask = useAsyncCombineSeq(delayTask, fetchTask);
   useAsyncRun(combinedTask);
