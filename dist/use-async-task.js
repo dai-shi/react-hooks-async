@@ -45,7 +45,7 @@ require("core-js/modules/web.dom-collections.iterator");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.useAsyncTask = void 0;
+exports.useAsyncTask = exports.SYMBOL_ABORTED = void 0;
 
 require("regenerator-runtime/runtime");
 
@@ -64,6 +64,9 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var SYMBOL_ABORTED = Symbol('ABORTED');
+exports.SYMBOL_ABORTED = SYMBOL_ABORTED;
 
 var createTask = function createTask(_ref) {
   var func = _ref.func,
@@ -130,7 +133,7 @@ var createTask = function createTask(_ref) {
                 taskId: taskId,
                 runId: runId
               });
-              return _context.abrupt("return", null);
+              return _context.abrupt("return", SYMBOL_ABORTED);
 
             case 18:
               dispatchRef.current({

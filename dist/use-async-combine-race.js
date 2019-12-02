@@ -54,12 +54,11 @@ var useAsyncCombineRace = function useAsyncCombineRace() {
               });
             }); // start everything
 
-            _context.next = 3;
-            return regeneratorRuntime.awrap(Promise.all(memoAsyncTasks.map(function (asyncTask) {
+            return _context.abrupt("return", Promise.all(memoAsyncTasks.map(function (asyncTask) {
               return asyncTask.start();
             })));
 
-          case 3:
+          case 2:
           case "end":
             return _context.stop();
         }
