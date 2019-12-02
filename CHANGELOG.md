@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Do not propagate errors when invoking with useAsyncRun
 
 ## [3.8.1] - 2019-11-28
 ### Changed

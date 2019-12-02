@@ -12,7 +12,13 @@ export const useAsyncRun = (asyncTask, ...args) => {
       if (lastAbort.current) {
         lastAbort.current();
       }
-      start(...memoArgs);
+      (async () => {
+        try {
+          await start(...memoArgs);
+        } catch (e) {
+          // we ignore this error because it's handled with state
+        }
+      })();
     }
   }, [start, memoArgs]);
   useEffect(() => {
