@@ -1,8 +1,10 @@
 # Change Log
 
 ## [Unreleased]
+
+## [3.9.0] - 2019-12-02
 ### Changed
-- Do not propagate errors when invoking with useAsyncRun/useAsyncCombine
+- Do not propagate errors when invoking with useAsyncRun/useAsyncCombine (#36)
 - The start functions in combined tasks return results
 
 ## [3.8.1] - 2019-11-28
