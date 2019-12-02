@@ -1,15 +1,11 @@
-import {
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-} from 'react';
+/* eslint no-restricted-syntax: off, no-await-in-loop: off */
 
-import { useAsyncTask } from './use-async-task';
+import { useCallback, useMemo } from 'react';
+
+import { useAsyncTask, SYMBOL_ABORTED } from './use-async-task';
 import { useMemoList } from './utils';
 
 export const useAsyncCombineSeq = (...asyncTasks) => {
-  const indexRef = useRef(0);
   const memoAsyncTasks = useMemoList(asyncTasks, (a, b) => a.start === b.start);
   const task = useAsyncTask(useCallback(
     async (abortController) => {
@@ -18,27 +14,17 @@ export const useAsyncCombineSeq = (...asyncTasks) => {
           asyncTask.abort();
         });
       });
-      // start the first one
-      indexRef.current = 0;
-      await memoAsyncTasks[0].start();
+      // start sequentially
+      const results = [];
+      for (const currentTask of memoAsyncTasks) {
+        const result = await currentTask.start();
+        results.push(result);
+        if (result === SYMBOL_ABORTED) return results;
+      }
+      return results;
     },
     [memoAsyncTasks],
   ));
-  useEffect(() => {
-    // if current task is finished, start next task
-    const currTask = asyncTasks[indexRef.current];
-    const nextTask = asyncTasks[indexRef.current + 1];
-    if (nextTask && currTask && !currTask.pending && !currTask.error) {
-      indexRef.current += 1;
-      (async () => {
-        try {
-          await nextTask.start();
-        } catch (e) {
-          // we ignore this error because it's handled with state
-        }
-      })();
-    }
-  });
   const taskAborted = asyncTasks.some(({ aborted }) => aborted);
   const taskPending = asyncTasks.some(({ pending }) => pending);
   const taskError = asyncTasks.find(({ error }) => error);

@@ -13,7 +13,7 @@ export const useAsyncCombineAll = (...asyncTasks) => {
         });
       });
       // start everything
-      await Promise.all(memoAsyncTasks.map(asyncTask => asyncTask.start()));
+      return Promise.all(memoAsyncTasks.map(asyncTask => asyncTask.start()));
     },
     [memoAsyncTasks],
   ));

@@ -1,5 +1,7 @@
 import { useEffect, useReducer, useRef } from 'react';
 
+export const SYMBOL_ABORTED = Symbol('ABORTED');
+
 const createTask = ({ func, dispatchRef }) => {
   const taskId = Symbol('TASK_ID');
   let abortController = null;
@@ -21,7 +23,7 @@ const createTask = ({ func, dispatchRef }) => {
       } catch (error) {
         if (error.name === 'AbortError') {
           dispatchRef.current({ type: 'ABORT', taskId, runId });
-          return null;
+          return SYMBOL_ABORTED;
         }
         dispatchRef.current({ type: 'ERROR', taskId, runId, error });
         throw error;
