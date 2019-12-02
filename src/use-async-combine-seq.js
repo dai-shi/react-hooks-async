@@ -19,8 +19,8 @@ export const useAsyncCombineSeq = (...asyncTasks) => {
         });
       });
       // start the first one
-      memoAsyncTasks[0].start();
       indexRef.current = 0;
+      await memoAsyncTasks[0].start();
     },
     [memoAsyncTasks],
   ));
@@ -29,8 +29,14 @@ export const useAsyncCombineSeq = (...asyncTasks) => {
     const currTask = asyncTasks[indexRef.current];
     const nextTask = asyncTasks[indexRef.current + 1];
     if (nextTask && currTask && !currTask.pending && !currTask.error) {
-      nextTask.start();
       indexRef.current += 1;
+      (async () => {
+        try {
+          await nextTask.start();
+        } catch (e) {
+          // we ignore this error because it's handled with state
+        }
+      })();
     }
   });
   const taskAborted = asyncTasks.some(({ aborted }) => aborted);

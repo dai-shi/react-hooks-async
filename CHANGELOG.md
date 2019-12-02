@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 ### Changed
-- Do not propagate errors when invoking with useAsyncRun
+- Do not propagate errors when invoking with useAsyncRun/useAsyncCombine*
 
 ## [3.8.1] - 2019-11-28
 ### Changed

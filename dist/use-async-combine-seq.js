@@ -47,10 +47,11 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
               });
             }); // start the first one
 
-            memoAsyncTasks[0].start();
             indexRef.current = 0;
+            _context.next = 4;
+            return regeneratorRuntime.awrap(memoAsyncTasks[0].start());
 
-          case 3:
+          case 4:
           case "end":
             return _context.stop();
         }
@@ -63,8 +64,32 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
     var nextTask = asyncTasks[indexRef.current + 1];
 
     if (nextTask && currTask && !currTask.pending && !currTask.error) {
-      nextTask.start();
       indexRef.current += 1;
+
+      (function _callee2() {
+        return regeneratorRuntime.async(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                _context2.next = 3;
+                return regeneratorRuntime.awrap(nextTask.start());
+
+              case 3:
+                _context2.next = 7;
+                break;
+
+              case 5:
+                _context2.prev = 5;
+                _context2.t0 = _context2["catch"](0);
+
+              case 7:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, null, null, [[0, 5]]);
+      })();
     }
   });
   var taskAborted = asyncTasks.some(function (_ref) {

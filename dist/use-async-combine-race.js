@@ -8,13 +8,19 @@ require("core-js/modules/es.array.find-index");
 
 require("core-js/modules/es.array.for-each");
 
+require("core-js/modules/es.array.iterator");
+
 require("core-js/modules/es.array.map");
 
 require("core-js/modules/es.object.to-string");
 
 require("core-js/modules/es.promise");
 
+require("core-js/modules/es.string.iterator");
+
 require("core-js/modules/web.dom-collections.for-each");
+
+require("core-js/modules/web.dom-collections.iterator");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -48,11 +54,12 @@ var useAsyncCombineRace = function useAsyncCombineRace() {
               });
             }); // start everything
 
-            memoAsyncTasks.forEach(function (asyncTask) {
-              asyncTask.start();
-            });
+            _context.next = 3;
+            return regeneratorRuntime.awrap(Promise.all(memoAsyncTasks.map(function (asyncTask) {
+              return asyncTask.start();
+            })));
 
-          case 2:
+          case 3:
           case "end":
             return _context.stop();
         }

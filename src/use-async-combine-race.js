@@ -13,9 +13,7 @@ export const useAsyncCombineRace = (...asyncTasks) => {
         });
       });
       // start everything
-      memoAsyncTasks.forEach((asyncTask) => {
-        asyncTask.start();
-      });
+      await Promise.all(memoAsyncTasks.map(asyncTask => asyncTask.start()));
     },
     [memoAsyncTasks],
   ));
