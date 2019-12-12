@@ -26,11 +26,98 @@ npm install react-hooks-async
 
 ## Usage
 
-A typeahead search example:
+### A basic async example (run immediately)
+
+```jsx
+import React from 'react';
+
+import { useAsyncTask, useAsyncRun } from 'react-hooks-async';
+
+const fetchStarwarsHero = async ({ signal }, id) => {
+  const response = await fetch(`https://swapi.co/api/people/${id}/`);
+  const data = await response.json();
+  return data;
+};
+
+const StarwarsHero = ({ id }) => {
+  const task = useAsyncTask(fetchStarwarsHero);
+  useAsyncRun(task, id);
+  const { pending, error, result, abort } = task;
+  if (pending) return <div>Loading...<button onClick={abort}>Abort</button></div>;
+  if (error) return <div>Error: {error.name} {error.message}</div>;
+  return <div>Name: {result.name}</div>;
+};
+
+const App = () => (
+  <div>
+    <StarwarsHero id={'1'} />
+    <StarwarsHero id={'2'} />
+  </div>
+);
+```
+
+### A basic async example (run in callback)
+
+```jsx
+import React, { useState } from 'react';
+
+import { useAsyncTask } from 'react-hooks-async';
+
+const fetchStarwarsHero = async ({ signal }, id) => {
+  const response = await fetch(`https://swapi.co/api/people/${id}/`);
+  const data = await response.json();
+  return data;
+};
+
+const StarwarsHero = () => {
+  const { start, started, result } = useAsyncTask(fetchStarwarsHero);
+  const [id, setId] = useState('');
+  return (
+    <div>
+      <input value={id} onChange={e => setId(e.target.value)} />
+      <button type="button" onClick={() => start(id)}>Fetch</button>
+      {started && 'Fetching...'}
+      <div>Name: {result && result.name}</div>
+    </div>
+  );
+};
+
+const App = () => (
+  <div>
+    <StarwarsHero />
+    <StarwarsHero />
+  </div>
+);
+```
+
+### A simple fetch example
+
+```jsx
+import React from 'react';
+
+import { useFetch } from 'react-hooks-async';
+
+const UserInfo = ({ id }) => {
+  const url = `https://reqres.in/api/users/${id}?delay=1`;
+  const { pending, error, result, abort } = useFetch(url);
+  if (pending) return <div>Loading...<button onClick={abort}>Abort</button></div>;
+  if (error) return <div>Error: {error.name} {error.message}</div>;
+  return <div>First Name: {result.data.first_name}</div>;
+};
+
+const App = () => (
+  <div>
+    <UserInfo id={'1'} />
+    <UserInfo id={'2'} />
+  </div>
+);
+```
+
+### A typeahead search example using combination
 
 <img src="./examples/04_typeahead/screencast.gif" alt="Preview" width="350" />
 
-```javascript
+```jsx
 import React, { useState, useCallback } from 'react';
 
 import {
@@ -72,29 +159,6 @@ const App = () => {
     </div>
   );
 };
-```
-
-A simple fetch example:
-
-```javascript
-import React from 'react';
-
-import { useFetch } from 'react-hooks-async';
-
-const UserInfo = ({ id }) => {
-  const url = `https://reqres.in/api/users/${id}?delay=1`;
-  const { pending, error, result, abort } = useFetch(url);
-  if (pending) return <div>Loading...<button onClick={abort}>Abort</button></div>;
-  if (error) return <div>Error: {error.name} {error.message}</div>;
-  return <div>First Name: {result.data.first_name}</div>;
-};
-
-const App = () => (
-  <div>
-    <UserInfo id={'1'} />
-    <UserInfo id={'2'} />
-  </div>
-);
 ```
 
 ## Examples
