@@ -34,7 +34,7 @@ import React from 'react';
 import { useAsyncTask, useAsyncRun } from 'react-hooks-async';
 
 const fetchStarwarsHero = async ({ signal }, id) => {
-  const response = await fetch(`https://swapi.co/api/people/${id}/`);
+  const response = await fetch(`https://swapi.co/api/people/${id}/`, { signal });
   const data = await response.json();
   return data;
 };
@@ -64,7 +64,7 @@ import React, { useState } from 'react';
 import { useAsyncTask } from 'react-hooks-async';
 
 const fetchStarwarsHero = async ({ signal }, id) => {
-  const response = await fetch(`https://swapi.co/api/people/${id}/`);
+  const response = await fetch(`https://swapi.co/api/people/${id}/`, { signal });
   const data = await response.json();
   return data;
 };
