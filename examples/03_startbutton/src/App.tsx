@@ -10,13 +10,13 @@ const App = () => {
     <div>
       <div>
         id:
-        <input value={id} onChange={e => setId(e.target.value)} />
+        <input value={id} onChange={(e) => setId(e.target.value)} />
         {id && <DisplayRemoteData id={id} />}
       </div>
       <hr />
       <div>
         id:
-        <input value={id2} onChange={e => setId2(e.target.value)} />
+        <input value={id2} onChange={(e) => setId2(e.target.value)} />
         {id2 && <UserInfo id={id2} />}
       </div>
     </div>

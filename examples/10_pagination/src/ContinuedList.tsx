@@ -35,13 +35,13 @@ const ContinuedList: React.FC = () => {
     return <div>Something wrong happened: ${asyncTask.error.message}</div>;
   }
   if (!asyncTask.pending && asyncTask.result.page === page) {
-    setList(prev => [...prev, ...asyncTask.result.data]);
+    setList((prev) => [...prev, ...asyncTask.result.data]);
     setHasMore(asyncTask.result.page < asyncTask.result.total_pages);
   }
   return (
     <div>
       <ul>
-        {list.map(item => (
+        {list.map((item) => (
           <li key={item.id}>{item.first_name} {item.last_name}</li>
         ))}
       </ul>

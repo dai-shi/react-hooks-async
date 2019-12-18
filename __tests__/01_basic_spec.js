@@ -5,7 +5,7 @@ import { useAsyncTask, useAsyncRun, useAsyncTaskTimeout } from '../src/index';
 
 // FIXME we should fake timers
 // jest.useFakeTimers();
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 describe('basic spec', () => {
   afterEach(cleanup);

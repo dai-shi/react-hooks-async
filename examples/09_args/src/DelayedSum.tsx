@@ -10,13 +10,13 @@ const func = async (_abortController: unknown, ...args: number[]) => {
 const DelayedSum: React.FC = () => {
   const [ready, setReady] = useState(false);
   const [nums, setNums] = useState('1, 2, 3');
-  const args = nums.split(',').map(x => Number(x));
+  const args = nums.split(',').map((x) => Number(x));
   const asyncTask = useAsyncTask(func);
   useAsyncRun(ready && asyncTask, ...args);
   return (
     <div>
       <div>
-        Args: <input value={nums} onChange={e => setNums(e.target.value)} />
+        Args: <input value={nums} onChange={(e) => setNums(e.target.value)} />
       </div>
       <div>
         <input type="checkbox" onClick={() => setReady(!ready)} />

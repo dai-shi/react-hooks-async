@@ -29,8 +29,7 @@
     "react/prop-types": "off",
     "react/jsx-one-expression-per-line": "off",
     "import/prefer-default-export": "off",
-    "import/no-unresolved": ["error", { "ignore": ["react-hooks-async", "node-fetch"] }],
-    "arrow-parens": ["error", "as-needed", { "requireForBlockBody": true }],
+    "import/no-unresolved": ["error", { "ignore": ["react-hooks-async"] }],
     "object-curly-newline": ["error", {
       "ObjectExpression": { "minProperties": 5, "multiline": true, "consistent": true },
       "ObjectPattern": { "minProperties": 5, "multiline": true, "consistent": true },

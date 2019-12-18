@@ -4,7 +4,7 @@ import { useAsyncTask } from './use-async-task';
 import { useAsyncRun } from './use-async-run';
 
 const defaultInit = {};
-const defaultReadBody = body => body.json();
+const defaultReadBody = (body) => body.json();
 
 const createFetchError = (message, responseBody) => {
   const err = new Error(message);

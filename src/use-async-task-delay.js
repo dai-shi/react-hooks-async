@@ -12,7 +12,7 @@ const createAbortError = (message) => {
   }
 };
 
-export const useAsyncTaskDelay = delay => useAsyncTask(useCallback(
+export const useAsyncTaskDelay = (delay) => useAsyncTask(useCallback(
   (abortController, delayOverride) => new Promise((resolve, reject) => {
     const delayToUse = delayOverride || delay;
     const id = setTimeout(() => {

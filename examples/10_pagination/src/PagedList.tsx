@@ -38,7 +38,7 @@ const PagedList: React.FC = () => {
   return (
     <div>
       <ul>
-        {asyncTask.result.data.map(item => (
+        {asyncTask.result.data.map((item) => (
           <li key={item.id}>{item.first_name} {item.last_name}</li>
         ))}
       </ul>
