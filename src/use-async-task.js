@@ -103,7 +103,7 @@ export const useAsyncTask = (func) => {
   dispatchRef.current = dispatch;
   useEffect(() => {
     const cleanup = () => {
-      dispatchRef.current = () => {};
+      dispatchRef.current = () => null;
     };
     return cleanup;
   }, []);
