@@ -1,6 +1,6 @@
 {
   "name": "react-hooks-async",
-  "description": "An abortable async function library with React Hooks",
+  "description": "React custom hooks for async functions with abortability and composability",
   "version": "3.9.0",
   "author": "Daishi Kato",
   "repository": {

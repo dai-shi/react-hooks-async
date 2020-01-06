@@ -4,7 +4,7 @@
 [![npm version](https://badge.fury.io/js/react-hooks-async.svg)](https://badge.fury.io/js/react-hooks-async)
 [![bundle size](https://badgen.net/bundlephobia/minzip/react-hooks-async)](https://bundlephobia.com/result?p=react-hooks-async)
 
-An abortable async function library with React Hooks
+React custom hooks for async functions with abortability and composability
 
 ## Introduction
 
