@@ -191,6 +191,21 @@ Arguments must be memoized if they would change in re-renders.
 Consider defining them outside of render,
 or useMemo/useMemoOne/useCallback/useCallbackOne.
 
+### States
+
+| State  | Description |
+| ------------- | ------------- |
+| started  | Initial _false_. Becomes _true_ once the task is started. Becomes _false_ when the task ends  |
+| pending  | Initial _true_.  Stays _true_ after the task is started. Becomes _false_ when the task ends |
+
+An example,
+* initial: started=false, pending=true
+* first start: started=true, pending=true
+* first end: started=false, pending=false
+* second start: started=true, pending=true
+* second end: started=false, pending=false
+
+
 ### Core hooks
 
 #### useAsyncTask
