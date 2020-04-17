@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+### Changed
+- Avoid using useRef in useMemoList (hoping to find better solution)
 
 ## [3.9.0] - 2019-12-02
 ### Changed
