@@ -3,6 +3,7 @@
 ## [Unreleased]
 ### Changed
 - Avoid using useRef in useMemoList (hoping to find better solution)
+- Attach response object to fetch error (#40)
 
 ## [3.9.0] - 2019-12-02
 ### Changed
