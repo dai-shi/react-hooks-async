@@ -33,6 +33,10 @@ var _useAsyncTask = require("./use-async-task");
 
 var _utils = require("./utils");
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 var useAsyncCombineAll = function useAsyncCombineAll() {
   for (var _len = arguments.length, asyncTasks = new Array(_len), _key = 0; _key < _len; _key++) {
     asyncTasks[_key] = arguments[_key];
@@ -41,46 +45,52 @@ var useAsyncCombineAll = function useAsyncCombineAll() {
   var memoAsyncTasks = (0, _utils.useMemoList)(asyncTasks, function (a, b) {
     return a.start === b.start;
   });
-  var task = (0, _useAsyncTask.useAsyncTask)((0, _react.useCallback)(function _callee(abortController) {
-    return regeneratorRuntime.async(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            abortController.signal.addEventListener('abort', function () {
-              memoAsyncTasks.forEach(function (asyncTask) {
-                asyncTask.abort();
-              });
-            }); // start everything
+  var task = (0, _useAsyncTask.useAsyncTask)((0, _react.useCallback)( /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(abortController) {
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              abortController.signal.addEventListener('abort', function () {
+                memoAsyncTasks.forEach(function (asyncTask) {
+                  asyncTask.abort();
+                });
+              }); // start everything
 
-            return _context.abrupt("return", Promise.all(memoAsyncTasks.map(function (asyncTask) {
-              return asyncTask.start();
-            })));
+              return _context.abrupt("return", Promise.all(memoAsyncTasks.map(function (asyncTask) {
+                return asyncTask.start();
+              })));
 
-          case 2:
-          case "end":
-            return _context.stop();
+            case 2:
+            case "end":
+              return _context.stop();
+          }
         }
-      }
-    });
-  }, [memoAsyncTasks]));
-  var taskAborted = asyncTasks.some(function (_ref) {
-    var aborted = _ref.aborted;
+      }, _callee);
+    }));
+
+    return function (_x) {
+      return _ref.apply(this, arguments);
+    };
+  }(), [memoAsyncTasks]));
+  var taskAborted = asyncTasks.some(function (_ref2) {
+    var aborted = _ref2.aborted;
     return aborted;
   });
-  var taskPending = asyncTasks.some(function (_ref2) {
-    var pending = _ref2.pending;
+  var taskPending = asyncTasks.some(function (_ref3) {
+    var pending = _ref3.pending;
     return pending;
   });
-  var taskError = asyncTasks.find(function (_ref3) {
-    var error = _ref3.error;
-    return error;
-  });
-  var taskErrorAll = (0, _utils.useMemoList)(asyncTasks.map(function (_ref4) {
+  var taskError = asyncTasks.find(function (_ref4) {
     var error = _ref4.error;
     return error;
+  });
+  var taskErrorAll = (0, _utils.useMemoList)(asyncTasks.map(function (_ref5) {
+    var error = _ref5.error;
+    return error;
   }));
-  var taskResult = (0, _utils.useMemoList)(asyncTasks.map(function (_ref5) {
-    var result = _ref5.result;
+  var taskResult = (0, _utils.useMemoList)(asyncTasks.map(function (_ref6) {
+    var result = _ref6.result;
     return result;
   }));
   return (0, _react.useMemo)(function () {

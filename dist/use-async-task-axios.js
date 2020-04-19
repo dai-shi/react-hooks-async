@@ -43,49 +43,59 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 var useAsyncTaskAxios = function useAsyncTaskAxios(axios, config) {
-  return (0, _useAsyncTask.useAsyncTask)((0, _react.useCallback)(function _callee(abortController, configOverride) {
-    var source, error;
-    return regeneratorRuntime.async(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            source = axios.CancelToken.source();
-            abortController.signal.addEventListener('abort', function () {
-              source.cancel('canceled');
-            });
-            _context.prev = 2;
-            _context.next = 5;
-            return regeneratorRuntime.awrap(axios(_objectSpread({}, config, {}, configOverride, {
-              cancelToken: source.token
-            })));
+  return (0, _useAsyncTask.useAsyncTask)((0, _react.useCallback)( /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(abortController, configOverride) {
+      var source, error;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              source = axios.CancelToken.source();
+              abortController.signal.addEventListener('abort', function () {
+                source.cancel('canceled');
+              });
+              _context.prev = 2;
+              _context.next = 5;
+              return axios(_objectSpread({}, config, {}, configOverride, {
+                cancelToken: source.token
+              }));
 
-          case 5:
-            return _context.abrupt("return", _context.sent);
+            case 5:
+              return _context.abrupt("return", _context.sent);
 
-          case 8:
-            _context.prev = 8;
-            _context.t0 = _context["catch"](2);
+            case 8:
+              _context.prev = 8;
+              _context.t0 = _context["catch"](2);
 
-            if (!axios.isCancel(_context.t0)) {
-              _context.next = 14;
-              break;
-            }
+              if (!axios.isCancel(_context.t0)) {
+                _context.next = 14;
+                break;
+              }
 
-            error = new Error(_context.t0.message);
-            error.name = 'AbortError';
-            throw error;
+              error = new Error(_context.t0.message);
+              error.name = 'AbortError';
+              throw error;
 
-          case 14:
-            throw _context.t0;
+            case 14:
+              throw _context.t0;
 
-          case 15:
-          case "end":
-            return _context.stop();
+            case 15:
+            case "end":
+              return _context.stop();
+          }
         }
-      }
-    }, null, null, [[2, 8]]);
-  }, [axios, config]));
+      }, _callee, null, [[2, 8]]);
+    }));
+
+    return function (_x, _x2) {
+      return _ref.apply(this, arguments);
+    };
+  }(), [axios, config]));
 };
 
 exports.useAsyncTaskAxios = useAsyncTaskAxios;

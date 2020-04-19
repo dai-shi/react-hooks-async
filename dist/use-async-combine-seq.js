@@ -10,15 +10,27 @@ require("core-js/modules/es.array.find");
 
 require("core-js/modules/es.array.for-each");
 
+require("core-js/modules/es.array.from");
+
+require("core-js/modules/es.array.is-array");
+
 require("core-js/modules/es.array.iterator");
 
 require("core-js/modules/es.array.map");
 
+require("core-js/modules/es.array.slice");
+
 require("core-js/modules/es.array.some");
+
+require("core-js/modules/es.date.to-string");
+
+require("core-js/modules/es.function.name");
 
 require("core-js/modules/es.object.to-string");
 
 require("core-js/modules/es.promise");
+
+require("core-js/modules/es.regexp.to-string");
 
 require("core-js/modules/es.string.iterator");
 
@@ -39,7 +51,16 @@ var _useAsyncTask = require("./use-async-task");
 
 var _utils = require("./utils");
 
-/* eslint no-restricted-syntax: off, no-await-in-loop: off */
+function _createForOfIteratorHelper(o) { if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) { var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var it, normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(n); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 var useAsyncCombineSeq = function useAsyncCombineSeq() {
   for (var _len = arguments.length, asyncTasks = new Array(_len), _key = 0; _key < _len; _key++) {
     asyncTasks[_key] = arguments[_key];
@@ -48,114 +69,101 @@ var useAsyncCombineSeq = function useAsyncCombineSeq() {
   var memoAsyncTasks = (0, _utils.useMemoList)(asyncTasks, function (a, b) {
     return a.start === b.start;
   });
-  var task = (0, _useAsyncTask.useAsyncTask)((0, _react.useCallback)(function _callee(abortController) {
-    var results, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, currentTask, result;
+  var task = (0, _useAsyncTask.useAsyncTask)((0, _react.useCallback)( /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(abortController) {
+      var results, _iterator, _step, currentTask, result;
 
-    return regeneratorRuntime.async(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            abortController.signal.addEventListener('abort', function () {
-              memoAsyncTasks.forEach(function (asyncTask) {
-                asyncTask.abort();
-              });
-            }); // start sequentially
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              abortController.signal.addEventListener('abort', function () {
+                memoAsyncTasks.forEach(function (asyncTask) {
+                  asyncTask.abort();
+                });
+              }); // start sequentially
 
-            results = [];
-            _iteratorNormalCompletion = true;
-            _didIteratorError = false;
-            _iteratorError = undefined;
-            _context.prev = 5;
-            _iterator = memoAsyncTasks[Symbol.iterator]();
+              results = [];
+              _iterator = _createForOfIteratorHelper(memoAsyncTasks);
+              _context.prev = 3;
 
-          case 7:
-            if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-              _context.next = 18;
+              _iterator.s();
+
+            case 5:
+              if ((_step = _iterator.n()).done) {
+                _context.next = 15;
+                break;
+              }
+
+              currentTask = _step.value;
+              _context.next = 9;
+              return currentTask.start();
+
+            case 9:
+              result = _context.sent;
+              results.push(result);
+
+              if (!(result === _useAsyncTask.SYMBOL_ABORTED)) {
+                _context.next = 13;
+                break;
+              }
+
+              return _context.abrupt("return", results);
+
+            case 13:
+              _context.next = 5;
               break;
-            }
 
-            currentTask = _step.value;
-            _context.next = 11;
-            return regeneratorRuntime.awrap(currentTask.start());
-
-          case 11:
-            result = _context.sent;
-            results.push(result);
-
-            if (!(result === _useAsyncTask.SYMBOL_ABORTED)) {
-              _context.next = 15;
+            case 15:
+              _context.next = 20;
               break;
-            }
 
-            return _context.abrupt("return", results);
+            case 17:
+              _context.prev = 17;
+              _context.t0 = _context["catch"](3);
 
-          case 15:
-            _iteratorNormalCompletion = true;
-            _context.next = 7;
-            break;
+              _iterator.e(_context.t0);
 
-          case 18:
-            _context.next = 24;
-            break;
+            case 20:
+              _context.prev = 20;
 
-          case 20:
-            _context.prev = 20;
-            _context.t0 = _context["catch"](5);
-            _didIteratorError = true;
-            _iteratorError = _context.t0;
+              _iterator.f();
 
-          case 24:
-            _context.prev = 24;
-            _context.prev = 25;
+              return _context.finish(20);
 
-            if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-              _iterator["return"]();
-            }
+            case 23:
+              return _context.abrupt("return", results);
 
-          case 27:
-            _context.prev = 27;
-
-            if (!_didIteratorError) {
-              _context.next = 30;
-              break;
-            }
-
-            throw _iteratorError;
-
-          case 30:
-            return _context.finish(27);
-
-          case 31:
-            return _context.finish(24);
-
-          case 32:
-            return _context.abrupt("return", results);
-
-          case 33:
-          case "end":
-            return _context.stop();
+            case 24:
+            case "end":
+              return _context.stop();
+          }
         }
-      }
-    }, null, null, [[5, 20, 24, 32], [25,, 27, 31]]);
-  }, [memoAsyncTasks]));
-  var taskAborted = asyncTasks.some(function (_ref) {
-    var aborted = _ref.aborted;
+      }, _callee, null, [[3, 17, 20, 23]]);
+    }));
+
+    return function (_x) {
+      return _ref.apply(this, arguments);
+    };
+  }(), [memoAsyncTasks]));
+  var taskAborted = asyncTasks.some(function (_ref2) {
+    var aborted = _ref2.aborted;
     return aborted;
   });
-  var taskPending = asyncTasks.some(function (_ref2) {
-    var pending = _ref2.pending;
+  var taskPending = asyncTasks.some(function (_ref3) {
+    var pending = _ref3.pending;
     return pending;
   });
-  var taskError = asyncTasks.find(function (_ref3) {
-    var error = _ref3.error;
-    return error;
-  });
-  var taskErrorAll = (0, _utils.useMemoList)(asyncTasks.map(function (_ref4) {
+  var taskError = asyncTasks.find(function (_ref4) {
     var error = _ref4.error;
     return error;
+  });
+  var taskErrorAll = (0, _utils.useMemoList)(asyncTasks.map(function (_ref5) {
+    var error = _ref5.error;
+    return error;
   }));
-  var taskResult = (0, _utils.useMemoList)(asyncTasks.map(function (_ref5) {
-    var result = _ref5.result;
+  var taskResult = (0, _utils.useMemoList)(asyncTasks.map(function (_ref6) {
+    var result = _ref6.result;
     return result;
   }));
   return (0, _react.useMemo)(function () {
