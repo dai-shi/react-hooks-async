@@ -1,6 +1,8 @@
 # Change Log
 
 ## [Unreleased]
+
+## [3.10.0] - 2020-04-19
 ### Changed
 - Avoid using useRef in useMemoList (hoping to find better solution)
 - Attach response object to fetch error (#40)
