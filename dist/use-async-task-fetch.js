@@ -56,7 +56,7 @@ var defaultReadBody = function defaultReadBody(body) {
 };
 
 var createFetchError = function createFetchError(response, responseBody) {
-  var err = new Error("".concat(response.statusCode, " ").concat(response.statusText));
+  var err = new Error("".concat(response.status, " ").concat(response.statusText));
   err.name = 'FetchError';
   err.response = response;
   err.responseBody = responseBody;

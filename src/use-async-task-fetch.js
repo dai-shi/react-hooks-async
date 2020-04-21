@@ -7,7 +7,7 @@ const defaultInit = {};
 const defaultReadBody = (body) => body.json();
 
 const createFetchError = (response, responseBody) => {
-  const err = new Error(`${response.statusCode} ${response.statusText}`);
+  const err = new Error(`${response.status} ${response.statusText}`);
   err.name = 'FetchError';
   err.response = response;
   err.responseBody = responseBody;

@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.10.1] - 2020-04-22
+### Changed
+- Add status code in fetch error message (#40)
+
 ## [3.10.0] - 2020-04-19
 ### Changed
 - Avoid using useRef in useMemoList (hoping to find better solution)
