@@ -4,6 +4,7 @@ which will not be a best pracitce in the future versions of React.
 This would be still useful for learning and might work for small projects.
 React community should move to new data fetching approach,
 or at least approach to fire a single async function in useEffect.
+See also: https://github.com/dai-shi/react-hooks-async/issues/64
 
 ---
 
